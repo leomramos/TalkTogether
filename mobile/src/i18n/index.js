@@ -1,12 +1,17 @@
-import I18n from "react-native-i18n";
+import * as Localization from "expo-localization";
+import { I18n } from "i18n-js";
+
 import en from "./locales/en";
-import it from "./locales/it";
 
-I18n.fallbacks = true;
+console.log(Localization.locale);
 
-I18n.translations = {
+const translations = {
   en,
-  it,
 };
 
-export default I18n;
+const i18n = new I18n(translations);
+
+i18n.locale = Localization.locale;
+i18n.enableFallback = true;
+
+export default i18n;
