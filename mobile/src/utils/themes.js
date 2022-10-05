@@ -8,7 +8,7 @@ const darkTheme = {
   },
 };
 
-export default AppTheme = {
+export default Theme = {
   get: t => {
     switch (t) {
       case "dark":
