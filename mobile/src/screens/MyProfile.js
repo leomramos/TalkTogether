@@ -1,10 +1,11 @@
 import React from "react";
 import { Text, View } from "react-native";
+import ScreenContainer from "../components/ScreenContainer";
 
 export default MyProfile = () => {
   return (
-    <View>
+    <ScreenContainer>
       <Text>MyProfile</Text>
-    </View>
+    </ScreenContainer>
   );
 };

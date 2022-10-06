@@ -1,10 +1,11 @@
 import React from "react";
 import { Text, View } from "react-native";
+import ScreenContainer from "../components/ScreenContainer";
 
 export default Calls = () => {
   return (
-    <View style={{ backgroundColor: "gray", flex: 1 }}>
+    <ScreenContainer>
       <Text>Calls</Text>
-    </View>
+    </ScreenContainer>
   );
 };

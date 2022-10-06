@@ -20,10 +20,6 @@ export default AppStack = () => {
       initialRouteName="Chats"
       tabBarPosition="bottom"
       backBehavior="history"
-      style={{
-        // paddingTop: insets.top,
-        backgroundColor: colors.surface,
-      }}
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -35,10 +31,11 @@ export default AppStack = () => {
         },
         tabBarIndicatorStyle: {
           backgroundColor: colors.focused,
-          marginBottom: insets.bottom + 10,
+          height: 5,
+          position: "relative",
         },
         tabBarContentContainerStyle: {
-          paddingBottom: insets.bottom + 10,
+          paddingBottom: insets.bottom,
         },
       }}
     >
