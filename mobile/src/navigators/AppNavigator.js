@@ -17,7 +17,7 @@ export default AppStack = () => {
   return (
     <Tab.Navigator
       id="AppStack"
-      initialRouteName="Chats"
+      initialRouteName="ChatsScreen"
       tabBarPosition="bottom"
       backBehavior="history"
       screenOptions={{
