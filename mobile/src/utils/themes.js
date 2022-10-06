@@ -5,6 +5,10 @@ const darkTheme = {
   dark: true,
   colors: {
     ...DefaultTheme.colors,
+    background: "#21212B",
+    focused: "#9D4EDD",
+    unfocused: "#909095",
+    surface: "#181820",
   },
 };
 
