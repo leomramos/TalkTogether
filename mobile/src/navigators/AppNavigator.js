@@ -2,9 +2,9 @@ import { Icon } from "@react-native-material/core";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Calls from "../screens/Calls";
-import Chats from "../screens/Chats";
-import MyProfile from "../screens/MyProfile";
+import CallsScreen from "../screens/tabs/Calls";
+import ChatsScreen from "../screens/tabs/Chats";
+import MyProfileScreen from "../screens/tabs/MyProfile";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -40,8 +40,8 @@ export default AppStack = () => {
       }}
     >
       <Tab.Screen
-        name="Calls"
-        component={Calls}
+        name="CallsScreen"
+        component={CallsScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="phone" color={color} size={iconSize} />
@@ -49,8 +49,8 @@ export default AppStack = () => {
         }}
       />
       <Tab.Screen
-        name="Chats"
-        component={Chats}
+        name="ChatsScreen"
+        component={ChatsScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="message" color={color} size={iconSize} />
@@ -58,8 +58,8 @@ export default AppStack = () => {
         }}
       />
       <Tab.Screen
-        name="MyProfile"
-        component={MyProfile}
+        name="MyProfileScreen"
+        component={MyProfileScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Icon name="account" color={color} size={iconSize} />
