@@ -3,5 +3,5 @@ import { Text, View } from "react-native";
 import TabScreen from ".";
 
 export default Calls = () => {
-  return <TabScreen title={"Calls"} />;
+  return <TabScreen></TabScreen>;
 };
