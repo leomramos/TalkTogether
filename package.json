@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "expo": "cd mobile && yarn start",
+    "tunnel": "cd mobile && yarn start --tunnel"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leomramos/TalkTogether.git"
+  },
+  "private": true
+}
