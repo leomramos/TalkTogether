@@ -1,3 +1,4 @@
+import { Inter_700Bold, useFonts } from "@expo-google-fonts/inter";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { IconComponentProvider } from "@react-native-material/core";
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,6 +13,10 @@ import Theme from "./src/utils/themes";
 import i18n from "./src/i18n";
 
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    Inter_700Bold,
+  });
+
   const scheme = useColorScheme();
   // add theme switch functionality
   return (

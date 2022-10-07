@@ -3,6 +3,13 @@ import { DefaultTheme } from "react-native-paper";
 const darkTheme = {
   ...DefaultTheme,
   dark: true,
+  text: {
+    pageTitle: {
+      font: "Inter_700Bold",
+      size: "24px",
+      color: "#FDFDFD",
+    },
+  },
   colors: {
     ...DefaultTheme.colors,
     background: "#21212B",

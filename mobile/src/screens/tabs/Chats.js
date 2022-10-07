@@ -1,7 +1,15 @@
 import React from "react";
 import { Text, View } from "react-native";
-import TabScreen from ".";
+import { useTheme } from "react-native-paper";
+import { PageHeader } from "../../components";
+import ScreenContainer from "../../components/ScreenContainer";
+
+import i18n from "../../i18n";
 
 export default Chats = () => {
-  return <TabScreen></TabScreen>;
+  return (
+    <ScreenContainer>
+      <PageHeader title="Chats" />
+    </ScreenContainer>
+  );
 };

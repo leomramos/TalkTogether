@@ -1,7 +1,11 @@
 import React from "react";
 import { Text, View } from "react-native";
-import TabScreen from ".";
+import ScreenContainer from "../../components/ScreenContainer";
 
 export default Calls = () => {
-  return <TabScreen></TabScreen>;
+  return (
+    <ScreenContainer>
+      <PageHeader title="Calls" />
+    </ScreenContainer>
+  );
 };
