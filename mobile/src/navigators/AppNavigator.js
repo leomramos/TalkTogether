@@ -20,6 +20,7 @@ export default AppStack = () => {
       initialRouteName="ChatsScreen"
       tabBarPosition="bottom"
       backBehavior="history"
+      keyboardDismissMode="none"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,

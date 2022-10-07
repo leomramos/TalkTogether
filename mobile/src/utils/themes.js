@@ -10,13 +10,10 @@ const common = {
     pageTitle: {
       font: "Inter_700Bold",
       size: "24px",
-      color: "#FDFDFD",
     },
     input: {
       font: "Inter_500Medium",
       size: "14px",
-      color: "#CECED0",
-      placeholder: "#76767C",
     },
   },
   colors: {
@@ -27,6 +24,7 @@ const common = {
 const darkTheme = {
   ...common,
   dark: true,
+  borderColor: "#5A189A",
   text: {
     ...common.text,
     pageTitle: {

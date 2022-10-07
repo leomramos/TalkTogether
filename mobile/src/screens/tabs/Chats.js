@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
-import { PageHeader, CustomInput } from "../../components";
+import { CustomInput, PageHeader } from "../../components";
 import ScreenContainer from "../../components/ScreenContainer";
 
 import i18n from "../../i18n";
 
 export default Chats = () => {
+  const [search, setSearch] = useState("");
+
   return (
     <ScreenContainer>
       <PageHeader title="Chats" />
-      <CustomInput />
+      <CustomInput
+        value={search}
+        setValue={setSearch}
+        placeholder="Search"
+        icon={"magnify"}
+      />
     </ScreenContainer>
   );
 };

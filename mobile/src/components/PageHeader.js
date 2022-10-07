@@ -5,7 +5,7 @@ import Styled from "styled-components/native";
 import PageTitle from "./CustomText";
 
 const HeaderWrapper = Styled.View`
-  padding: 25px;
+  padding: 25px 0;
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
