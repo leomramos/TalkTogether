@@ -6,6 +6,10 @@ import PageTitle from "./CustomText";
 
 const HeaderWrapper = Styled.View`
   padding: 25px;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export default PageHeader = ({
@@ -23,7 +27,10 @@ export default PageHeader = ({
         <PageTitle base={text.pageTitle}>{title}</PageTitle>
         {titleExtra}
       </View>
-      <View>{sideOptions.map(opt => opt)}</View>
+      <View>
+        {sideOptions.map(opt => opt)}
+        <Text>a</Text>
+      </View>
     </HeaderWrapper>
   );
 };

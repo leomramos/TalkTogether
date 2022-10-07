@@ -1,4 +1,8 @@
-import { Inter_700Bold, useFonts } from "@expo-google-fonts/inter";
+import {
+  Inter_500Medium,
+  Inter_700Bold,
+  useFonts,
+} from "@expo-google-fonts/inter";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { IconComponentProvider } from "@react-native-material/core";
 import { NavigationContainer } from "@react-navigation/native";
@@ -15,6 +19,7 @@ import i18n from "./src/i18n";
 export default function App() {
   let [fontsLoaded] = useFonts({
     Inter_700Bold,
+    Inter_500Medium,
   });
 
   const scheme = useColorScheme();

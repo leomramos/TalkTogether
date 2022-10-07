@@ -26,7 +26,7 @@ export default AppStack = () => {
         tabBarActiveTintColor: colors.focused,
         tabBarInactiveTintColor: colors.unfocused,
         tabBarStyle: {
-          backgroundColor: colors.surface,
+          backgroundColor: colors.backgroundAccent,
           paddingVertical: 5,
         },
         tabBarIndicatorStyle: {
