@@ -1,9 +1,11 @@
 import { DefaultTheme } from "react-native-paper";
 
-const darkTheme = {
+const common = {
   ...DefaultTheme,
-  dark: true,
-  roundness: 10,
+  screen: {
+    paddingLeft: "20px",
+    paddingRight: "20px",
+  },
   text: {
     pageTitle: {
       font: "Inter_700Bold",
@@ -19,6 +21,26 @@ const darkTheme = {
   },
   colors: {
     ...DefaultTheme.colors,
+  },
+};
+
+const darkTheme = {
+  ...common,
+  dark: true,
+  text: {
+    ...common.text,
+    pageTitle: {
+      ...common.text.pageTitle,
+      color: "#FDFDFD",
+    },
+    input: {
+      ...common.text.input,
+      color: "#CECED0",
+      placeholder: "#76767C",
+    },
+  },
+  colors: {
+    ...common.colors,
     background: "#21212B",
     focused: "#9D4EDD",
     unfocused: "#909095",
