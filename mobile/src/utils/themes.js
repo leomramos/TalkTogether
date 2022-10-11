@@ -31,6 +31,7 @@ const darkTheme = {
     pageTitle: {
       ...common.text.pageTitle,
       color: "#FDFDFD",
+      icons: "#909095",
     },
     input: {
       ...common.text.input,

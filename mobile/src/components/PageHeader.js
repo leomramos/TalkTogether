@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import PageTitle from "./CustomText";
+import NavigateBack from "./NavigateBack";
 
 const HeaderWrapper = Styled.View`
   padding: 25px 0;
@@ -23,9 +24,11 @@ export default PageHeader = ({
 
   return (
     <HeaderWrapper>
-      <View>
-        {goBack && <Text>GB</Text>}
-        <PageTitle base={text.pageTitle}>{title}</PageTitle>
+      <View style={{ flexDirection: "row", alignItems: "center", flexGap: 2 }}>
+        {goBack && <NavigateBack />}
+        <PageTitle base={text.pageTitle} style={{ marginRight: 15 }}>
+          {title}
+        </PageTitle>
         {titleExtra}
       </View>
       <View>

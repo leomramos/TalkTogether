@@ -36,7 +36,7 @@ export default CustomInput = ({
       left={
         search && (
           <TextInput.Icon
-            name={"magnify"}
+            name="magnify"
             size={25}
             color={
               isFocused || value !== "" ? colors.focused : text.input.color
@@ -47,18 +47,22 @@ export default CustomInput = ({
         )
       }
       right={
-        <TextInput.Icon
-          name={search && value !== "" ? "close" : icon}
-          size={search ? 15 : 20}
-          color={
-            search
-              ? text.input.placeholder
-              : isFocused || value !== ""
-              ? colors.focused
-              : text.input.color
-          }
-          onPress={() => (search ? setValue("") : action())}
-        />
+        search && value === "" ? (
+          "undefined"
+        ) : (
+          <TextInput.Icon
+            name={search && value !== "" ? "close" : icon}
+            size={search ? 15 : 20}
+            color={
+              search
+                ? text.input.placeholder
+                : isFocused || value !== ""
+                ? colors.focused
+                : text.input.color
+            }
+            onPress={() => (search ? setValue("") : action())}
+          />
+        )
       }
       theme={{
         colors: {
