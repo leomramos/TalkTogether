@@ -14,6 +14,7 @@ export default CustomInput = ({
   action = () => {},
   search = false,
   dense = false,
+  keyboard = "default",
 }) => {
   const { colors, text, borderColor } = useTheme();
   const [isFocused, setIsFocused] = useState(false);
@@ -33,6 +34,7 @@ export default CustomInput = ({
         setValue(text);
         search && search(text);
       }}
+      keyboardType={search ? "web-search" : keyboard}
       selectionColor={colors.focused}
       outlineColor={value === "" ? "transparent" : borderColor}
       activeOutlineColor={borderColor}
