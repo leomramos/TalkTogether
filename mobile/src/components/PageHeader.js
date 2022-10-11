@@ -31,10 +31,7 @@ export default PageHeader = ({
         </PageTitle>
         {titleExtra}
       </View>
-      <View>
-        {sideOptions.map(opt => opt)}
-        <Text>a</Text>
-      </View>
+      <View>{sideOptions.map(opt => opt)}</View>
     </HeaderWrapper>
   );
 };

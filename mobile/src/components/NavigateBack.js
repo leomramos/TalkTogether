@@ -7,7 +7,7 @@ export default NavigateBack = ({ action }) => {
   return (
     <IconButton
       icon="chevron-left"
-      color={text.pageTitle.icons}
+      color={text.icons.idle}
       size={iconSize}
       style={{ width: iconSize, height: iconSize }}
       onPress={action}

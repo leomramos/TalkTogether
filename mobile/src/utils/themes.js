@@ -28,10 +28,13 @@ const darkTheme = {
   borderColor: "#5A189A",
   text: {
     ...common.text,
+    icons: {
+      idle: "#909095",
+      active: "#FDFDFD",
+    },
     pageTitle: {
       ...common.text.pageTitle,
       color: "#FDFDFD",
-      icons: "#909095",
     },
     input: {
       ...common.text.input,

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
-import { CustomInput, PageHeader } from "../../components";
+import { CustomInput, OverlayMenu, PageHeader } from "../../components";
 import ScreenContainer from "../../components/ScreenContainer";
 
 import i18n from "../../i18n";
@@ -11,7 +11,11 @@ export default Chats = () => {
 
   return (
     <ScreenContainer>
-      <PageHeader title="Chats" titleExtra={<Text>b</Text>} />
+      <PageHeader
+        title="Chats"
+        titleExtra={<Text>b</Text>}
+        sideOptions={[<OverlayMenu />]}
+      />
       <CustomInput
         dense
         value={search}
