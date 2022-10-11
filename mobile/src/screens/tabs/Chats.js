@@ -32,6 +32,13 @@ export default Chats = () => {
           search={() => {}}
           style={{ flexGrow: 1 }}
         />
+        <CustomInput
+          value={search}
+          setValue={setSearch}
+          label="Teste"
+          icon="at"
+          action={() => alert("oi, te amo")}
+        />
         <OverlayMenu
           title="Sort"
           icon="dots-vertical"
