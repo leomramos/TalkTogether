@@ -13,7 +13,6 @@ export default CustomInput = ({
   icon = "",
   action = () => {},
   search = false,
-  query = () => {},
   dense = false,
 }) => {
   const { colors, text, borderColor } = useTheme();
@@ -30,7 +29,10 @@ export default CustomInput = ({
       label={!search && label}
       placeholder={search ? i18n.t("search") : label}
       value={value}
-      onChangeText={text => setValue(text)}
+      onChangeText={text => {
+        setValue(text);
+        search && search(text);
+      }}
       selectionColor={colors.focused}
       outlineColor={value === "" ? "transparent" : borderColor}
       activeOutlineColor={borderColor}

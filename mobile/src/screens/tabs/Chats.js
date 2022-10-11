@@ -29,8 +29,7 @@ export default Chats = () => {
           dense
           value={search}
           setValue={setSearch}
-          search
-          query={() => alert(search)}
+          search={() => {}}
           style={{ flexGrow: 1 }}
         />
         <OverlayMenu
