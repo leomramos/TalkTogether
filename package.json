@@ -1,7 +1,8 @@
 {
   "scripts": {
     "expo": "cd mobile && yarn start",
-    "tunnel": "cd mobile && yarn start --tunnel"
+    "tunnel": "cd mobile && yarn start --tunnel",
+    "apk": "cd mobile && eas build -p android --profile preview"
   },
   "repository": {
     "type": "git",

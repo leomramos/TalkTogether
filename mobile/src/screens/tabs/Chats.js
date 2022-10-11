@@ -13,10 +13,11 @@ export default Chats = () => {
     <ScreenContainer>
       <PageHeader title="Chats" />
       <CustomInput
+        dense
         value={search}
         setValue={setSearch}
-        placeholder="Search"
-        icon={"magnify"}
+        search
+        query={() => alert(search)}
       />
     </ScreenContainer>
   );

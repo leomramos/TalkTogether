@@ -2,6 +2,7 @@ import { DefaultTheme } from "react-native-paper";
 
 const common = {
   ...DefaultTheme,
+  roundness: 5,
   screen: {
     paddingLeft: "20px",
     paddingRight: "20px",

@@ -1,3 +1,3 @@
 export default {
-  greeting: "Hi",
+  search: "Search",
 };
