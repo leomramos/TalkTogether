@@ -16,6 +16,14 @@ const common = {
       font: "Inter_500Medium",
       size: "14px",
     },
+    overlayTitle: {
+      font: "Inter_600SemiBold",
+      size: "16px",
+    },
+    overlayFooter: {
+      font: "Inter_600SemiBold",
+      size: "14px",
+    },
   },
   colors: {
     ...DefaultTheme.colors,
@@ -40,6 +48,14 @@ const darkTheme = {
       ...common.text.input,
       color: "#CECED0",
       placeholder: "#76767C",
+    },
+    overlayTitle: {
+      ...common.text.overlayTitle,
+      color: "#FDFDFD",
+    },
+    overlayFooter: {
+      ...common.text.overlayFooter,
+      color: "#CECED0",
     },
   },
   colors: {

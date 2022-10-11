@@ -22,7 +22,10 @@ export default CustomInput = ({
   return (
     <TextInput
       dense={dense}
-      style={{ backgroundColor: colors.surface }}
+      style={{
+        backgroundColor: colors.surface,
+        flexGrow: 1,
+      }}
       mode="outlined"
       label={!search && label}
       placeholder={search ? i18n.t("search") : label}
@@ -33,36 +36,33 @@ export default CustomInput = ({
       activeOutlineColor={borderColor}
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
-      left={
-        search && (
-          <TextInput.Icon
-            name="magnify"
-            size={25}
-            color={
-              isFocused || value !== "" ? colors.focused : text.input.color
-            }
-            onPress={query}
-            forceTextInputFocus={false}
-          />
-        )
-      }
+      // left={
+      //   search && (
+      //     <TextInput.Icon
+      //       name="magnify"
+      //       size={25}
+      //       color={
+      //         isFocused || value !== "" ? colors.focused : text.input.color
+      //       }
+      //       onPress={query}
+      //       forceTextInputFocus={false}
+      //     />
+      //   )
+      // }
       right={
-        search && value === "" ? (
-          "undefined"
-        ) : (
-          <TextInput.Icon
-            name={search && value !== "" ? "close" : icon}
-            size={search ? 15 : 20}
-            color={
-              search
-                ? text.input.placeholder
-                : isFocused || value !== ""
-                ? colors.focused
-                : text.input.color
-            }
-            onPress={search ? () => setValue("") : action}
-          />
-        )
+        <TextInput.Icon
+          animated
+          name={search ? (value !== "" ? "close" : "magnify") : icon}
+          size={search ? (value !== "" ? 15 : 25) : 20}
+          color={
+            search && value !== ""
+              ? text.input.placeholder
+              : isFocused
+              ? colors.focused
+              : text.input.color
+          }
+          onPress={search ? () => setValue("") : action}
+        />
       }
       theme={{
         colors: {

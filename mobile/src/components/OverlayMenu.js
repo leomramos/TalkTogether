@@ -1,9 +1,23 @@
 import React, { useState } from "react";
-import { Divider, IconButton, Menu, useTheme } from "react-native-paper";
+import { View } from "react-native";
+import {
+  IconButton,
+  Menu,
+  TouchableRipple,
+  useTheme,
+} from "react-native-paper";
+import CustomText from "./CustomText";
 
-export default OverlayMenu = ({ action }) => {
+export default OverlayMenu = ({
+  title = "",
+  icon = "",
+  iconSize = 30,
+  content = <></>,
+  footer = "",
+  topSpacing = 50,
+  footerAction = "",
+}) => {
   const { colors, text } = useTheme();
-  const iconSize = 20;
   const [visible, setVisible] = useState(false);
 
   const openMenu = () => setVisible(true);
@@ -11,24 +25,46 @@ export default OverlayMenu = ({ action }) => {
 
   return (
     <Menu
-      style={{ marginTop: iconSize * 2 }}
+      style={{
+        marginTop: topSpacing,
+      }}
       contentStyle={{ backgroundColor: colors.surface }}
       visible={visible}
       onDismiss={closeMenu}
       anchor={
         <IconButton
-          icon="cog"
+          icon={icon}
           color={visible ? text.icons.active : text.icons.idle}
           size={iconSize}
           onPress={openMenu}
-          style={{ margin: 0 }}
+          style={{ marginVertical: 0, marginLeft: 5, marginRight: -15 }}
         />
       }
     >
-      <Menu.Item onPress={() => {}} title="Item 1" />
-      <Menu.Item onPress={() => {}} title="Item 2" />
-      <Divider />
-      <Menu.Item onPress={() => {}} title="Item 3" />
+      <CustomText
+        type={text.overlayTitle}
+        style={{ paddingHorizontal: 15, paddingVertical: 5 }}
+      >
+        {title}
+      </CustomText>
+      <View style={{ marginTop: 5, flexDirection: "row" }}>{content}</View>
+      {footer && (
+        <TouchableRipple
+          centered
+          onPress={() => {}}
+          style={{ alignSelf: "flex-end" }}
+        >
+          <CustomText
+            type={text.overlayFooter}
+            style={{
+              paddingHorizontal: 15,
+              paddingVertical: 5,
+            }}
+          >
+            {footer}
+          </CustomText>
+        </TouchableRipple>
+      )}
     </Menu>
   );
 };

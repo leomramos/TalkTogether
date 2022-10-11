@@ -1,5 +1,6 @@
 import {
   Inter_500Medium,
+  Inter_600SemiBold,
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
@@ -19,6 +20,7 @@ import i18n from "./src/i18n";
 export default function App() {
   let [fontsLoaded] = useFonts({
     Inter_700Bold,
+    Inter_600SemiBold,
     Inter_500Medium,
   });
 
