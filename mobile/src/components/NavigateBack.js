@@ -1,7 +1,7 @@
 import React from "react";
 import { IconButton, useTheme } from "react-native-paper";
 
-export default NavigateBack = () => {
+export default NavigateBack = ({ action }) => {
   const { text } = useTheme();
   const iconSize = 30;
   return (
@@ -10,7 +10,7 @@ export default NavigateBack = () => {
       color={text.pageTitle.icons}
       size={iconSize}
       style={{ width: iconSize, height: iconSize }}
-      onPress={() => {}}
+      onPress={action}
     />
   );
 };

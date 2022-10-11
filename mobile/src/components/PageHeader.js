@@ -25,7 +25,7 @@ export default PageHeader = ({
   return (
     <HeaderWrapper>
       <View style={{ flexDirection: "row", alignItems: "center", flexGap: 2 }}>
-        {goBack && <NavigateBack />}
+        {goBack && <NavigateBack action={goBack} />}
         <PageTitle base={text.pageTitle} style={{ marginRight: 15 }}>
           {title}
         </PageTitle>

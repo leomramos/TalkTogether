@@ -11,7 +11,7 @@ export default Chats = () => {
 
   return (
     <ScreenContainer>
-      <PageHeader title="Chats" goBack titleExtra={<Text>b</Text>} />
+      <PageHeader title="Chats" titleExtra={<Text>b</Text>} />
       <CustomInput
         dense
         value={search}

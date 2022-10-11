@@ -41,7 +41,7 @@ export default CustomInput = ({
             color={
               isFocused || value !== "" ? colors.focused : text.input.color
             }
-            onPress={() => query()}
+            onPress={query}
             forceTextInputFocus={false}
           />
         )
@@ -60,7 +60,7 @@ export default CustomInput = ({
                 ? colors.focused
                 : text.input.color
             }
-            onPress={() => (search ? setValue("") : action())}
+            onPress={search ? () => setValue("") : action}
           />
         )
       }
