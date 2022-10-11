@@ -6,6 +6,7 @@ import PageTitle from "./CustomText";
 
 const HeaderWrapper = Styled.View`
   padding: 25px 0;
+  padding-bottom: 15px;
   width: 100%;
   flex-direction: row;
   justify-content: space-between;

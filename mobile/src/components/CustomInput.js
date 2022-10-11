@@ -37,7 +37,7 @@ export default CustomInput = ({
         search && (
           <TextInput.Icon
             name={"magnify"}
-            size={20}
+            size={25}
             color={
               isFocused || value !== "" ? colors.focused : text.input.color
             }

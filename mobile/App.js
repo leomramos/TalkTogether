@@ -30,9 +30,11 @@ export default function App() {
         <SafeAreaProvider>
           <StatusBar style="light" />
           {/* <StatusBar style={scheme === "dark" ? "light" : "dark"} /> */}
-          <NavigationContainer>
-            <AppStack />
-          </NavigationContainer>
+          {fontsLoaded && (
+            <NavigationContainer>
+              <AppStack />
+            </NavigationContainer>
+          )}
         </SafeAreaProvider>
       </IconComponentProvider>
     </PaperProvider>

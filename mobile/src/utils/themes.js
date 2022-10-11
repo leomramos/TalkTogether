@@ -10,7 +10,7 @@ const common = {
   text: {
     pageTitle: {
       font: "Inter_700Bold",
-      size: "24px",
+      size: "26px",
     },
     input: {
       font: "Inter_500Medium",
