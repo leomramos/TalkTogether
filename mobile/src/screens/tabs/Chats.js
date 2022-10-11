@@ -29,8 +29,15 @@ export default Chats = () => {
           dense
           value={search}
           setValue={setSearch}
-          search={console.log}
+          search={() => {}}
           style={{ flexGrow: 1 }}
+        />
+        <CustomInput
+          value={search}
+          setValue={setSearch}
+          label="Teste"
+          icon="at"
+          action={() => alert("oi, te amo")}
         />
         <OverlayMenu
           title="Sort"
