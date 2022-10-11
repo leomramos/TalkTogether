@@ -36,19 +36,6 @@ export default CustomInput = ({
       activeOutlineColor={borderColor}
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
-      // left={
-      //   search && (
-      //     <TextInput.Icon
-      //       name="magnify"
-      //       size={25}
-      //       color={
-      //         isFocused || value !== "" ? colors.focused : text.input.color
-      //       }
-      //       onPress={query}
-      //       forceTextInputFocus={false}
-      //     />
-      //   )
-      // }
       right={
         <TextInput.Icon
           animated
