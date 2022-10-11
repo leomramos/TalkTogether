@@ -6,7 +6,14 @@ import {
   TouchableRipple,
   useTheme,
 } from "react-native-paper";
+import Styled from "styled-components/native";
 import CustomText from "./CustomText";
+
+const AnchorButton = Styled(IconButton)`
+  margin: 0;
+  margin-left: 5px;
+  margin-right: -${({ screen }) => screen.paddingRight};
+`;
 
 export default OverlayMenu = ({
   title = "",
@@ -17,7 +24,7 @@ export default OverlayMenu = ({
   topSpacing = 50,
   footerAction = "",
 }) => {
-  const { colors, text } = useTheme();
+  const { colors, text, screen } = useTheme();
   const [visible, setVisible] = useState(false);
 
   const openMenu = () => setVisible(true);
@@ -32,12 +39,12 @@ export default OverlayMenu = ({
       visible={visible}
       onDismiss={closeMenu}
       anchor={
-        <IconButton
+        <AnchorButton
           icon={icon}
           color={visible ? text.icons.active : text.icons.idle}
           size={iconSize}
           onPress={openMenu}
-          style={{ marginVertical: 0, marginLeft: 5, marginRight: -15 }}
+          screen={screen}
         />
       }
     >
