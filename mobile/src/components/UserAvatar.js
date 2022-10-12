@@ -7,7 +7,8 @@ const Circle = Styled.View`
   height: ${({ size }) => size}px;
   width: ${({ size }) => size}px;
   background-color: ${({ color }) => color};
-  border: 2px solid ${({ outerColor }) => outerColor};
+  /* border: ${({ size }) => size / 6}px solid ${({ outerColor }) =>
+  outerColor || "transparent"}; */
   align-items: center;
   justify-content: center;
   border-radius: 100px;
@@ -23,7 +24,7 @@ const Container = Styled.View`
 export default UserAvatar = ({
   size = 58,
   src = require("../../assets/user-avatar-1.png"),
-  color = "black",
+  color = "",
   background = "",
 }) => {
   const { colors } = useTheme();
@@ -33,15 +34,23 @@ export default UserAvatar = ({
       <Avatar.Image
         size={size}
         source={src}
-        style={{ backgroundColor: color }}
+        style={{ backgroundColor: color || colors.avatar.white }}
       />
       <Circle
-        size={25}
-        color="red"
+        size={(7 * size) / 20}
+        color={background || colors.gray.second}
         style={{ position: "absolute", bottom: 0, right: 0 }}
-        outerColor={background || colors.gray.second}
       >
-        <Circle size={15} color={background || colors.gray.second}></Circle>
+        <Circle
+          size={size / 4}
+          color={color || colors.purple.fifth}
+          outerColor={background || colors.gray.second}
+        >
+          <Circle
+            size={size / 9}
+            color={background || colors.gray.second}
+          ></Circle>
+        </Circle>
       </Circle>
     </View>
   );

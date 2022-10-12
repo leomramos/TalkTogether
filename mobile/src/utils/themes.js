@@ -3,19 +3,6 @@ import { DefaultTheme } from "react-native-paper";
 const common = {
   ...DefaultTheme,
   roundness: 5,
-  user: {
-    avatar: {
-      white: "#D9D9D9",
-      gray: "#9D9B9B",
-      salmon: "#A39090",
-      yellow: "#ABA496",
-      green: "#9DAB96",
-      cyan: "#96ABAA",
-      blue: "#969BAB",
-      violet: "#A796AB",
-      orange: "#AB9696",
-    },
-  },
   screen: {
     padding: {
       left: "20px",
@@ -58,6 +45,17 @@ const common = {
   },
   colors: {
     ...DefaultTheme.colors,
+    avatar: {
+      white: "#D9D9D9",
+      gray: "#9D9B9B",
+      salmon: "#A39090",
+      yellow: "#ABA496",
+      green: "#9DAB96",
+      cyan: "#96ABAA",
+      blue: "#969BAB",
+      violet: "#A796AB",
+      orange: "#AB9696",
+    },
   },
 };
 
