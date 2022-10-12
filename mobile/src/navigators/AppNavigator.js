@@ -25,9 +25,9 @@ export default AppStack = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarActiveTintColor: colors.purple.sixth,
-        tabBarInactiveTintColor: colors.gray.third,
+        tabBarInactiveTintColor: colors.gray.seventh,
         tabBarStyle: {
-          backgroundColor: colors.gray.ninth,
+          backgroundColor: colors.gray.first,
           paddingVertical: 5,
         },
         tabBarIndicatorStyle: {

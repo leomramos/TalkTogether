@@ -35,13 +35,13 @@ export default OverlayMenu = ({
       style={{
         marginTop: topSpacing,
       }}
-      contentStyle={{ backgroundColor: colors.gray.seventh }}
+      contentStyle={{ backgroundColor: colors.gray.third }}
       visible={visible}
       onDismiss={closeMenu}
       anchor={
         <AnchorButton
           icon={icon}
-          color={visible ? colors.gray.first : colors.gray.third}
+          color={visible ? colors.gray.ninth : colors.gray.seventh}
           size={iconSize}
           onPress={openMenu}
           screen={screen}
@@ -50,6 +50,7 @@ export default OverlayMenu = ({
     >
       <CustomText
         type={typography.overlay.title}
+        color={colors.gray.ninth}
         style={{ paddingHorizontal: 15, paddingVertical: 5 }}
       >
         {title}
@@ -63,6 +64,7 @@ export default OverlayMenu = ({
         >
           <CustomText
             type={typography.overlay.footer}
+            color={colors.gray.eigth}
             style={{
               paddingHorizontal: 15,
               paddingVertical: 5,

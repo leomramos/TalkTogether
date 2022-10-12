@@ -7,7 +7,7 @@ export default NavigateBack = ({ action }) => {
   return (
     <IconButton
       icon="chevron-left"
-      color={colors.gray.third}
+      color={colors.gray.seventh}
       size={iconSize}
       style={{ width: iconSize, height: iconSize }}
       onPress={action}

@@ -49,18 +49,18 @@ export default CustomInput = ({
           size={search ? (value !== "" ? 15 : 25) : 20}
           color={
             search && value !== ""
-              ? colors.gray.fourth
+              ? colors.gray.sixth
               : isFocused
               ? colors.purple.sixth
-              : colors.gray.second
+              : colors.gray.eigth
           }
           onPress={search ? () => setValue("") : action}
         />
       }
       theme={{
         colors: {
-          text: colors.gray.second,
-          placeholder: colors.gray.fourth,
+          text: colors.gray.eigth,
+          placeholder: colors.gray.sixth,
         },
       }}
     />

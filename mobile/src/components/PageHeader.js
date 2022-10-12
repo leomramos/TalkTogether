@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 import Styled from "styled-components/native";
 import PageTitle from "./CustomText";
 import NavigateBack from "./NavigateBack";
@@ -20,13 +21,17 @@ export default PageHeader = ({
   titleExtra = <></>,
   sideOptions = [],
 }) => {
-  const { typography } = useTheme();
+  const { colors, typography } = useTheme();
 
   return (
     <HeaderWrapper>
       <View style={{ flexDirection: "row", alignItems: "center", flexGap: 2 }}>
         {goBack && <NavigateBack action={goBack} />}
-        <PageTitle type={typography.tab.title} style={{ marginRight: 15 }}>
+        <PageTitle
+          type={typography.tab.title}
+          color={colors.gray.ninth}
+          style={{ marginRight: 15 }}
+        >
           {title}
         </PageTitle>
         {titleExtra}
