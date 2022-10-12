@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { Divider, IconButton, Menu, useTheme } from "react-native-paper";
-import Styled from "styled-components/native";
-import { CustomInput, OverlayMenu, PageHeader } from "../../components";
+import {
+  ChatItem,
+  CustomInput,
+  List,
+  OverlayMenu,
+  PageHeader,
+} from "../../components";
 import ScreenContainer from "../../components/ScreenContainer";
 
 import i18n from "../../i18n";
@@ -11,6 +16,10 @@ const SortOverlay = () => {
   return (
     <>
       <IconButton icon="at" color="black" size={25} onPress={() => {}} />
+      <IconButton icon="at" color="black" size={25} onPress={() => {}} />
+      <IconButton icon="at" color="black" size={25} onPress={() => {}} />
+      <IconButton icon="at" color="black" size={25} onPress={() => {}} />
+      <IconButton icon="at" color="black" size={25} onPress={() => {}} />
       {/* <Menu.Item onPress={() => {}} title="Ale" />
       <Menu.Item onPress={() => {}} title="Te" />
       <Divider />
@@ -18,12 +27,6 @@ const SortOverlay = () => {
     </>
   );
 };
-
-const ChatsList = Styled.FlatList`
-  margin-top: 30px;
-  padding-right: ${({ theme }) => theme.screen.paddingRight};
-  margin-right: -${({ theme }) => theme.screen.paddingRight};
-`;
 
 const DATA = [
   {
@@ -64,16 +67,8 @@ const DATA = [
   },
 ];
 
-const Chat = ({ name }) => {
-  return (
-    <View>
-      <Text>{name}</Text>
-    </View>
-  );
-};
-
 const renderItem = ({ item }) => {
-  return <Chat name={item.name} />;
+  return <ChatItem name={item.name} />;
 };
 
 export default Chats = () => {
@@ -210,7 +205,7 @@ export default Chats = () => {
           footer={i18n.t("clear")}
         />
       </View>
-      <ChatsList
+      <List
         theme={theme}
         data={chats}
         renderItem={renderItem}

@@ -24,14 +24,14 @@ export default AppStack = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarActiveTintColor: colors.focused,
-        tabBarInactiveTintColor: colors.unfocused,
+        tabBarActiveTintColor: colors.purple.sixth,
+        tabBarInactiveTintColor: colors.gray.third,
         tabBarStyle: {
-          backgroundColor: colors.backgroundAccent,
+          backgroundColor: colors.gray.ninth,
           paddingVertical: 5,
         },
         tabBarIndicatorStyle: {
-          backgroundColor: colors.focused,
+          backgroundColor: colors.purple.sixth,
           height: 5,
           position: "relative",
         },

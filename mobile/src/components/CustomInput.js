@@ -16,15 +16,17 @@ export default CustomInput = ({
   dense = false,
   keyboard = "default",
 }) => {
-  const { colors, text, borderColor } = useTheme();
+  const { colors, typography } = useTheme();
   const [isFocused, setIsFocused] = useState(false);
 
   return (
     <TextInput
       dense={dense}
       style={{
-        backgroundColor: colors.surface,
+        backgroundColor: colors.gray.third,
         flexGrow: 1,
+        // fontFamily: typography.input.font,
+        // fontSize: typography.input.size.number,
       }}
       mode="outlined"
       label={!search && label}
@@ -35,9 +37,9 @@ export default CustomInput = ({
         search && search(text);
       }}
       keyboardType={search ? "web-search" : keyboard}
-      selectionColor={colors.focused}
-      outlineColor={value === "" ? "transparent" : borderColor}
-      activeOutlineColor={borderColor}
+      selectionColor={colors.purple.sixth}
+      outlineColor={value === "" ? "transparent" : colors.purple.fourth}
+      activeOutlineColor={colors.purple.fourth}
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       right={
@@ -47,18 +49,18 @@ export default CustomInput = ({
           size={search ? (value !== "" ? 15 : 25) : 20}
           color={
             search && value !== ""
-              ? text.input.placeholder
+              ? colors.gray.fourth
               : isFocused
-              ? colors.focused
-              : text.input.color
+              ? colors.purple.sixth
+              : colors.gray.second
           }
           onPress={search ? () => setValue("") : action}
         />
       }
       theme={{
         colors: {
-          text: text.input.color,
-          placeholder: text.input.placeholder,
+          text: colors.gray.second,
+          placeholder: colors.gray.fourth,
         },
       }}
     />

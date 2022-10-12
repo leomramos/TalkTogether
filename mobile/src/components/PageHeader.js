@@ -20,13 +20,13 @@ export default PageHeader = ({
   titleExtra = <></>,
   sideOptions = [],
 }) => {
-  const { text } = useTheme();
+  const { typography } = useTheme();
 
   return (
     <HeaderWrapper>
       <View style={{ flexDirection: "row", alignItems: "center", flexGap: 2 }}>
         {goBack && <NavigateBack action={goBack} />}
-        <PageTitle type={text.pageTitle} style={{ marginRight: 15 }}>
+        <PageTitle type={typography.tab.title} style={{ marginRight: 15 }}>
           {title}
         </PageTitle>
         {titleExtra}

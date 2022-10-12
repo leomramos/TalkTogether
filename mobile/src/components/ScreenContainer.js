@@ -5,9 +5,9 @@ import Styled from "styled-components/native";
 
 const ScreenWrapper = Styled(SafeAreaView)`
   flex: 1;
-  background-color: ${({ colors }) => colors.background};
-  padding-left: ${({ screen }) => screen.paddingLeft};
-  padding-right: ${({ screen }) => screen.paddingRight};
+  background-color: ${({ colors }) => colors.gray.eigth};
+  padding-left: ${({ screen }) => screen.padding.left};
+  padding-right: ${({ screen }) => screen.padding.right};
 `;
 
 export default ScreenContainer = props => {

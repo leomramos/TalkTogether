@@ -17,28 +17,42 @@ const common = {
     },
   },
   screen: {
-    paddingLeft: "20px",
-    paddingRight: "20px",
+    padding: {
+      left: "20px",
+      right: "20px",
+    },
   },
   typography: {
     tab: {
       title: {
         font: "Inter_700Bold",
-        size: "26px",
+        size: {
+          number: 26,
+          unit: "px",
+        },
       },
     },
     input: {
       font: "Inter_500Medium",
-      size: "14px",
+      size: {
+        number: 14,
+        unit: "px",
+      },
     },
     overlay: {
       title: {
         font: "Inter_600SemiBold",
-        size: "16px",
+        size: {
+          number: 16,
+          unit: "px",
+        },
       },
       footer: {
         font: "Inter_600SemiBold",
-        size: "14px",
+        size: {
+          number: 14,
+          unit: "px",
+        },
       },
     },
   },

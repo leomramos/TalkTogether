@@ -1,5 +1,6 @@
 export { default as CustomInput } from "./CustomInput";
 export { default as CustomText } from "./CustomText";
+export { CallItem, ChatItem, default as List } from "./InteractionsList";
 export { default as NavigateBack } from "./NavigateBack";
 export { default as OverlayMenu } from "./OverlayMenu";
 export { default as PageHeader } from "./PageHeader";

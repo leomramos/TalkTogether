@@ -12,7 +12,7 @@ import CustomText from "./CustomText";
 const AnchorButton = Styled(IconButton)`
   margin: 0;
   margin-left: 5px;
-  margin-right: -${({ screen }) => screen.paddingRight};
+  margin-right: -${({ screen }) => screen.padding.right};
 `;
 
 export default OverlayMenu = ({
@@ -22,9 +22,9 @@ export default OverlayMenu = ({
   content = <></>,
   footer = "",
   topSpacing = 50,
-  footerAction = "",
+  footerAction = () => {},
 }) => {
-  const { colors, text, screen } = useTheme();
+  const { colors, typography, screen } = useTheme();
   const [visible, setVisible] = useState(false);
 
   const openMenu = () => setVisible(true);
@@ -35,13 +35,13 @@ export default OverlayMenu = ({
       style={{
         marginTop: topSpacing,
       }}
-      contentStyle={{ backgroundColor: colors.surface }}
+      contentStyle={{ backgroundColor: colors.gray.seventh }}
       visible={visible}
       onDismiss={closeMenu}
       anchor={
         <AnchorButton
           icon={icon}
-          color={visible ? text.icons.active : text.icons.idle}
+          color={visible ? colors.gray.first : colors.gray.third}
           size={iconSize}
           onPress={openMenu}
           screen={screen}
@@ -49,7 +49,7 @@ export default OverlayMenu = ({
       }
     >
       <CustomText
-        type={text.overlayTitle}
+        type={typography.overlay.title}
         style={{ paddingHorizontal: 15, paddingVertical: 5 }}
       >
         {title}
@@ -58,11 +58,11 @@ export default OverlayMenu = ({
       {footer && (
         <TouchableRipple
           centered
-          onPress={() => {}}
+          onPress={footerAction}
           style={{ alignSelf: "flex-end" }}
         >
           <CustomText
-            type={text.overlayFooter}
+            type={typography.overlay.footer}
             style={{
               paddingHorizontal: 15,
               paddingVertical: 5,
