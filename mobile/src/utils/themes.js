@@ -42,6 +42,38 @@ const common = {
         },
       },
     },
+    label: {
+      name: {
+        font: "Inter_600SemiBold",
+        size: {
+          number: 16,
+          unit: "px",
+        },
+      },
+      sent: {
+        font: "Inter_400Regular",
+        size: {
+          number: 14,
+          unit: "px",
+        },
+      },
+    },
+    message: {
+      preview: {
+        font: "Inter_400Regular",
+        size: {
+          number: 14,
+          unit: "px",
+        },
+      },
+      badge: {
+        font: "Inter_700Bold",
+        size: {
+          number: 9,
+          unit: "px",
+        },
+      },
+    },
   },
   colors: {
     ...DefaultTheme.colors,

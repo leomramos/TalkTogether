@@ -183,6 +183,182 @@ export default Chats = () => {
         },
       ],
     },
+    {
+      _id: "6",
+      name: "Teste 6",
+      messages: [
+        {
+          body: "Mensagem 1",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 2",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 3",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 4",
+          sent: new Date(),
+        },
+      ],
+    },
+    {
+      _id: "7",
+      name: "Teste 7",
+      messages: [
+        {
+          body: "Mensagem 1",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 2",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 3",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 4",
+          sent: new Date(),
+        },
+      ],
+    },
+    {
+      _id: "8",
+      name: "Teste 8",
+      messages: [
+        {
+          body: "Mensagem 1",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 2",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 3",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 4",
+          sent: new Date(),
+        },
+      ],
+    },
+    {
+      _id: "9",
+      name: "Teste 9",
+      messages: [
+        {
+          body: "Mensagem 1",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 2",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 3",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 4",
+          sent: new Date(),
+        },
+      ],
+    },
+    {
+      _id: "10",
+      name: "Teste 10",
+      messages: [
+        {
+          body: "Mensagem 1",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 2",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 3",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 4",
+          sent: new Date(),
+        },
+      ],
+    },
+    {
+      _id: "11",
+      name: "Teste 11",
+      messages: [
+        {
+          body: "Mensagem 1",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 2",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 3",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 4",
+          sent: new Date(),
+        },
+      ],
+    },
+    {
+      _id: "12",
+      name: "Teste 12",
+      messages: [
+        {
+          body: "Mensagem 1",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 2",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 3",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 4",
+          sent: new Date(),
+        },
+      ],
+    },
+    {
+      _id: "13",
+      name: "Teste 13",
+      messages: [
+        {
+          body: "Mensagem 1",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 2",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 3",
+          sent: new Date(),
+        },
+        {
+          body: "Mensagem 4",
+          sent: new Date(),
+        },
+      ],
+    },
   ]);
   const theme = useTheme();
   const [search, setSearch] = useState("");

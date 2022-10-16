@@ -1,4 +1,5 @@
 import {
+  Inter_400Regular,
   Inter_500Medium,
   Inter_600SemiBold,
   Inter_700Bold,
@@ -19,9 +20,10 @@ import i18n from "./src/i18n";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
-    Inter_700Bold,
-    Inter_600SemiBold,
+    Inter_400Regular,
     Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
   });
 
   const scheme = useColorScheme();
