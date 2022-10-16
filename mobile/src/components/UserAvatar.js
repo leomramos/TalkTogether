@@ -1,17 +1,9 @@
 import React from "react";
-import { Image, Text, View } from "react-native";
-import { Avatar, useTheme } from "react-native-paper";
+import { Image } from "react-native";
+import { useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import { BlackOpacity } from "../utils/graphical";
-
-const Circle = Styled.View`
-  height: ${({ size }) => size}px;
-  width: ${({ size }) => size}px;
-  background-color: ${({ color }) => color};
-  align-items: center;
-  justify-content: center;
-  border-radius: 100px;
-`;
+import OnlineIcon from "./OnlineIcon";
 
 const Container = Styled.View`
   border-radius: 100%;
@@ -39,15 +31,11 @@ export default UserAvatar = ({
 }) => {
   const { colors } = useTheme();
 
-  const borderCircleSize = (7 * size) / 20;
-  const outerCircleSize = size / 4;
-  const innerCircleSize = size / 9;
-  const statusOffset = -(borderCircleSize - outerCircleSize) / 2;
-
   return (
     <Container size={size} color={background || colors.avatar.white}>
       {!focused && <BlackOpacity radius={size * 2} />}
       <Image
+        blurRadius={offline ? 10 : 0}
         source={src}
         resizeMode="contain"
         alt={"User avatar"}
@@ -57,44 +45,12 @@ export default UserAvatar = ({
         }}
       />
       {!offline && (
-        <Circle
-          size={borderCircleSize}
-          color={background || colors.gray.second}
-          style={{
-            position: "absolute",
-            bottom: statusOffset,
-            right: statusOffset,
-            padding: statusOffset,
-            zIndex: 9999,
-          }}
-        >
-          {flag ? (
-            <Circle
-              size={outerCircleSize}
-              color={"transparent"}
-              style={{
-                overflow: "hidden",
-              }}
-            >
-              <Image
-                source={{ uri: flag }}
-                resizeMode="cover"
-                alt={"User country flag"}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              />
-            </Circle>
-          ) : (
-            <Circle size={outerCircleSize} color={color || colors.purple.fifth}>
-              <Circle
-                size={innerCircleSize}
-                color={background || colors.gray.second}
-              ></Circle>
-            </Circle>
-          )}
-        </Circle>
+        <OnlineIcon
+          size={size}
+          colors={colors}
+          flag={flag}
+          background={background}
+        />
       )}
     </Container>
   );

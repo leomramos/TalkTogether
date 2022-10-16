@@ -7,6 +7,7 @@ import UserAvatar from "./UserAvatar";
 const ItemContainer = Styled.View`
   flex-direction: row;
   margin-bottom: 15px;
+  opacity: ${({ offline }) => (offline ? 0.5 : 1)};
 `;
 
 const ChatInfo = Styled.View`
@@ -28,18 +29,19 @@ const Badge = Styled.View`
   background-color: ${({ color }) => color};
 `;
 
-export const ChatItem = ({ name }) => {
+export const ChatItem = ({ name, offline, lastMessage }) => {
   const { colors, typography } = useTheme();
+
   return (
-    <ItemContainer>
-      <UserAvatar />
+    <ItemContainer offline={offline}>
+      <UserAvatar offline={offline} />
       <ChatInfo>
         <MessageWrapper>
           <CustomText type={typography.label.name} color={colors.gray.eigth}>
             {name}
           </CustomText>
           <CustomText type={typography.label.sent} color={colors.gray.seventh}>
-            just now
+            {new Date(lastMessage.sent).getSeconds()}
           </CustomText>
         </MessageWrapper>
         <MessageWrapper style={{ marginTop: 4 }}>
@@ -50,13 +52,7 @@ export const ChatItem = ({ name }) => {
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            Ullamco ad sit voluptate occaecat enim aliqua sint dolor voluptate
-            cupidatat. Est sit ipsum minim aliquip fugiat nostrud adipisicing.
-            Sunt dolor cupidatat excepteur ea non. Ipsum quis deserunt cupidatat
-            consectetur minim occaecat occaecat aliquip aute. Cillum deserunt
-            sunt aliqua non fugiat ut consequat eu amet quis dolore. Esse
-            commodo dolor non exercitation nulla labore do dolore tempor
-            consectetur nulla ad et quis. Minim culpa duis anim officia.
+            {lastMessage.body}
           </CustomText>
           <Badge size={16} color={colors.purple.eighth}>
             <CustomText
