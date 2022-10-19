@@ -5,33 +5,64 @@ import {
   ChatItem,
   CustomInput,
   List,
+  OnlineIcon,
   OverlayMenu,
   PageHeader,
 } from "../../components";
 import ScreenContainer from "../../components/ScreenContainer";
+import UserAvatar from "../../components/UserAvatar";
 
 import i18n from "../../i18n";
 
-const SortOverlay = ({ sort, setSort }) => {
+const sorts = {
+  name: {
+    icon: "alphabetical-variant",
+    sort: (a, b, order) =>
+      order *
+      (String(a.name).localeCompare(String(b.name), undefined, {
+        ignorePunctuation: true,
+        sensitivity: "base",
+      }) || sorts["date"].sort(a, b, -1)),
+  },
+  date: {
+    icon: "calendar",
+    sort: (a, b, order) => order * (a.lastMessage.sent - b.lastMessage.sent),
+  },
+  status: {
+    icon: "account-circle",
+    sort: (a, b, order) =>
+      -order *
+      (Number(a.online) - Number(b.online) || sorts["date"].sort(a, b, -1)),
+    extra: <OnlineIcon sortIcon />,
+  },
+};
+
+const SortOverlay = ({ sort, setSort, theme }) => {
   return (
     <>
+      {Object.entries(sorts).map(([s, { icon, extra }]) => (
+        <View key={`sort-${s}`} style={{ position: "relative" }}>
+          <IconButton
+            style={{
+              marginLeft: 0,
+              marginRight: 5,
+            }}
+            icon={icon}
+            color={
+              sort.by === s ? theme.colors.gray.ninth : theme.colors.gray.sixth
+            }
+            size={25}
+            onPress={() => setSort({ by: s, order: sort.order })}
+          />
+          {extra}
+        </View>
+      ))}
       <IconButton
-        icon="alphabetical-variant"
-        color={sort.by === "name" ? "white" : "black"}
-        size={25}
-        onPress={() => setSort({ by: "name", order: sort.order })}
-      />
-      <IconButton
-        icon="calendar"
-        color={sort.by === "date" ? "white" : "black"}
-        size={25}
-        onPress={() => setSort({ by: "date", order: sort.order })}
-      />
-      <IconButton
-        icon="account"
-        color={sort.by === "status" ? "white" : "black"}
-        size={25}
-        onPress={() => setSort({ by: "status", order: sort.order })}
+        icon={sort.order === 1 ? "sort-ascending" : "sort-descending"}
+        color={theme.colors.gray.ninth}
+        size={15}
+        style={{ marginLeft: 10, marginRight: 0 }}
+        onPress={() => setSort({ by: sort.by, order: -sort.order })}
       />
     </>
   );
@@ -48,377 +79,50 @@ const renderItem = ({ item }) => {
 };
 
 export default Chats = () => {
-  const defaultSort = { by: "date", order: -1 };
-  const [chats, setChats] = useState([
-    {
-      _id: "1",
-      name: "Teste 1",
-      online: true,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
+  const defaultSort = { by: "date", order: 1 };
+  const [chats, setChats] = useState(
+    Array(Math.floor(Math.random() * (25 - 10 + 1) + 10))
+      .fill()
+      .map((v, k) => ({
+        _id: k,
+        name: Array(Math.floor(Math.random() * (15 - 3 + 1) + 3))
+          .fill()
+          .map(_ => String.fromCharCode(97 + Math.floor(Math.random() * 26)))
+          .join(""),
+        online: Math.random() < 0.5,
+        lastMessage: {
+          body: Array(Math.floor(Math.random() * (15 - 3 + 1) + 3))
+            .fill()
+            .map(
+              _ =>
+                Array(Math.floor(Math.random() * (8 - 2 + 1) + 2))
+                  .fill()
+                  .map(_ =>
+                    String.fromCharCode(97 + Math.floor(Math.random() * 26))
+                  )
+                  .join("") +
+                String.fromCharCode(97 + Math.floor(Math.random() * 26))
+            )
+            .join(" "),
+          sent: new Date() - Math.floor(Math.random() * 100 * 1000),
         },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date() - 1000,
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date() - 1000,
-      },
-    },
-    {
-      _id: "2",
-      name: "Teste 2",
-      online: false,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date(),
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date(),
-      },
-    },
-    {
-      _id: "3",
-      name: "Teste 3",
-      online: true,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date() - 2000,
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date() - 2000,
-      },
-    },
-    {
-      _id: "4",
-      name: "Teste 4",
-      online: false,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date() - 5000,
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date() - 5000,
-      },
-    },
-    {
-      _id: "5",
-      name: "Teste 5",
-      online: true,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date() - 500,
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date() - 500,
-      },
-    },
-    {
-      _id: "6",
-      name: "Teste 6",
-      online: true,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date() - 100,
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date() - 100,
-      },
-    },
-    {
-      _id: "7",
-      name: "Teste 7",
-      online: true,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date(),
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date(),
-      },
-    },
-    {
-      _id: "8",
-      name: "Teste 8",
-      online: false,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date(),
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date(),
-      },
-    },
-    {
-      _id: "9",
-      name: "Teste 9",
-      online: false,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date(),
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date(),
-      },
-    },
-    {
-      _id: "10",
-      name: "Teste 10",
-      online: true,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date(),
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date(),
-      },
-    },
-    {
-      _id: "11",
-      name: "Teste 11",
-      online: false,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date(),
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date(),
-      },
-    },
-    {
-      _id: "12",
-      name: "Teste 12",
-      online: true,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date(),
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date(),
-      },
-    },
-    {
-      _id: "13",
-      name: "Teste 13",
-      online: false,
-      messages: [
-        {
-          body: "Mensagem 1",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 2",
-          sent: new Date(),
-        },
-        {
-          body: "Mensagem 3",
-          sent: new Date(),
-        },
-        {
-          body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-          sent: new Date() - 5000,
-        },
-      ],
-      lastMessage: {
-        body: "Elit non in sint aliquip amet sint et proident amet. Fugiat aliquip cillum officia nostrud dolore elit aliquip culpa aute id incididunt labore ea officia. Cillum nisi qui voluptate tempor magna occaecat laborum Lorem. Consectetur ad ex ex dolore reprehenderit voluptate ad labore culpa et laboris. Pariatur consectetur ut enim consectetur. Nisi veniam sit adipisicing elit enim excepteur fugiat adipisicing. Reprehenderit aliquip incididunt do quis amet occaecat exercitation qui.",
-        sent: new Date() - 5000,
-      },
-    },
-  ]);
+      }))
+  );
   const theme = useTheme();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState(defaultSort);
 
-  const sorts = {
-    name: (a, b, order) => order * String(a.name).localeCompare(String(b.name)),
-    date: (a, b, order) => order * (a.lastMessage.sent - b.lastMessage.sent),
-    status: (a, b, order) =>
-      order * (Number(a.online) - Number(b.online) || sorts["date"](a, b, -1)),
-  };
-
-  const sortChats = (a, b) => sorts[sort.by](a, b, sort.order);
+  const sortChats = (a, b) => sorts[sort.by].sort(a, b, sort.order);
 
   return (
     <ScreenContainer>
       <PageHeader title="Chats" titleExtra={<Text>b</Text>} sideOptions={[]} />
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <CustomInput
           dense
           value={search}
@@ -429,7 +133,7 @@ export default Chats = () => {
         <OverlayMenu
           title="Sort"
           icon="dots-vertical"
-          content={<SortOverlay sort={sort} setSort={setSort} />}
+          content={<SortOverlay sort={sort} setSort={setSort} theme={theme} />}
           footer={i18n.t("clear")}
           footerAction={() => setSort(defaultSort)}
         />

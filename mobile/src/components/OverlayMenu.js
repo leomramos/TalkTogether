@@ -48,32 +48,30 @@ export default OverlayMenu = ({
         />
       }
     >
-      <CustomText
-        type={typography.overlay.title}
-        color={colors.gray.ninth}
-        style={{ paddingHorizontal: 15, paddingVertical: 5 }}
-      >
-        {title}
-      </CustomText>
-      <View style={{ marginTop: 5, flexDirection: "row" }}>{content}</View>
-      {footer && (
-        <TouchableRipple
-          centered
-          onPress={footerAction}
-          style={{ alignSelf: "flex-end" }}
+      <View style={{ paddingHorizontal: 15, paddingTop: 5 }}>
+        <CustomText type={typography.overlay.title} color={colors.gray.ninth}>
+          {title}
+        </CustomText>
+        <View
+          style={{ marginTop: 5, flexDirection: "row", alignItems: "center" }}
         >
-          <CustomText
-            type={typography.overlay.footer}
-            color={colors.gray.eigth}
-            style={{
-              paddingHorizontal: 15,
-              paddingVertical: 5,
-            }}
+          {content}
+        </View>
+        {footer && (
+          <TouchableRipple
+            centered
+            onPress={footerAction}
+            style={{ alignSelf: "flex-end", padding: 5 }}
           >
-            {footer}
-          </CustomText>
-        </TouchableRipple>
-      )}
+            <CustomText
+              type={typography.overlay.footer}
+              color={colors.gray.eigth}
+            >
+              {footer}
+            </CustomText>
+          </TouchableRipple>
+        )}
+      </View>
     </Menu>
   );
 };

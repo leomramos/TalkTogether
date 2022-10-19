@@ -1,4 +1,5 @@
 import React from "react";
+import { useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 
 const Circle = Styled.View`
@@ -10,7 +11,10 @@ const Circle = Styled.View`
   border-radius: 100px;
 `;
 
-const OnlineIcon = ({ size, colors, flag, background }) => {
+const OnlineIcon = ({ size = 48, flag, background, sortIcon = false }) => {
+  const { colors } = useTheme();
+  size = sortIcon ? 25 : size;
+
   const borderCircleSize = (7 * size) / 20;
   const outerCircleSize = size / 4;
   const innerCircleSize = size / 9;
@@ -18,11 +22,11 @@ const OnlineIcon = ({ size, colors, flag, background }) => {
   return (
     <Circle
       size={borderCircleSize}
-      color={background || colors.gray.second}
+      color={sortIcon ? colors.gray.third : background || colors.gray.second}
       style={{
         position: "absolute",
-        bottom: statusOffset,
-        right: statusOffset,
+        bottom: sortIcon ? 12.5 : statusOffset,
+        right: sortIcon ? 12.5 : statusOffset,
         padding: statusOffset,
         zIndex: 9999,
       }}
@@ -49,7 +53,9 @@ const OnlineIcon = ({ size, colors, flag, background }) => {
         <Circle size={outerCircleSize} color={colors.purple.fifth}>
           <Circle
             size={innerCircleSize}
-            color={background || colors.gray.second}
+            color={
+              sortIcon ? colors.gray.third : background || colors.gray.second
+            }
           ></Circle>
         </Circle>
       )}

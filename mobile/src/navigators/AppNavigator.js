@@ -22,7 +22,6 @@ export default AppStack = () => {
       backBehavior="history"
       keyboardDismissMode="none"
       screenOptions={{
-        swipeEnabled: false, // fix swipe
         headerShown: false,
         tabBarShowLabel: false,
         tabBarActiveTintColor: colors.purple.sixth,

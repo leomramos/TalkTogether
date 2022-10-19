@@ -27,6 +27,7 @@ const Badge = Styled.View`
   justify-content: center;
   align-items: center;
   background-color: ${({ color }) => color};
+  margin-left: 5px;
 `;
 
 export const ChatItem = ({ name, offline, lastMessage }) => {

@@ -1,3 +1,4 @@
+import * as Device from "expo-device";
 import React from "react";
 import { Image } from "react-native";
 import { useTheme } from "react-native-paper";
@@ -35,7 +36,7 @@ export default UserAvatar = ({
     <Container size={size} color={background || colors.avatar.white}>
       {!focused && <BlackOpacity radius={size * 2} />}
       <Image
-        blurRadius={offline ? 10 : 0}
+        blurRadius={offline ? (Device.osName === "Android" ? 10 : 2.5) : 0}
         source={src}
         resizeMode="contain"
         alt={"User avatar"}
@@ -45,12 +46,7 @@ export default UserAvatar = ({
         }}
       />
       {!offline && (
-        <OnlineIcon
-          size={size}
-          colors={colors}
-          flag={flag}
-          background={background}
-        />
+        <OnlineIcon size={size} flag={flag} background={background} />
       )}
     </Container>
   );
