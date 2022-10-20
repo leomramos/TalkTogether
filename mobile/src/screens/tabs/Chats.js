@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { Divider, IconButton, Menu, useTheme } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   ChatItem,
   CustomInput,
@@ -80,8 +81,11 @@ const renderItem = ({ item }) => {
 
 export default Chats = () => {
   const defaultSort = { by: "date", order: 1 };
+  const insets = useSafeAreaInsets();
+
+  const chatsAmount = 15;
   const [chats, setChats] = useState(
-    Array(Math.floor(Math.random() * (25 - 10 + 1) + 10))
+    Array(chatsAmount)
       .fill()
       .map((v, k) => ({
         _id: k,
@@ -139,6 +143,7 @@ export default Chats = () => {
         />
       </View>
       <List
+        style={{ marginBottom: -insets.bottom }}
         theme={theme}
         data={chats
           .filter(el => el.name.search(new RegExp(search, "i")) !== -1)
