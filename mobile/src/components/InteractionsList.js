@@ -1,6 +1,8 @@
 import { Text, View } from "react-native";
-import { Divider, TouchableRipple, useTheme } from "react-native-paper";
+import { Divider, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
+import { formatMessageSentDate } from "../utils/helpers";
+import Badge from "./Badge";
 import CustomText from "./CustomText";
 import UserAvatar from "./UserAvatar";
 
@@ -20,16 +22,6 @@ const MessageWrapper = Styled.View`
   align-items: center;
 `;
 
-const Badge = Styled.View`
-  width: ${({ size }) => size}px;
-  height: ${({ size }) => size}px;
-  border-radius: 100px;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ color }) => color};
-  margin-left: 5px;
-`;
-
 export const ChatItem = ({ name, offline, lastMessage }) => {
   const { colors, typography } = useTheme();
 
@@ -38,17 +30,17 @@ export const ChatItem = ({ name, offline, lastMessage }) => {
       <UserAvatar offline={offline} />
       <ChatInfo>
         <MessageWrapper>
-          <CustomText type={typography.label.name} color={colors.gray.eigth}>
+          <CustomText type={typography.label.name} color={colors.gray.eighth}>
             {name}
           </CustomText>
           <CustomText type={typography.label.sent} color={colors.gray.seventh}>
-            {new Date(lastMessage.sent).getSeconds()}
+            {formatMessageSentDate(lastMessage.sent)}
           </CustomText>
         </MessageWrapper>
         <MessageWrapper style={{ marginTop: 4 }}>
           <CustomText
             type={typography.message.preview}
-            color={colors.gray.eigth}
+            color={colors.gray.eighth}
             style={{ flex: 1 }}
             numberOfLines={1}
             ellipsizeMode="tail"

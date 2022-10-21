@@ -1,4 +1,15 @@
 export default {
   search: "Search",
   clear: "Clear",
+  justNow: "Just now",
+  secondsAgo: "{{time}}s ago",
+  minutesAgo: "{{time}}m ago",
+  hoursAgo: "{{time}}h ago",
+  daysAgo: "{{time}}d ago",
+  weeksAgo: "{{time}}w ago",
+  userCountryFlag: "User country flag",
+  userAvatar: "User avatar",
+  calls: "Calls",
+  chats: "Chats",
+  myProfile: "My profile",
 };

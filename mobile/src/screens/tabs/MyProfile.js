@@ -8,7 +8,7 @@ import i18n from "../../i18n";
 export default MyProfile = () => {
   return (
     <ScreenContainer>
-      <PageHeader title="My profile" />
+      <PageHeader title={i18n.t("myProfile")} />
     </ScreenContainer>
   );
 };

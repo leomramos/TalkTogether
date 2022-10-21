@@ -30,13 +30,17 @@ export default PageHeader = ({
         <PageTitle
           type={typography.tab.title}
           color={colors.gray.ninth}
-          style={{ marginRight: 15 }}
+          style={{ marginRight: 5 }}
         >
           {title}
         </PageTitle>
         {titleExtra}
       </View>
-      <View>{sideOptions.map(opt => opt)}</View>
+      <View>
+        {sideOptions.map((Opt, i) => (
+          <Opt key={i} />
+        ))}
+      </View>
     </HeaderWrapper>
   );
 };

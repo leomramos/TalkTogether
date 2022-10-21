@@ -1,23 +1,47 @@
 import React, { useState } from "react";
-import { FlatList, Text, View } from "react-native";
-import { Divider, IconButton, Menu, useTheme } from "react-native-paper";
+import { View } from "react-native";
+import { IconButton, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
+  Badge,
   ChatItem,
   CustomInput,
+  CustomText,
   List,
   OnlineIcon,
   OverlayMenu,
   PageHeader,
 } from "../../components";
 import ScreenContainer from "../../components/ScreenContainer";
-import UserAvatar from "../../components/UserAvatar";
 
 import i18n from "../../i18n";
+
+const QuickMatch = () => {
+  const { colors, typography } = useTheme();
+
+  return (
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <IconButton
+        style={{
+          marginLeft: 0,
+          marginRight: 5,
+        }}
+        icon="plus"
+        size={20}
+        color={colors.purple.seventh}
+        onPress={() => {}}
+      />
+      <CustomText type={typography.button} color={colors.gray.ninth}>
+        Quick Match
+      </CustomText>
+    </View>
+  );
+};
 
 const sorts = {
   name: {
     icon: "alphabetical-variant",
+    defaultOrder: 1,
     sort: (a, b, order) =>
       order *
       (String(a.name).localeCompare(String(b.name), undefined, {
@@ -27,13 +51,15 @@ const sorts = {
   },
   date: {
     icon: "calendar",
+    defaultOrder: -1,
     sort: (a, b, order) => order * (a.lastMessage.sent - b.lastMessage.sent),
   },
   status: {
     icon: "account-circle",
+    defaultOrder: -1,
     sort: (a, b, order) =>
-      -order *
-      (Number(a.online) - Number(b.online) || sorts["date"].sort(a, b, -1)),
+      order *
+      (Number(a.online) - Number(b.online) || sorts["date"].sort(a, b, 1)),
     extra: <OnlineIcon sortIcon />,
   },
 };
@@ -41,7 +67,7 @@ const sorts = {
 const SortOverlay = ({ sort, setSort, theme }) => {
   return (
     <>
-      {Object.entries(sorts).map(([s, { icon, extra }]) => (
+      {Object.entries(sorts).map(([s, { icon, extra, defaultOrder }]) => (
         <View key={`sort-${s}`} style={{ position: "relative" }}>
           <IconButton
             style={{
@@ -53,13 +79,13 @@ const SortOverlay = ({ sort, setSort, theme }) => {
               sort.by === s ? theme.colors.gray.ninth : theme.colors.gray.sixth
             }
             size={25}
-            onPress={() => setSort({ by: s, order: sort.order })}
+            onPress={() => setSort({ by: s, order: defaultOrder })}
           />
           {extra}
         </View>
       ))}
       <IconButton
-        icon={sort.order === 1 ? "sort-ascending" : "sort-descending"}
+        icon={sort.order === 1 ? "sort-descending" : "sort-ascending"}
         color={theme.colors.gray.ninth}
         size={15}
         style={{ marginLeft: 10, marginRight: 0 }}
@@ -80,7 +106,7 @@ const renderItem = ({ item }) => {
 };
 
 export default Chats = () => {
-  const defaultSort = { by: "date", order: 1 };
+  const defaultSort = { by: "date", order: -1 };
   const insets = useSafeAreaInsets();
 
   const chatsAmount = 15;
@@ -108,7 +134,7 @@ export default Chats = () => {
                 String.fromCharCode(97 + Math.floor(Math.random() * 26))
             )
             .join(" "),
-          sent: new Date() - Math.floor(Math.random() * 100 * 1000),
+          sent: new Date() - Math.floor(Math.random() * 100 * 100000),
         },
       }))
   );
@@ -120,7 +146,33 @@ export default Chats = () => {
 
   return (
     <ScreenContainer>
-      <PageHeader title="Chats" titleExtra={<Text>b</Text>} sideOptions={[]} />
+      <PageHeader
+        title={i18n.t("chats")}
+        titleExtra={
+          <View style={{ position: "relative" }}>
+            <IconButton
+              icon="account-multiple"
+              style={{ marginLeft: 0 }}
+              size={18}
+              color={theme.colors.gray.eighth}
+              onPress={() => {}}
+            />
+            <Badge
+              size={10}
+              color={theme.colors.gray.sixth}
+              style={{ position: "absolute", top: 8, right: 8 }}
+            >
+              <CustomText
+                type={theme.typography.requests.badge}
+                color={theme.colors.gray.ninth}
+              >
+                1
+              </CustomText>
+            </Badge>
+          </View>
+        }
+        sideOptions={[QuickMatch]}
+      />
       <View
         style={{
           flexDirection: "row",

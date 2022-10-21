@@ -52,14 +52,14 @@ export default CustomInput = ({
               ? colors.gray.sixth
               : isFocused
               ? colors.purple.sixth
-              : colors.gray.eigth
+              : colors.gray.eighth
           }
           onPress={search ? () => setValue("") : action}
         />
       }
       theme={{
         colors: {
-          text: colors.gray.eigth,
+          text: colors.gray.eighth,
           placeholder: colors.gray.sixth,
         },
       }}

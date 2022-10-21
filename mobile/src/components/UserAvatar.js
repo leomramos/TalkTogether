@@ -3,6 +3,7 @@ import React from "react";
 import { Image } from "react-native";
 import { useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
+import i18n from "../i18n";
 import { BlackOpacity } from "../utils/graphical";
 import OnlineIcon from "./OnlineIcon";
 
@@ -39,7 +40,7 @@ export default UserAvatar = ({
         blurRadius={offline ? (Device.osName === "Android" ? 10 : 2.5) : 0}
         source={src}
         resizeMode="contain"
-        alt={"User avatar"}
+        alt={i18n.t("userAvatar")}
         style={{
           width: "100%",
           maxHeight: "90%",

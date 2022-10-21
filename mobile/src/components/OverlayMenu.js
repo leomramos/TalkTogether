@@ -65,7 +65,7 @@ export default OverlayMenu = ({
           >
             <CustomText
               type={typography.overlay.footer}
-              color={colors.gray.eigth}
+              color={colors.gray.eighth}
             >
               {footer}
             </CustomText>

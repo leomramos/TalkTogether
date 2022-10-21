@@ -1,6 +1,7 @@
 import React from "react";
 import { useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
+import i18n from "../i18n";
 
 const Circle = Styled.View`
   height: ${({ size }) => size}px;
@@ -34,7 +35,7 @@ const OnlineIcon = ({ size = 48, flag, background, sortIcon = false }) => {
       {flag ? (
         <Circle
           size={outerCircleSize}
-          color={"transparent"}
+          color="transparent"
           style={{
             overflow: "hidden",
           }}
@@ -42,7 +43,7 @@ const OnlineIcon = ({ size = 48, flag, background, sortIcon = false }) => {
           <Image
             source={{ uri: flag }}
             resizeMode="cover"
-            alt={"User country flag"}
+            alt={i18n.t("userCountryFlag")}
             style={{
               width: "100%",
               height: "100%",

@@ -26,6 +26,13 @@ const common = {
         unit: "px",
       },
     },
+    button: {
+      font: "Inter_500Medium",
+      size: {
+        number: 12,
+        unit: "px",
+      },
+    },
     overlay: {
       title: {
         font: "Inter_600SemiBold",
@@ -74,6 +81,15 @@ const common = {
         },
       },
     },
+    requests: {
+      badge: {
+        font: "Inter_700Bold",
+        size: {
+          number: 6,
+          unit: "px",
+        },
+      },
+    },
   },
   colors: {
     ...DefaultTheme.colors,
@@ -114,7 +130,7 @@ const darkTheme = {
       fifth: "#414052",
       sixth: "#76767C",
       seventh: "#909095",
-      eigth: "#CECED0",
+      eighth: "#CECED0",
       ninth: "#FDFDFD",
     },
   },
