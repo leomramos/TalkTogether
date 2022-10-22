@@ -1,6 +1,6 @@
 import Styled from "styled-components/native";
 
-export default Badge = Styled.View`
+export default Badge = Styled.View.attrs({ pointerEvents: "none" })`
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   border-radius: 100px;

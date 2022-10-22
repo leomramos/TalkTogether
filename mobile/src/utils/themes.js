@@ -81,13 +81,20 @@ const common = {
         },
       },
     },
-    requests: {
+    menus: {
       badge: {
         font: "Inter_700Bold",
         size: {
           number: 6,
           unit: "px",
         },
+      },
+    },
+    popUp: {
+      font: "Inter_600SemiBold",
+      size: {
+        number: 10,
+        unit: "px",
       },
     },
   },
@@ -103,6 +110,10 @@ const common = {
       blue: "#969BAB",
       violet: "#A796AB",
       orange: "#AB9696",
+    },
+    aux: {
+      confirm: "#26A524",
+      cancel: "#7D2626",
     },
   },
 };

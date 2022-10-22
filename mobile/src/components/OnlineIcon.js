@@ -1,4 +1,5 @@
 import React from "react";
+import { Image } from "react-native";
 import { useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import i18n from "../i18n";
@@ -12,7 +13,12 @@ const Circle = Styled.View`
   border-radius: 100px;
 `;
 
-const OnlineIcon = ({ size = 48, flag, background, sortIcon = false }) => {
+export default OnlineIcon = ({
+  size = 48,
+  flag,
+  background,
+  sortIcon = false,
+}) => {
   const { colors } = useTheme();
   size = sortIcon ? 25 : size;
 
@@ -63,5 +69,3 @@ const OnlineIcon = ({ size = 48, flag, background, sortIcon = false }) => {
     </Circle>
   );
 };
-
-export default OnlineIcon;

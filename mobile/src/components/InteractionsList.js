@@ -4,22 +4,16 @@ import Styled from "styled-components/native";
 import { formatMessageSentDate } from "../utils/helpers";
 import Badge from "./Badge";
 import CustomText from "./CustomText";
+import { Row } from "./Helpers";
 import UserAvatar from "./UserAvatar";
 
-const ItemContainer = Styled.View`
-  flex-direction: row;
+const ItemContainer = Styled(Row)`
   margin-bottom: 15px;
   opacity: ${({ offline }) => (offline ? 0.5 : 1)};
 `;
 
-const ChatInfo = Styled.View`
-  flex: 1;
-`;
-
-const MessageWrapper = Styled.View`
-  flex-direction: row;
+const MessageWrapper = Styled(Row)`
   justify-content: space-between;
-  align-items: center;
 `;
 
 export const ChatItem = ({ name, offline, lastMessage }) => {
@@ -28,7 +22,7 @@ export const ChatItem = ({ name, offline, lastMessage }) => {
   return (
     <ItemContainer offline={offline}>
       <UserAvatar offline={offline} />
-      <ChatInfo>
+      <View style={{ flex: 1, marginLeft: 15 }}>
         <MessageWrapper>
           <CustomText type={typography.label.name} color={colors.gray.eighth}>
             {name}
@@ -59,7 +53,7 @@ export const ChatItem = ({ name, offline, lastMessage }) => {
         <Divider
           style={{ marginTop: 15, backgroundColor: colors.gray.fifth }}
         />
-      </ChatInfo>
+      </View>
     </ItemContainer>
   );
 };

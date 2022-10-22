@@ -32,8 +32,7 @@ export default function App() {
     <PaperProvider theme={Theme.get("dark")}>
       <IconComponentProvider IconComponent={MaterialCommunityIcons}>
         <SafeAreaProvider>
-          <StatusBar style="light" />
-          {/* <StatusBar style={scheme === "dark" ? "light" : "dark"} /> */}
+          <StatusBar style={scheme === "dark" ? "light" : "dark"} />
           {fontsLoaded && (
             <NavigationContainer>
               <AppStack />

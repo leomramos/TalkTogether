@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import {
   IconButton,
   Menu,
@@ -7,12 +7,13 @@ import {
   useTheme,
 } from "react-native-paper";
 import Styled from "styled-components/native";
+import Badge from "./Badge";
 import CustomText from "./CustomText";
+import { Row } from "./Helpers";
 
-const AnchorButton = Styled(IconButton)`
-  margin: 0;
-  margin-left: 5px;
+const AnchorView = Styled.View`
   margin-right: -${({ screen }) => screen.padding.right};
+  position: relative;
 `;
 
 export default OverlayMenu = ({
@@ -23,6 +24,7 @@ export default OverlayMenu = ({
   footer = "",
   topSpacing = 50,
   footerAction = () => {},
+  badge = 0,
 }) => {
   const { colors, typography, screen } = useTheme();
   const [visible, setVisible] = useState(false);
@@ -39,24 +41,42 @@ export default OverlayMenu = ({
       visible={visible}
       onDismiss={closeMenu}
       anchor={
-        <AnchorButton
-          icon={icon}
-          color={visible ? colors.gray.ninth : colors.gray.seventh}
-          size={iconSize}
-          onPress={openMenu}
-          screen={screen}
-        />
+        <AnchorView screen={screen}>
+          <IconButton
+            icon={icon}
+            color={visible ? colors.gray.ninth : colors.gray.seventh}
+            size={iconSize}
+            onPress={openMenu}
+            style={{ margin: 0 }}
+          />
+          {badge ? (
+            <Badge
+              size={10}
+              color={colors.gray.seventh}
+              style={{
+                position: "absolute",
+                top: iconSize * 0.5 - 7,
+                right: iconSize * 0.5 - 7,
+              }}
+            >
+              <CustomText
+                type={typography.menus.badge}
+                color={colors.gray.ninth}
+              >
+                {badge}
+              </CustomText>
+            </Badge>
+          ) : (
+            <></>
+          )}
+        </AnchorView>
       }
     >
       <View style={{ paddingHorizontal: 15, paddingTop: 5 }}>
         <CustomText type={typography.overlay.title} color={colors.gray.ninth}>
           {title}
         </CustomText>
-        <View
-          style={{ marginTop: 5, flexDirection: "row", alignItems: "center" }}
-        >
-          {content}
-        </View>
+        <Row style={{ marginTop: 10, marginBottom: 5 }}>{content}</Row>
         {footer && (
           <TouchableRipple
             centered

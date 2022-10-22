@@ -12,4 +12,6 @@ export default {
   calls: "Calls",
   chats: "Chats",
   myProfile: "My profile",
+  requests: "Requests",
+  sort: "Sort",
 };

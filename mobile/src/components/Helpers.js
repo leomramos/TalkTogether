@@ -1,5 +1,10 @@
 import Styled from "styled-components/native";
 
+export const Row = Styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
 export const BlackOpacity = Styled.View`
   position: absolute;
   top: 0;
