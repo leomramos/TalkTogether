@@ -32,8 +32,8 @@ export default OnlineIcon = ({
       color={sortIcon ? colors.gray.third : background || colors.gray.second}
       style={{
         position: "absolute",
-        bottom: sortIcon ? 12.5 : statusOffset,
-        right: sortIcon ? 12.5 : statusOffset,
+        bottom: sortIcon ? 7 : statusOffset,
+        right: sortIcon ? 12 : statusOffset,
         padding: statusOffset,
         zIndex: 9999,
       }}

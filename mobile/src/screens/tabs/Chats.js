@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import { View } from "react-native";
-import { IconButton, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  Badge,
   ChatItem,
   CustomInput,
-  CustomText,
   List,
   OnlineIcon,
   OverlayMenu,
@@ -48,16 +45,6 @@ const sorts = {
   },
 };
 
-const renderItem = ({ item }) => {
-  return (
-    <ChatItem
-      name={item.name}
-      offline={!item.online}
-      lastMessage={item.lastMessage}
-    />
-  );
-};
-
 const PendingRequests = () => {
   const requestsAmount = 5;
   const [requests, setRequests] = useState(
@@ -65,7 +52,7 @@ const PendingRequests = () => {
       .fill()
       .map((_, k) => ({
         _id: k,
-        name: Array(Math.floor(Math.random() * (15 - 3 + 1) + 3))
+        name: Array(Math.floor(Math.random() * (150 - 3 + 1) + 3))
           .fill()
           .map(_ => String.fromCharCode(97 + Math.floor(Math.random() * 26)))
           .join(""),
@@ -100,10 +87,19 @@ export default Chats = () => {
       .fill()
       .map((_, k) => ({
         _id: k,
-        name: Array(Math.floor(Math.random() * (15 - 3 + 1) + 3))
+        name: Array(Math.floor(Math.random() * (4 - 2 + 1) + 3))
           .fill()
-          .map(_ => String.fromCharCode(97 + Math.floor(Math.random() * 26)))
-          .join(""),
+          .map(
+            _ =>
+              Array(Math.floor(Math.random() * (8 - 2 + 1) + 2))
+                .fill()
+                .map(_ =>
+                  String.fromCharCode(97 + Math.floor(Math.random() * 26))
+                )
+                .join("") +
+              String.fromCharCode(97 + Math.floor(Math.random() * 26))
+          )
+          .join(" "),
         online: Math.random() < 0.5,
         lastMessage: {
           body: Array(Math.floor(Math.random() * (15 - 3 + 1) + 3))
@@ -119,7 +115,7 @@ export default Chats = () => {
                 String.fromCharCode(97 + Math.floor(Math.random() * 26))
             )
             .join(" "),
-          sent: new Date() - Math.floor(Math.random() * 100 * 100000),
+          sent: new Date() - Math.floor(Math.random() * 100 * 10000),
         },
       }))
   );
@@ -129,24 +125,19 @@ export default Chats = () => {
 
   const sortChats = (a, b) => sorts[sort.by].sort(a, b, sort.order);
 
+  const renderItem = ({ item }) => {
+    return (
+      <ChatItem
+        name={item.name}
+        offline={!item.online}
+        lastMessage={item.lastMessage}
+      />
+    );
+  };
+
   return (
     <ScreenContainer>
-      <PageHeader
-        title={i18n.t("chats")}
-        // titleExtra={
-        //   <OverlayMenu
-        //     title={i18n.t("requests")}
-        //     icon="account-multiple"
-        //     iconSize={18}
-        //     badge={1}
-        //     topSpacing={35}
-        //     content={<RequestsOverlay requests={requests} />}
-        //     // footer={i18n.t("clear")}
-        //     // footerAction={() => setSort(defaultSort)}
-        //   />
-        // }
-        sideActions={[PendingRequests]}
-      />
+      <PageHeader title={i18n.t("chats")} sideActions={[PendingRequests]} />
       <Row>
         <CustomInput
           dense

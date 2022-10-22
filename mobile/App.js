@@ -28,6 +28,7 @@ export default function App() {
 
   const scheme = useColorScheme();
   // add theme switch functionality
+
   return (
     <PaperProvider theme={Theme.get("dark")}>
       <IconComponentProvider IconComponent={MaterialCommunityIcons}>

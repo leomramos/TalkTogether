@@ -24,7 +24,13 @@ export const ChatItem = ({ name, offline, lastMessage }) => {
       <UserAvatar offline={offline} />
       <View style={{ flex: 1, marginLeft: 15 }}>
         <MessageWrapper>
-          <CustomText type={typography.label.name} color={colors.gray.eighth}>
+          <CustomText
+            type={typography.label.name}
+            color={colors.gray.eighth}
+            numberOfLines={1}
+            style={{ flex: 1, marginRight: 15 }}
+            ellipsizeMode="tail"
+          >
             {name}
           </CustomText>
           <CustomText type={typography.label.sent} color={colors.gray.seventh}>
@@ -35,7 +41,7 @@ export const ChatItem = ({ name, offline, lastMessage }) => {
           <CustomText
             type={typography.message.preview}
             color={colors.gray.eighth}
-            style={{ flex: 1 }}
+            style={{ flex: 1, marginRight: 5 }}
             numberOfLines={1}
             ellipsizeMode="tail"
           >
