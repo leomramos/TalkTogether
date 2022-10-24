@@ -74,6 +74,6 @@ export const CallItem = ({ name }) => {
 
 export default List = Styled.FlatList`
   margin-top: 30px;
-  padding-right: ${({ theme }) => theme.screen.padding.right};
-  margin-right: -${({ theme }) => theme.screen.padding.right};
+  padding-right: ${({ theme }) => theme.screen.padding.right}px;
+  margin-right: -${({ theme }) => theme.screen.padding.right}px;
 `;

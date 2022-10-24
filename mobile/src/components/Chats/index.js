@@ -59,28 +59,6 @@ export const RequestsOverlay = ({ requests }) => {
   );
 };
 
-export const QuickMatch = () => {
-  const { colors, typography } = useTheme();
-
-  return (
-    <Row>
-      <IconButton
-        style={{
-          marginLeft: 0,
-          marginRight: 5,
-        }}
-        icon="plus"
-        size={20}
-        color={colors.purple.seventh}
-        onPress={() => {}}
-      />
-      <CustomText type={typography.button} color={colors.gray.ninth}>
-        Quick Match
-      </CustomText>
-    </Row>
-  );
-};
-
 export const SortOverlay = ({ sort, setSort, sorts }) => {
   const { colors } = useTheme();
   return (

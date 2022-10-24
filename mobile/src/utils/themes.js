@@ -5,8 +5,8 @@ const common = {
   roundness: 5,
   screen: {
     padding: {
-      left: "20px",
-      right: "20px",
+      left: 20,
+      right: 20,
     },
   },
   typography: {

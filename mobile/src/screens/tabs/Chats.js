@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useTheme } from "react-native-paper";
+import React, { useEffect, useState } from "react";
+import { FAB, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   ChatItem,
@@ -9,11 +9,7 @@ import {
   OverlayMenu,
   PageHeader,
 } from "../../components";
-import {
-  QuickMatch,
-  RequestsOverlay,
-  SortOverlay,
-} from "../../components/Chats";
+import { RequestsOverlay, SortOverlay } from "../../components/Chats";
 import ScreenContainer from "../../components/ScreenContainer";
 
 import { Row } from "../../components";
@@ -65,7 +61,7 @@ const PendingRequests = () => {
 
   return (
     <OverlayMenu
-      title={i18n.t("requests")}
+      title={i18n.t("chatRequests")}
       icon="account-multiple"
       iconSize={20}
       badge={1}
@@ -77,9 +73,18 @@ const PendingRequests = () => {
   );
 };
 
-export default Chats = () => {
+export default Chats = ({ navigation }) => {
   const defaultSort = { by: "date", order: -1 };
   const insets = useSafeAreaInsets();
+  const [fabOpen, setFabOpen] = useState(false);
+  const [quickChatEnabled, setQuickChatEnabled] = useState(false);
+  const [quickChatSearching, setQuickChatSearching] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("blur", () => setFabOpen(false));
+
+    return unsubscribe;
+  }, [navigation]);
 
   const chatsAmount = 15;
   const [chats, setChats] = useState(
@@ -135,6 +140,41 @@ export default Chats = () => {
     );
   };
 
+  const getAction = (
+    icon,
+    label = "",
+    onPress,
+    color = "",
+    background = ""
+  ) => ({
+    icon,
+    label: i18n.t(label),
+    onPress,
+    color: color || theme.colors.gray.eighth,
+    style: {
+      backgroundColor: background || theme.colors.gray.third,
+    },
+    labelTextColor: color || theme.colors.gray.eighth,
+    labelStyle: {
+      backgroundColor: background || theme.colors.gray.third,
+    },
+  });
+
+  const fabActions = [
+    getAction(
+      quickChatEnabled ? "access-point" : "access-point-off",
+      quickChatEnabled ? "quickChatEnabled" : "quickChatDisabled",
+      () => setQuickChatEnabled(!quickChatEnabled)
+    ),
+  ];
+
+  quickChatEnabled &&
+    fabActions.push(
+      getAction("plus", "match", () =>
+        setQuickChatSearching(!quickChatSearching)
+      )
+    );
+
   return (
     <ScreenContainer>
       <PageHeader title={i18n.t("chats")} sideActions={[PendingRequests]} />
@@ -162,6 +202,17 @@ export default Chats = () => {
           .sort(sortChats)}
         renderItem={renderItem}
         keyExtractor={item => item._id}
+      />
+      <FAB.Group
+        open={fabOpen}
+        icon={fabOpen ? "close" : "plus"}
+        color={theme.colors.gray.ninth}
+        fabStyle={{
+          backgroundColor: theme.colors.purple.sixth,
+        }}
+        onStateChange={_ => {}}
+        onPress={() => setFabOpen(!fabOpen)}
+        actions={fabActions}
       />
     </ScreenContainer>
   );

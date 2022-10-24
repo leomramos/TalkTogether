@@ -12,7 +12,7 @@ import CustomText from "./CustomText";
 import { Row } from "./Helpers";
 
 const AnchorView = Styled.View`
-  margin-right: -${({ screen }) => screen.padding.right};
+  margin-right: -${({ screen }) => screen.padding.right}px;
   position: relative;
 `;
 

@@ -12,6 +12,9 @@ export default {
   calls: "Calls",
   chats: "Chats",
   myProfile: "My profile",
-  requests: "Requests",
+  chatRequests: "Chat requests",
   sort: "Sort",
+  quickChatEnabled: "Quick Chat enabled",
+  quickChatDisabled: "Quick Chat disabled",
+  match: "Match",
 };
