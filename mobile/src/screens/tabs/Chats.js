@@ -11,6 +11,7 @@ import {
 } from "../../components";
 import { RequestsOverlay, SortOverlay } from "../../components/Chats";
 import ScreenContainer from "../../components/ScreenContainer";
+import ModalStack from "../../navigators/ModalNavigator";
 
 import { Row } from "../../components";
 import i18n from "../../i18n";
@@ -136,6 +137,12 @@ export default Chats = ({ navigation }) => {
         name={item.name}
         offline={!item.online}
         lastMessage={item.lastMessage}
+        handlePress={() =>
+          navigation.navigate("Modals", {
+            screen: "CallsScreen",
+            params: { teste: "a" },
+          })
+        }
       />
     );
   };
@@ -214,6 +221,7 @@ export default Chats = ({ navigation }) => {
         onPress={() => setFabOpen(!fabOpen)}
         actions={fabActions}
       />
+      <ModalStack />
     </ScreenContainer>
   );
 };
