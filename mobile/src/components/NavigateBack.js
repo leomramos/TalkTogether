@@ -9,7 +9,7 @@ export default NavigateBack = ({ action }) => {
       icon="chevron-left"
       color={colors.gray.seventh}
       size={iconSize}
-      style={{ width: iconSize, height: iconSize }}
+      style={{ width: iconSize, height: iconSize, marginLeft: 10 }}
       onPress={action}
     />
   );

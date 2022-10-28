@@ -6,7 +6,7 @@ const common = {
   screen: {
     padding: {
       left: 20,
-      right: 20,
+      right: 0,
     },
   },
   typography: {

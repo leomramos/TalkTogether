@@ -12,7 +12,6 @@ import CustomText from "./CustomText";
 import { Row } from "./Helpers";
 
 const AnchorView = Styled.View`
-  margin-right: -${({ screen }) => screen.padding.right}px;
   position: relative;
 `;
 
@@ -25,6 +24,7 @@ export default OverlayMenu = ({
   topSpacing = 50,
   footerAction = () => {},
   badge = 0,
+  iconColor = "",
 }) => {
   const { colors, typography, screen } = useTheme();
   const [visible, setVisible] = useState(false);
@@ -41,10 +41,12 @@ export default OverlayMenu = ({
       visible={visible}
       onDismiss={closeMenu}
       anchor={
-        <AnchorView screen={screen}>
+        <AnchorView>
           <IconButton
             icon={icon}
-            color={visible ? colors.gray.ninth : colors.gray.seventh}
+            color={
+              visible ? colors.gray.ninth : iconColor || colors.gray.seventh
+            }
             size={iconSize}
             onPress={openMenu}
             style={{ margin: 0 }}

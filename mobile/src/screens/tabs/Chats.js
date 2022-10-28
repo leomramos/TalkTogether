@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   ChatItem,
   CustomInput,
+  CustomText,
   List,
   OnlineIcon,
   OverlayMenu,
@@ -139,8 +140,8 @@ export default Chats = ({ navigation }) => {
         lastMessage={item.lastMessage}
         handlePress={() =>
           navigation.navigate("Modals", {
-            screen: "CallsScreen",
-            params: { teste: "a" },
+            screen: "ChatScreen",
+            params: { user: item },
           })
         }
       />
@@ -202,13 +203,22 @@ export default Chats = ({ navigation }) => {
         />
       </Row>
       <List
-        style={{ marginBottom: -insets.bottom }}
+        style={{ marginBottom: -insets.bottom, paddingBottom: 30 }}
         theme={theme}
         data={chats
           .filter(el => el.name.search(new RegExp(search, "i")) !== -1)
           .sort(sortChats)}
         renderItem={renderItem}
         keyExtractor={item => item._id}
+        ListFooterComponent={
+          <CustomText
+            type={theme.typography.input}
+            color={theme.colors.gray.fifth}
+            style={{ height: 90 }}
+          >
+            asdsa
+          </CustomText>
+        }
       />
       <FAB.Group
         open={fabOpen}

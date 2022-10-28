@@ -1,5 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import CallsScreen from "../screens/tabs/Calls";
+import ChatModal from "../screens/modals/Chat";
 import MyProfileScreen from "../screens/tabs/MyProfile";
 
 const Modal = createStackNavigator();
@@ -13,8 +13,8 @@ export default ModalStack = () => {
         headerShown: false,
       }}
     >
-      <Modal.Screen name="ChatScreen" component={MyProfileScreen} />
-      <Modal.Screen name="CallsScreen" component={CallsScreen} />
+      <Modal.Screen name="Modal1" component={MyProfileScreen} />
+      <Modal.Screen name="ChatScreen" component={ChatModal} />
     </Modal.Navigator>
   );
 };

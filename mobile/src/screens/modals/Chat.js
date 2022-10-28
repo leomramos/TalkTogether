@@ -1,12 +1,12 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { ChatHeader } from "../../components";
 import ScreenContainer from "../../components/ScreenContainer";
 import i18n from "../../i18n";
 
-export default Calls = ({ route }) => {
+export default Chat = ({ route, navigation }) => {
   return (
     <ScreenContainer>
-      <PageHeader title={i18n.t("calls")} />
+      <ChatHeader user={route.params.user} goBack={() => navigation.goBack()} />
     </ScreenContainer>
   );
 };

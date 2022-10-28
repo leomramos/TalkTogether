@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { Divider, TouchableRipple, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import { formatMessageSentDate } from "../utils/helpers";
@@ -8,8 +8,11 @@ import { Row } from "./Helpers";
 import UserAvatar from "./UserAvatar";
 
 const ItemContainer = Styled(Row)`
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
   opacity: ${({ offline }) => (offline ? 0.5 : 1)};
+  padding-right: 20px;
+  padding-left: ${({ screen }) => screen.padding.left}px;
 `;
 
 const MessageWrapper = Styled(Row)`
@@ -17,12 +20,14 @@ const MessageWrapper = Styled(Row)`
 `;
 
 export const ChatItem = ({ name, offline, lastMessage, handlePress }) => {
-  const { colors, typography } = useTheme();
+  const { colors, typography, screen } = useTheme();
   console.log(handlePress);
+
+  const unread = Math.floor(Math.random() * Math.random() * 10);
 
   return (
     <TouchableRipple onPress={handlePress}>
-      <ItemContainer offline={offline}>
+      <ItemContainer offline={offline} screen={screen}>
         <UserAvatar offline={offline} />
         <View style={{ flex: 1, marginLeft: 15 }}>
           <MessageWrapper>
@@ -52,17 +57,19 @@ export const ChatItem = ({ name, offline, lastMessage, handlePress }) => {
             >
               {lastMessage.body}
             </CustomText>
-            <Badge size={16} color={colors.purple.eighth}>
-              <CustomText
-                type={typography.message.badge}
-                color={colors.gray.second}
-              >
-                9+
-              </CustomText>
-            </Badge>
+            {unread > 0 && (
+              <Badge size={16} color={colors.purple.eighth}>
+                <CustomText
+                  type={typography.message.badge}
+                  color={colors.gray.second}
+                >
+                  {unread < 10 ? unread : "9+"}
+                </CustomText>
+              </Badge>
+            )}
           </MessageWrapper>
           <Divider
-            style={{ marginTop: 15, backgroundColor: colors.gray.fifth }}
+            style={{ marginTop: 10, backgroundColor: colors.gray.fourth }}
           />
         </View>
       </ItemContainer>
@@ -78,8 +85,7 @@ export const CallItem = ({ name }) => {
   );
 };
 
-export default List = Styled.FlatList`
-  margin-top: 30px;
-  padding-right: ${({ theme }) => theme.screen.padding.right}px;
-  margin-right: -${({ theme }) => theme.screen.padding.right}px;
+export default List = Styled.FlatList.attrs({ scrollIndicatorColor: "white" })`
+  margin-top: 20px;
+  margin-left: -${({ theme }) => theme.screen.padding.left}px;
 `;

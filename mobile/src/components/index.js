@@ -1,4 +1,5 @@
 export { default as Badge } from "./Badge";
+export { default as ChatHeader } from "./ChatHeader";
 export { default as CustomInput } from "./CustomInput";
 export { default as CustomText } from "./CustomText";
 export { BlackOpacity, Row } from "./Helpers";
