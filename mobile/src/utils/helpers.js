@@ -17,3 +17,8 @@ export const formatMessageSentDate = (date, now = moment()) => {
     ? i18n.t("weeksAgo", { time: now.diff(sentDate, "weeks") })
     : sentDate.format("L");
 };
+
+export const formatMessageSentTime = date => {
+  const sentDate = moment(date);
+  return sentDate.format("hh:mm a");
+};

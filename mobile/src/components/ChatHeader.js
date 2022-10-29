@@ -20,6 +20,7 @@ const HeaderWrapper = Styled(Row)`
   justify-content: space-between;
   background-color: ${({ colors }) => colors.gray.first};
   position: relative;
+  z-index: 1;
 `;
 
 const UserInfo = Styled.View`
@@ -31,7 +32,6 @@ export default ChatHeader = ({ user = null, goBack }) => {
 
   return (
     <HeaderWrapper colors={colors} screen={screen}>
-      <StatusBar backgroundColor={colors.gray.first} />
       <Row style={{ paddingRight: 15 }}>
         <NavigateBack action={goBack} />
         <TouchableRipple onPress={() => {}} style={{ flex: 1, marginRight: 5 }}>
@@ -45,7 +45,7 @@ export default ChatHeader = ({ user = null, goBack }) => {
               size={40}
               flag="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.opovo.com.br%2F_midias%2Fjpg%2F2020%2F10%2F05%2F750x500%2F1_bandeira_do_brasil_300dpi-13718529.jpg&f=1&nofb=1&ipt=aedc272207e3b366ad03dd290a11199c384cb1c0885e5355c7f23d5bd4e8a86a&ipo=images"
             />
-            <UserInfo>
+            <UserInfo style={{ flex: 1 }}>
               <CustomText
                 type={typography.message.preview}
                 color={colors.gray.ninth}
@@ -86,12 +86,6 @@ export default ChatHeader = ({ user = null, goBack }) => {
           footer={i18n.t("clear")}
           footerAction={() => {}}
         />
-        {/* <IconButton
-          icon="cog"
-          color={colors.gray.seventh}
-          style={{ marginRight: 10 }}
-          onPress={() => {}}
-        /> */}
       </Row>
       <Divider
         style={{

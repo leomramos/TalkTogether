@@ -25,8 +25,8 @@ export default CustomInput = ({
       style={{
         backgroundColor: colors.gray.third,
         flexGrow: 1,
-        // fontFamily: typography.input.font,
-        // fontSize: typography.input.size.number,
+        fontFamily: typography.input.font,
+        fontSize: typography.input.size.number,
       }}
       mode="outlined"
       label={!search && label}

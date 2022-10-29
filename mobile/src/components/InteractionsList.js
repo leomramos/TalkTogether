@@ -1,4 +1,5 @@
-import { FlatList, Text, View } from "react-native";
+import { useState } from "react";
+import { Text, View } from "react-native";
 import { Divider, TouchableRipple, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import { formatMessageSentDate } from "../utils/helpers";
@@ -21,12 +22,16 @@ const MessageWrapper = Styled(Row)`
 
 export const ChatItem = ({ name, offline, lastMessage, handlePress }) => {
   const { colors, typography, screen } = useTheme();
-  console.log(handlePress);
+  const [touching, setTouching] = useState(false);
 
   const unread = Math.floor(Math.random() * Math.random() * 10);
 
   return (
-    <TouchableRipple onPress={handlePress}>
+    <TouchableRipple
+      onPress={handlePress}
+      onPressIn={() => setTouching(true)}
+      onPressOut={() => setTouching(false)}
+    >
       <ItemContainer offline={offline} screen={screen}>
         <UserAvatar offline={offline} />
         <View style={{ flex: 1, marginLeft: 15 }}>
@@ -69,7 +74,13 @@ export const ChatItem = ({ name, offline, lastMessage, handlePress }) => {
             )}
           </MessageWrapper>
           <Divider
-            style={{ marginTop: 10, backgroundColor: colors.gray.fourth }}
+            style={{
+              position: "absolute",
+              bottom: -11,
+              left: 0,
+              right: 0,
+              backgroundColor: touching ? "transparent" : colors.gray.fourth,
+            }}
           />
         </View>
       </ItemContainer>

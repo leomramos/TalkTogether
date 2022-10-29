@@ -19,7 +19,7 @@ export default OverlayMenu = ({
   title = "",
   icon = "",
   iconSize = 30,
-  content = <></>,
+  content = null,
   footer = "",
   topSpacing = 50,
   footerAction = () => {},
@@ -68,9 +68,7 @@ export default OverlayMenu = ({
                 {badge}
               </CustomText>
             </Badge>
-          ) : (
-            <></>
-          )}
+          ) : null}
         </AnchorView>
       }
     >

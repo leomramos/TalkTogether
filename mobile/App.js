@@ -16,8 +16,6 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppStack from "./src/navigators/AppNavigator";
 import Theme from "./src/utils/themes";
 
-import i18n from "./src/i18n";
-
 export default function App() {
   let [fontsLoaded] = useFonts({
     Inter_400Regular,

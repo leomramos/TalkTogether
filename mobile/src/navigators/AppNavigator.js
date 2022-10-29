@@ -17,7 +17,7 @@ export default AppStack = () => {
       <App.Screen
         name="Modals"
         component={ModalNavigator}
-        options={{ presentation: "modal" }}
+        options={{ presentation: "fullScreenModal" }}
       />
     </App.Navigator>
   );
