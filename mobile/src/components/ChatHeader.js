@@ -47,7 +47,7 @@ export default ChatHeader = ({ user = null, goBack }) => {
             />
             <UserInfo style={{ flex: 1 }}>
               <CustomText
-                type={typography.message.preview}
+                type={typography.chat.name}
                 color={colors.gray.ninth}
                 style={{ marginRight: 5 }}
                 numberOfLines={1}
@@ -56,13 +56,13 @@ export default ChatHeader = ({ user = null, goBack }) => {
                 {user.name}
               </CustomText>
               <CustomText
-                type={typography.message.preview}
-                color={colors.gray.ninth}
-                style={{ marginRight: 5 }}
+                type={typography.chat.status}
+                color={colors.gray.seventh}
+                style={{ marginRight: 5, textTransform: "lowercase" }}
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                online
+                {i18n.t("online")}
               </CustomText>
             </UserInfo>
           </Row>

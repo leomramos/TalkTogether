@@ -97,6 +97,22 @@ const common = {
         unit: "px",
       },
     },
+    chat: {
+      name: {
+        font: "Inter_600SemiBold",
+        size: {
+          number: 18,
+          unit: "px",
+        },
+      },
+      status: {
+        font: "Inter_600SemiBold",
+        size: {
+          number: 12,
+          unit: "px",
+        },
+      },
+    },
   },
   colors: {
     ...DefaultTheme.colors,

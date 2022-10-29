@@ -17,4 +17,6 @@ export default {
   quickChatEnabled: "Quick Chat enabled",
   quickChatDisabled: "Quick Chat disabled",
   match: "Match",
+  online: "Online",
+  type: "Type...",
 };
