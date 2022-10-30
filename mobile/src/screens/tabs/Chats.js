@@ -124,6 +124,7 @@ export default Chats = ({ navigation }) => {
             .join(" "),
           sent: new Date() - Math.floor(Math.random() * 100 * 10000),
         },
+        unread: Math.floor(Math.random() * Math.random() * 10),
       }))
   );
   const theme = useTheme();
@@ -138,6 +139,7 @@ export default Chats = ({ navigation }) => {
         name={item.name}
         offline={!item.online}
         lastMessage={item.lastMessage}
+        unread={item.unread}
         handlePress={() =>
           navigation.navigate("Modals", {
             screen: "ChatScreen",

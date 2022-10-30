@@ -97,19 +97,19 @@ export default Chat = ({ route, navigation }) => {
           ref={ref => {
             setChat(ref);
           }}
-          ListFooterComponent={
-            <TouchableRipple
-              onPress={() => chat && chat.scrollToIndex({ index: 0 })}
-            >
-              <View
-                style={{
-                  width: "100%",
-                  height: 50,
-                  backgroundColor: "green",
-                }}
-              ></View>
-            </TouchableRipple>
-          }
+          // ListHeaderComponent={
+          //   <TouchableRipple
+          //     onPress={() => chat && chat.scrollToIndex({ index: 0 })}
+          //   >
+          //     <View
+          //       style={{
+          //         width: 100,
+          //         height: 50,
+          //         backgroundColor: "green",
+          //       }}
+          //     ></View>
+          //   </TouchableRipple>
+          // }
         />
         <View style={{ paddingHorizontal: 25, paddingVertical: 15 }}>
           <CustomInput

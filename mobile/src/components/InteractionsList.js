@@ -20,11 +20,15 @@ const MessageWrapper = Styled(Row)`
   justify-content: space-between;
 `;
 
-export const ChatItem = ({ name, offline, lastMessage, handlePress }) => {
+export const ChatItem = ({
+  name,
+  offline,
+  lastMessage,
+  unread,
+  handlePress,
+}) => {
   const { colors, typography, screen } = useTheme();
   const [touching, setTouching] = useState(false);
-
-  const unread = Math.floor(Math.random() * Math.random() * 10);
 
   return (
     <TouchableRipple
