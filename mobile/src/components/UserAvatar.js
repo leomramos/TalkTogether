@@ -27,6 +27,7 @@ export default UserAvatar = ({
   offline = false,
   focused = true,
   flag = "",
+  plain = false,
 }) => {
   const { colors } = useTheme();
   const src = require("../../assets/user-avatar-1.png");
@@ -44,7 +45,7 @@ export default UserAvatar = ({
           maxHeight: "90%",
         }}
       />
-      {!offline && (
+      {!offline && !plain && (
         <OnlineIcon size={size} flag={flag} background={background} />
       )}
     </Container>

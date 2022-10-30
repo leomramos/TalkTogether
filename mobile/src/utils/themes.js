@@ -113,6 +113,36 @@ const common = {
         },
       },
     },
+    profile: {
+      name: {
+        font: "Inter_700Bold",
+        size: {
+          number: 24,
+          unit: "px",
+        },
+      },
+      title: {
+        font: "Inter_700Bold",
+        size: {
+          number: 22,
+          unit: "px",
+        },
+      },
+      about: {
+        font: "Inter_400Regular",
+        size: {
+          number: 16,
+          unit: "px",
+        },
+      },
+      language: {
+        font: "Inter_600SemiBold",
+        size: {
+          number: 10,
+          unit: "px",
+        },
+      },
+    },
   },
   colors: {
     ...DefaultTheme.colors,

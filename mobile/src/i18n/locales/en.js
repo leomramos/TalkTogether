@@ -19,4 +19,7 @@ export default {
   match: "Match",
   online: "Online",
   type: "Type...",
+  username: "Username",
+  about: "About",
+  tellAboutYou: "Tell others a bit about yourself...",
 };

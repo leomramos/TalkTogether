@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { View } from "react-native";
 import { FAB, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -212,15 +213,7 @@ export default Chats = ({ navigation }) => {
           .sort(sortChats)}
         renderItem={renderItem}
         keyExtractor={item => item._id}
-        ListFooterComponent={
-          <CustomText
-            type={theme.typography.input}
-            color={theme.colors.gray.fifth}
-            style={{ height: 90 }}
-          >
-            asdsa
-          </CustomText>
-        }
+        ListFooterComponent={<View style={{ height: 80 }}></View>}
       />
       <FAB.Group
         open={fabOpen}

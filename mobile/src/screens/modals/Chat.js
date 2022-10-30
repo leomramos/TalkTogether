@@ -9,8 +9,8 @@ import {
   MessagesGroup,
   MessagesList,
   MessagesStack,
+  ScreenContainer,
 } from "../../components";
-import ScreenContainer from "../../components/ScreenContainer";
 import i18n from "../../i18n";
 import { formatMessageSentTime } from "../../utils/helpers";
 
