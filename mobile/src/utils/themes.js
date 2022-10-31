@@ -161,6 +161,12 @@ const common = {
       confirm: "#26A524",
       cancel: "#7D2626",
     },
+    proficiency: {
+      native: "#D6A700",
+      advanced: "#9D4EDD",
+      intermediate: "#C77DFF",
+      beginner: "#E0AAFF",
+    },
   },
 };
 

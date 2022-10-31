@@ -32,14 +32,14 @@ export const RequestsOverlay = ({ requests }) => {
         </Row>
         <Row style={{ marginLeft: 5 }}>
           <IconButton
-            icon="check"
-            color={colors.aux.confirm}
+            icon="close"
+            color={colors.aux.cancel}
             size={20}
             onPress={() => {}}
           />
           <IconButton
-            icon="close"
-            color={colors.aux.cancel}
+            icon="check"
+            color={colors.aux.confirm}
             size={20}
             style={{ marginLeft: 0, marginRight: 0 }}
             onPress={() => {}}

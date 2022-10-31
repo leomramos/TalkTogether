@@ -12,6 +12,7 @@ export default {
   calls: "Calls",
   chats: "Chats",
   myProfile: "My profile",
+  profile: "Profile",
   chatRequests: "Chat requests",
   sort: "Sort",
   quickChatEnabled: "Quick Chat enabled",
@@ -22,4 +23,6 @@ export default {
   username: "Username",
   about: "About",
   tellAboutYou: "Tell others a bit about yourself...",
+  emptyAbout: "No information was provided",
+  unknown: "Unknown",
 };

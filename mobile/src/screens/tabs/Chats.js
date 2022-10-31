@@ -95,19 +95,10 @@ export default Chats = ({ navigation }) => {
       .fill()
       .map((_, k) => ({
         _id: k,
-        name: Array(Math.floor(Math.random() * (4 - 2 + 1) + 3))
+        name: Array(Math.floor(Math.random() * (10 - 3 + 1) + 3))
           .fill()
-          .map(
-            _ =>
-              Array(Math.floor(Math.random() * (8 - 2 + 1) + 2))
-                .fill()
-                .map(_ =>
-                  String.fromCharCode(97 + Math.floor(Math.random() * 26))
-                )
-                .join("") +
-              String.fromCharCode(97 + Math.floor(Math.random() * 26))
-          )
-          .join(" "),
+          .map(_ => String.fromCharCode(97 + Math.floor(Math.random() * 26)))
+          .join(""),
         online: Math.random() < 0.5,
         lastMessage: {
           body: Array(Math.floor(Math.random() * (15 - 3 + 1) + 3))
@@ -145,6 +136,12 @@ export default Chats = ({ navigation }) => {
           navigation.navigate("Modals", {
             screen: "ChatScreen",
             params: { user: item },
+          })
+        }
+        handleAvatarPress={() =>
+          navigation.navigate("Modals", {
+            screen: "ProfileScreen",
+            params: { user: item.name },
           })
         }
       />

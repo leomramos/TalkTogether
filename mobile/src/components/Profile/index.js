@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { ScrollView, Text, TextInput, View } from "react-native";
-import { useTheme } from "react-native-paper";
+import { Chip, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import CustomText from "../CustomText";
 
@@ -11,16 +11,18 @@ const UserContainer = Styled.View`
   align-items: flex-start;
   margin-top: 30px;
   margin-bottom: 30px;
-  /* margin-left: -15px; */
 `;
 
-export default UserProfile = ({ route, navigation }) => {
+export default UserProfile = ({
+  name = "",
+  setName = () => {},
+  about = "",
+  setAbout = () => {},
+  langs = [],
+  setLangs = () => {},
+  editable = false,
+}) => {
   const { typography, colors } = useTheme();
-
-  const [name, setName] = useState("User");
-  const [about, setAbout] = useState(
-    "Veniam exercitation tempor adipisicing sunt ex ea elit velit laborum irure reprehenderit minim Lorem aliqua. Laboris proident cupidatat aute laborum ea in minim deserunt labore in. Occaecat qui pariatur esse nostrud fugiat culpa et dolor occaecat."
-  );
 
   return (
     <View
@@ -36,7 +38,8 @@ export default UserProfile = ({ route, navigation }) => {
             autocomplete="username"
             value={name}
             onChangeText={text => setName(text)}
-            placeholder={i18n.t("username")}
+            onBlur={() => setName(name.trim())}
+            placeholder={editable ? i18n.t("username") : i18n.t("unknown")}
             style={{
               fontSize: typography.profile.name.size.number,
               color: colors.gray.ninth,
@@ -48,7 +51,7 @@ export default UserProfile = ({ route, navigation }) => {
             selectionColor={colors.gray.sixth}
             maxLength={10}
             autoCorrect={false}
-            // editable={false}
+            editable={editable}
           />
           <CustomText
             type={typography.profile.about}
@@ -71,22 +74,22 @@ export default UserProfile = ({ route, navigation }) => {
             value={about}
             onChangeText={text => setAbout(text)}
             onBlur={() => setAbout(about.trim())}
-            placeholder={i18n.t("tellAboutYou")}
+            placeholder={
+              editable ? i18n.t("tellAboutYou") : i18n.t("emptyAbout")
+            }
             style={{
               fontSize: typography.profile.about.size.number,
               color: colors.gray.eighth,
               maxWidth: "100%",
               marginBottom: 10,
               minHeight: 0,
-              maxHeight: 2550,
             }}
             placeholderTextColor={colors.gray.seventh}
             selectionColor={colors.gray.sixth}
             activeOutlineColor={colors.gray.sixth}
             multiline
-            // numberOfLines={15}
             maxLength={255}
-            // editable={false}
+            editable={editable}
           />
         </View>
         <View style={{ flex: 1, paddingLeft: 15 }}>
@@ -97,6 +100,21 @@ export default UserProfile = ({ route, navigation }) => {
           >
             Languages
           </CustomText>
+          {/* <View>
+            <Chip
+              icon="information"
+              onPress={() => console.log("Pressed")}
+              style={{
+                borderRadius: 0,
+                backgroundColor: colors.proficiency.native,
+              }}
+              textStyle={{
+                color: colors.gray.ninth,
+              }}
+            >
+              Example Chip
+            </Chip>
+          </View> */}
         </View>
       </ScrollView>
     </View>

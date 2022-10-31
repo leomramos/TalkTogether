@@ -18,10 +18,10 @@ export default PageHeader = ({
   titleExtra = null,
   sideActions = [],
 }) => {
-  const { colors, typography } = useTheme();
+  const { colors, typography, screen } = useTheme();
 
   return (
-    <HeaderWrapper>
+    <HeaderWrapper style={{ marginLeft: goBack ? -screen.padding.left : 0 }}>
       <Row>
         {goBack && <NavigateBack action={goBack} />}
         <PageTitle

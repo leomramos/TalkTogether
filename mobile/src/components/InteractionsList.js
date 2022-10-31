@@ -26,6 +26,7 @@ export const ChatItem = ({
   lastMessage,
   unread,
   handlePress,
+  handleAvatarPress,
 }) => {
   const { colors, typography, screen } = useTheme();
   const [touching, setTouching] = useState(false);
@@ -37,7 +38,7 @@ export const ChatItem = ({
       onPressOut={() => setTouching(false)}
     >
       <ItemContainer offline={offline} screen={screen}>
-        <UserAvatar offline={offline} />
+        <UserAvatar offline={offline} onPress={handleAvatarPress} />
         <View style={{ flex: 1, marginLeft: 15 }}>
           <MessageWrapper>
             <CustomText

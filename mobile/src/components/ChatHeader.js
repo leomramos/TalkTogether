@@ -27,14 +27,17 @@ const UserInfo = Styled.View`
   margin-left: 10px;
 `;
 
-export default ChatHeader = ({ user = null, goBack }) => {
+export default ChatHeader = ({ user, goBack, navigation }) => {
   const { colors, typography, screen } = useTheme();
 
   return (
     <HeaderWrapper colors={colors} screen={screen}>
       <Row style={{ paddingRight: 15 }}>
         <NavigateBack action={goBack} />
-        <TouchableRipple onPress={() => {}} style={{ flex: 1, marginRight: 5 }}>
+        <TouchableRipple
+          onPress={() => navigation.navigate("ProfileScreen", { user })}
+          style={{ flex: 1, marginRight: 5 }}
+        >
           <Row
             style={{
               paddingHorizontal: 10,
@@ -55,15 +58,17 @@ export default ChatHeader = ({ user = null, goBack }) => {
               >
                 {user.name}
               </CustomText>
-              <CustomText
-                type={typography.chat.status}
-                color={colors.gray.seventh}
-                style={{ marginRight: 5, textTransform: "lowercase" }}
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {i18n.t("online")}
-              </CustomText>
+              {user.online && (
+                <CustomText
+                  type={typography.chat.status}
+                  color={colors.gray.seventh}
+                  style={{ marginRight: 5, textTransform: "lowercase" }}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {i18n.t("online")}
+                </CustomText>
+              )}
             </UserInfo>
           </Row>
         </TouchableRipple>
