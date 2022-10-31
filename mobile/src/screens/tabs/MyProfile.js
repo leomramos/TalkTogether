@@ -10,13 +10,12 @@ export default MyProfile = ({}) => {
 
   const [editing, setEditing] = useState(false);
 
-  const [curName, setCurName] = useState("Alezinha");
+  const [curName, setCurName] = useState("User");
   const [name, setName] = useState(curName);
 
-  const [curAbout, setCurAbout] = useState(`哈喽小蕾，我真的很爱你，你知道吗？
-  
-P.S.: wenn du hier etwas schreibst, kann ich es auf meinem Bildschirm sehen, sobald du den Fokus von der Eingabe nimmst
-    `);
+  const [curAbout, setCurAbout] = useState(
+    "Elit eiusmod in incididunt laboris consectetur ullamco et quis quis. Consectetur aliqua veniam anim nisi sunt ipsum sint do sunt. Eiusmod cupidatat reprehenderit minim do minim consectetur labore eiusmod magna consectetur velit aute laboris ullamco."
+  );
   const [about, setAbout] = useState(curAbout);
 
   const [curLangs, setCurLangs] = useState([]);
