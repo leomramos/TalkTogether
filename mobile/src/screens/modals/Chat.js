@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
-import { TouchableRipple, useTheme } from "react-native-paper";
+import { IconButton, TouchableRipple, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import {
   ChatHeader,
@@ -23,7 +23,7 @@ const MessagesContainer = Styled.View`
 export default Chat = ({ route, navigation }) => {
   const theme = useTheme();
   const [search, setSearch] = useState("");
-  const [chat, setChat] = useState(null);
+  const [chat, setChat] = useState({});
 
   const renderItem = ({ item }) => {
     return (
@@ -85,6 +85,8 @@ export default Chat = ({ route, navigation }) => {
       })
   );
 
+  const [scrolled, setScrolled] = useState(false);
+
   return (
     <ScreenContainer background={theme.colors.gray.first}>
       <ChatHeader
@@ -93,29 +95,45 @@ export default Chat = ({ route, navigation }) => {
         navigation={navigation}
       />
       <MessagesContainer theme={theme}>
-        <MessagesList
-          inverted
-          data={messages}
-          renderItem={renderItem}
-          keyExtractor={item => item._id}
-          ref={ref => {
-            setChat(ref);
+        <View style={{ flexShrink: 1 }}>
+          <MessagesList
+            inverted
+            data={messages}
+            renderItem={renderItem}
+            keyExtractor={item => item._id}
+            onScroll={scroll => {
+              const y = scroll.nativeEvent.contentOffset.y;
+
+              if ((y >= 10 && !scrolled) || (y < 10 && scrolled))
+                setScrolled(y >= 10);
+            }}
+            ref={ref => {
+              setChat(ref);
+            }}
+          />
+          <IconButton
+            icon="chevron-double-down"
+            size={20}
+            color={theme.colors.gray.ninth}
+            onPress={() => chat.scrollToIndex({ index: 0, animated: false })}
+            style={{
+              position: "absolute",
+              bottom: 10,
+              right: 10,
+              backgroundColor: theme.colors.gray.fifth,
+              opacity: scrolled ? 1 : 0,
+              // borderWidth: 1,
+              // borderColor: theme.colors.gray.ninth,
+            }}
+          />
+        </View>
+        <View
+          style={{
+            paddingHorizontal: 25,
+            paddingTop: 10,
+            paddingBottom: 15,
           }}
-          // ListHeaderComponent={
-          //   <TouchableRipple
-          //     onPress={() => chat && chat.scrollToIndex({ index: 0 })}
-          //   >
-          //     <View
-          //       style={{
-          //         width: 100,
-          //         height: 50,
-          //         backgroundColor: "green",
-          //       }}
-          //     ></View>
-          //   </TouchableRipple>
-          // }
-        />
-        <View style={{ paddingHorizontal: 25, paddingVertical: 15 }}>
+        >
           <CustomInput
             dense
             value={search}
