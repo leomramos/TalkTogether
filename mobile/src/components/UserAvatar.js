@@ -7,16 +7,12 @@ import i18n from "../i18n";
 import { BlackOpacity, Row } from "./Helpers";
 import OnlineIcon from "./OnlineIcon";
 
-const Container = Styled(TouchableRipple)`
-  flex: 1;
-  align-items: center;
+const Container = Styled(Row)`
   border-radius: 100%;
   height: ${({ size }) => size}px;
   width: ${({ size }) => size}px;
-  background-color: ${({ color }) => color};
   justify-content: center;
   align-items: flex-end;
-  border-radius: ${({ size }) => size * 2}px;
   padding: 2px;
   position: relative;
 `;
@@ -36,25 +32,42 @@ export default UserAvatar = ({
   const src = require("../../assets/user-avatar-1.png");
 
   return (
-    <Container
-      size={size}
-      color={color || colors.avatar.white}
-      onPress={onPress}
+    <View
+      style={{
+        position: "relative",
+      }}
     >
-      {!focused && <BlackOpacity radius={size * 2} />}
-      <Image
-        blurRadius={offline ? (Device.osName === "Android" ? 10 : 2.5) : 0}
-        source={src}
-        resizeMode="contain"
-        alt={i18n.t("userAvatar")}
+      <View
         style={{
-          width: "100%",
-          maxHeight: "90%",
+          borderRadius: size * 2,
+          overflow: "hidden",
         }}
-      />
+      >
+        <TouchableRipple
+          onPress={onPress}
+          rippleColor="#000"
+          style={{ backgroundColor: color || colors.avatar.white }}
+        >
+          <Container size={size}>
+            {!focused && <BlackOpacity radius={size * 2} />}
+            <Image
+              blurRadius={
+                offline ? (Device.osName === "Android" ? 10 : 2.5) : 0
+              }
+              source={src}
+              resizeMode="contain"
+              alt={i18n.t("userAvatar")}
+              style={{
+                width: "100%",
+                maxHeight: "90%",
+              }}
+            />
+          </Container>
+        </TouchableRipple>
+      </View>
       {!offline && !plain && (
         <OnlineIcon size={size} flag={flag} background={background} />
       )}
-    </Container>
+    </View>
   );
 };

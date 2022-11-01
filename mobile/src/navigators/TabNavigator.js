@@ -2,6 +2,7 @@ import { Icon } from "@react-native-material/core";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { UserAvatar } from "../components";
 import CallsScreen from "../screens/tabs/Calls";
 import ChatsScreen from "../screens/tabs/Chats";
 import MyProfileScreen from "../screens/tabs/MyProfile";
@@ -62,8 +63,14 @@ export default TabNavigator = () => {
         name="MyProfileScreen"
         component={MyProfileScreen}
         options={{
-          tabBarIcon: ({ color }) => (
-            <Icon name="account" color={color} size={iconSize} />
+          tabBarIcon: ({ focused }) => (
+            <UserAvatar
+              background={colors.gray.first}
+              size={iconSize}
+              focused={focused}
+            />
+
+            // <Icon name="account" color={color} size={iconSize} />
           ),
         }}
       />

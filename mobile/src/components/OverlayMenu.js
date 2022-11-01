@@ -79,7 +79,6 @@ export default OverlayMenu = ({
         <Row style={{ marginTop: 10, marginBottom: 5 }}>{content}</Row>
         {footer && (
           <TouchableRipple
-            centered
             onPress={footerAction}
             style={{ alignSelf: "flex-end", padding: 5 }}
           >
