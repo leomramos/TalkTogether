@@ -141,7 +141,7 @@ export default Chats = ({ navigation }) => {
         handleAvatarPress={() =>
           navigation.navigate("Modals", {
             screen: "ProfileScreen",
-            params: { user: item.name },
+            params: { user: item },
           })
         }
       />

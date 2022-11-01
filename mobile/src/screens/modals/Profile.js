@@ -1,7 +1,8 @@
 import React from "react";
 import { Text, View } from "react-native";
 import { useTheme } from "react-native-paper";
-import { PageHeader, ScreenContainer, UserProfile } from "../../components/";
+import { PageHeader, ScreenContainer } from "../../components/";
+import { UserProfile } from "../mocks";
 
 import i18n from "../../i18n";
 

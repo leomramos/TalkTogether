@@ -1,8 +1,12 @@
-import React from "react";
-import { ScrollView, Text, TextInput, View } from "react-native";
-import { Chip, useTheme } from "react-native-paper";
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  TextInput,
+  View,
+} from "react-native";
+import { useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
-import CustomText from "../CustomText";
+import { Chip, CustomText } from "../../components";
 
 import i18n from "../../i18n";
 
@@ -23,6 +27,7 @@ export default UserProfile = ({
   editable = false,
 }) => {
   const { typography, colors } = useTheme();
+  const levelsOrder = ["native", "advanced", "intermediate", "beginner"];
 
   return (
     <View
@@ -70,6 +75,7 @@ export default UserProfile = ({
           >
             {i18n.t("about")}
           </CustomText>
+          {/* <KeyboardAvoidingView behavior="position"> */}
           <TextInput
             value={about}
             onChangeText={text => setAbout(text)}
@@ -91,6 +97,7 @@ export default UserProfile = ({
             maxLength={255}
             editable={editable}
           />
+          {/* </KeyboardAvoidingView> */}
         </View>
         <View style={{ flex: 1, paddingLeft: 15 }}>
           <CustomText
@@ -100,21 +107,52 @@ export default UserProfile = ({
           >
             Languages
           </CustomText>
-          {/* <View>
-            <Chip
-              icon="information"
-              onPress={() => console.log("Pressed")}
-              style={{
-                borderRadius: 0,
-                backgroundColor: colors.proficiency.native,
-              }}
-              textStyle={{
-                color: colors.gray.ninth,
-              }}
-            >
-              Example Chip
-            </Chip>
-          </View> */}
+          <View>
+            {Object.entries(langs)
+              .sort(
+                (a, b) => levelsOrder.indexOf(a[0]) - levelsOrder.indexOf(b[0])
+              )
+              .map(
+                ([level, languages]) =>
+                  languages.length > 0 && (
+                    <ScrollView
+                      key={`${level}-langs-list`}
+                      horizontal
+                      style={{ paddingBottom: 5, marginBottom: 5 }}
+                    >
+                      {languages.map(language => {
+                        return (
+                          <Chip
+                            key={`${language}-chip`}
+                            text={language}
+                            textStyle={typography.chip}
+                            color={
+                              level === "beginner"
+                                ? colors.gray.second
+                                : colors.gray.ninth
+                            }
+                            background={colors.proficiency[level]}
+                            remove={
+                              editable &&
+                              (() =>
+                                setLangs(
+                                  Object.fromEntries(
+                                    Object.entries(langs).map(([lvl, lng]) => [
+                                      lvl,
+                                      lng.filter(
+                                        el => level !== lvl || el !== language
+                                      ),
+                                    ])
+                                  )
+                                ))
+                            }
+                          />
+                        );
+                      })}
+                    </ScrollView>
+                  )
+              )}
+          </View>
         </View>
       </ScrollView>
     </View>

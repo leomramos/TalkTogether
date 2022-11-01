@@ -7,7 +7,9 @@ import i18n from "../i18n";
 import { BlackOpacity, Row } from "./Helpers";
 import OnlineIcon from "./OnlineIcon";
 
-const Container = Styled(Row)`
+const Container = Styled(TouchableRipple)`
+  flex: 1;
+  align-items: center;
   border-radius: 100%;
   height: ${({ size }) => size}px;
   width: ${({ size }) => size}px;
@@ -34,27 +36,25 @@ export default UserAvatar = ({
   const src = require("../../assets/user-avatar-1.png");
 
   return (
-    <TouchableRipple onPress={onPress}>
-      <Container
-        size={size}
-        color={color || colors.avatar.white}
-        onPress={onPress}
-      >
-        {!focused && <BlackOpacity radius={size * 2} />}
-        <Image
-          blurRadius={offline ? (Device.osName === "Android" ? 10 : 2.5) : 0}
-          source={src}
-          resizeMode="contain"
-          alt={i18n.t("userAvatar")}
-          style={{
-            width: "100%",
-            maxHeight: "90%",
-          }}
-        />
-        {!offline && !plain && (
-          <OnlineIcon size={size} flag={flag} background={background} />
-        )}
-      </Container>
-    </TouchableRipple>
+    <Container
+      size={size}
+      color={color || colors.avatar.white}
+      onPress={onPress}
+    >
+      {!focused && <BlackOpacity radius={size * 2} />}
+      <Image
+        blurRadius={offline ? (Device.osName === "Android" ? 10 : 2.5) : 0}
+        source={src}
+        resizeMode="contain"
+        alt={i18n.t("userAvatar")}
+        style={{
+          width: "100%",
+          maxHeight: "90%",
+        }}
+      />
+      {!offline && !plain && (
+        <OnlineIcon size={size} flag={flag} background={background} />
+      )}
+    </Container>
   );
 };

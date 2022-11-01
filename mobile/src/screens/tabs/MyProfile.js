@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
-import { PageHeader, ScreenContainer, UserProfile } from "../../components/";
+import { PageHeader, ScreenContainer } from "../../components/";
+import { UserProfile } from "../mocks";
 
 import i18n from "../../i18n";
 
@@ -18,7 +19,12 @@ export default MyProfile = ({}) => {
   );
   const [about, setAbout] = useState(curAbout);
 
-  const [curLangs, setCurLangs] = useState([]);
+  const [curLangs, setCurLangs] = useState({
+    native: ["Portuguese"],
+    advanced: ["English"],
+    intermediate: ["Spanish"],
+    beginner: ["Italian", "French", "Russian", "German"],
+  });
   const [langs, setLangs] = useState(curLangs);
 
   const handleSave = _ => {

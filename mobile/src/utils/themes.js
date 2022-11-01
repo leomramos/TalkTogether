@@ -135,12 +135,12 @@ const common = {
           unit: "px",
         },
       },
-      language: {
-        font: "Inter_600SemiBold",
-        size: {
-          number: 10,
-          unit: "px",
-        },
+    },
+    chip: {
+      font: "Inter_600SemiBold",
+      size: {
+        number: 12,
+        unit: "px",
       },
     },
   },
