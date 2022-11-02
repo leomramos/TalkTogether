@@ -1,8 +1,8 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChatModal from "../screens/modals/Chat";
 import ProfileScreen from "../screens/modals/Profile";
 
-const Modal = createStackNavigator();
+const Modal = createNativeStackNavigator();
 
 export default ModalStack = () => {
   return (

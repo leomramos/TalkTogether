@@ -1,4 +1,5 @@
 import React from "react";
+import { Dimensions } from "react-native";
 import { useTheme } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Styled from "styled-components/native";
@@ -14,7 +15,9 @@ export default ScreenContainer = props => {
   return (
     <ScreenWrapper
       screen={screen}
-      style={{ backgroundColor: props.background || colors.gray.second }}
+      style={{
+        backgroundColor: props.background || colors.gray.second,
+      }}
     >
       {props.children}
     </ScreenWrapper>

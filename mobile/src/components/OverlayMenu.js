@@ -7,7 +7,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import Styled from "styled-components/native";
-import Badge from "./Badge";
+import Badge from "./Chats/Badge";
 import CustomText from "./CustomText";
 import { Row } from "./Helpers";
 

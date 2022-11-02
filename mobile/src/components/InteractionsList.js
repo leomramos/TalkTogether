@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import { Divider, TouchableRipple, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import { formatMessageSentDate } from "../utils/helpers";
-import Badge from "./Badge";
+import Badge from "./Chats/Badge";
 import CustomText from "./CustomText";
 import { Row } from "./Helpers";
 import UserAvatar from "./UserAvatar";

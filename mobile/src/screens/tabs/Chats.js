@@ -10,10 +10,9 @@ import {
   OnlineIcon,
   OverlayMenu,
   PageHeader,
+  ScreenContainer,
 } from "../../components";
 import { RequestsOverlay, SortOverlay } from "../../components/Chats";
-import ScreenContainer from "../../components/ScreenContainer";
-import ModalStack from "../../navigators/ModalNavigator";
 
 import { Row } from "../../components";
 import i18n from "../../i18n";
@@ -202,8 +201,13 @@ export default Chats = ({ navigation }) => {
           footerAction={() => setSort(defaultSort)}
         />
       </Row>
+      {/* <View style={{ flexGrow: 1, flexBasis: "100%" }}> */}
       <List
-        style={{ marginBottom: -insets.bottom, paddingBottom: 30 }}
+        style={{
+          marginBottom: -insets.bottom,
+          paddingBottom: 30,
+          // backgroundColor: "red",
+        }}
         theme={theme}
         data={chats
           .filter(el => el.name.search(new RegExp(search, "i")) !== -1)
@@ -212,6 +216,7 @@ export default Chats = ({ navigation }) => {
         keyExtractor={item => item._id}
         ListFooterComponent={<View style={{ height: 80 }}></View>}
       />
+      {/* </View> */}
       <FAB.Group
         open={fabOpen}
         icon={fabOpen ? "close" : "plus"}
@@ -223,7 +228,6 @@ export default Chats = ({ navigation }) => {
         onPress={() => setFabOpen(!fabOpen)}
         actions={fabActions}
       />
-      <ModalStack />
     </ScreenContainer>
   );
 };

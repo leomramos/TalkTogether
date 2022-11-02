@@ -1,8 +1,8 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ModalNavigator from "./ModalNavigator";
 import TabNavigator from "./TabNavigator";
 
-const App = createStackNavigator();
+const App = createNativeStackNavigator();
 
 export default AppStack = () => {
   return (
@@ -13,12 +13,12 @@ export default AppStack = () => {
         headerShown: false,
       }}
     >
-      <App.Screen name="Tabs" component={TabNavigator} />
       <App.Screen
         name="Modals"
         component={ModalNavigator}
         options={{ presentation: "fullScreenModal" }}
       />
+      <App.Screen name="Tabs" component={TabNavigator} />
     </App.Navigator>
   );
 };
