@@ -43,7 +43,8 @@ const sorts = {
   },
 };
 
-const PendingRequests = () => {
+const PendingRequests = ({ navigation }) => {
+  console.log(navigation);
   const requestsAmount = 5;
   const [requests, setRequests] = useState(
     Array(requestsAmount)
@@ -201,12 +202,10 @@ export default Chats = ({ navigation }) => {
           footerAction={() => setSort(defaultSort)}
         />
       </Row>
-      {/* <View style={{ flexGrow: 1, flexBasis: "100%" }}> */}
       <List
         style={{
           marginBottom: -insets.bottom,
           paddingBottom: 30,
-          // backgroundColor: "red",
         }}
         theme={theme}
         data={chats
@@ -216,7 +215,6 @@ export default Chats = ({ navigation }) => {
         keyExtractor={item => item._id}
         ListFooterComponent={<View style={{ height: 80 }}></View>}
       />
-      {/* </View> */}
       <FAB.Group
         open={fabOpen}
         icon={fabOpen ? "close" : "plus"}

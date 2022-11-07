@@ -11,6 +11,8 @@ export default ModalStack = () => {
       backBehavior="history"
       screenOptions={{
         headerShown: false,
+        animation: "fade_from_bottom",
+        animationDuration: 100,
       }}
     >
       <Modal.Screen name="ProfileScreen" component={ProfileScreen} />

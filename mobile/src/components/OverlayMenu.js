@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import {
   IconButton,
   Menu,
@@ -7,7 +7,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import Styled from "styled-components/native";
-import Badge from "./Chats/Badge";
+import Badge from "./Badge";
 import CustomText from "./CustomText";
 import { Row } from "./Helpers";
 

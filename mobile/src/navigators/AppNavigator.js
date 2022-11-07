@@ -11,6 +11,8 @@ export default AppStack = () => {
       initialRouteName="Tabs"
       screenOptions={{
         headerShown: false,
+        animation: "fade_from_bottom",
+        animationDuration: 100,
       }}
     >
       <App.Screen

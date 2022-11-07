@@ -122,8 +122,6 @@ export default Chat = ({ route, navigation }) => {
               right: 10,
               backgroundColor: theme.colors.gray.fifth,
               opacity: scrolled ? 1 : 0,
-              // borderWidth: 1,
-              // borderColor: theme.colors.gray.ninth,
             }}
           />
         </View>
