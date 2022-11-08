@@ -64,6 +64,13 @@ const common = {
           unit: "px",
         },
       },
+      date: {
+        font: "Inter_400Regular",
+        size: {
+          number: 14,
+          unit: "px",
+        },
+      },
     },
     message: {
       preview: {
@@ -77,6 +84,15 @@ const common = {
         font: "Inter_700Bold",
         size: {
           number: 9,
+          unit: "px",
+        },
+      },
+    },
+    call: {
+      duration: {
+        font: "Inter_400Regular",
+        size: {
+          number: 14,
           unit: "px",
         },
       },

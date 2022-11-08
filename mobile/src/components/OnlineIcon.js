@@ -1,17 +1,9 @@
 import React from "react";
 import { Image } from "react-native";
 import { useTheme } from "react-native-paper";
-import Styled from "styled-components/native";
-import i18n from "../i18n";
+import { Circle } from "./Helpers";
 
-const Circle = Styled.View`
-  height: ${({ size }) => size}px;
-  width: ${({ size }) => size}px;
-  background-color: ${({ color }) => color};
-  align-items: center;
-  justify-content: center;
-  border-radius: 100px;
-`;
+import i18n from "../i18n";
 
 export default OnlineIcon = ({
   size = 48,

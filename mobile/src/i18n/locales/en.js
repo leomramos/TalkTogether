@@ -9,7 +9,7 @@ export default {
   weeksAgo: "{{time}}w ago",
   userCountryFlag: "User country flag",
   userAvatar: "User avatar",
-  calls: "Calls",
+  callHistory: "Call history",
   chats: "Chats",
   myProfile: "My profile",
   profile: "Profile",

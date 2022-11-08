@@ -27,7 +27,7 @@ export default PageHeader = ({
         <PageTitle
           type={typography.tab.title}
           color={colors.gray.ninth}
-          style={{ marginRight: 5 }}
+          style={{ marginRight: 5, textTransform: "capitalize" }}
         >
           {title}
         </PageTitle>

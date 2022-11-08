@@ -3,7 +3,7 @@ export { default as ChatHeader } from "./ChatHeader";
 export { default as Chip } from "./Chip";
 export { default as CustomInput } from "./CustomInput";
 export { default as CustomText } from "./CustomText";
-export { BlackOpacity, Row } from "./Helpers";
+export { BlackOpacity, Circle, Row } from "./Helpers";
 export { CallItem, ChatItem, default as List } from "./InteractionsList";
 export {
   default as MessagesList,

@@ -22,3 +22,12 @@ export const formatMessageSentTime = date => {
   const sentDate = moment(date);
   return sentDate.format("hh:mm a");
 };
+
+export const formatCallDate = date => {
+  const sentDate = moment(date);
+  return sentDate.format("hh:mm a");
+};
+
+export const formatCallDuration = duration => {
+  return Math.round(moment.duration(duration).asMinutes());
+};

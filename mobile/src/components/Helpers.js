@@ -16,3 +16,12 @@ export const BlackOpacity = Styled.View`
   z-index: 1000;
   border-radius: ${({ radius }) => radius || 0}px;
 `;
+
+export const Circle = Styled.View`
+  height: ${({ size }) => size}px;
+  width: ${({ size }) => size}px;
+  background-color: ${({ color }) => color};
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+`;
