@@ -43,15 +43,35 @@ const sorts = {
   },
 };
 
-const PendingRequests = ({ navigation }) => {
-  console.log(navigation);
+const PendingRequests = ({ requests, setRequests, navigation }) => {
+  return (
+    <OverlayMenu
+      title={i18n.t("chatRequests")}
+      icon="account-multiple"
+      iconSize={20}
+      badge={1}
+      topSpacing={40}
+      content={
+        <RequestsOverlay
+          requests={requests}
+          setRequests={setRequests}
+          navigation={navigation}
+        />
+      }
+      // footer={i18n.t("clear")}
+      // footerAction={() => setSort(defaultSort)}
+    />
+  );
+};
+
+export default Chats = ({ navigation }) => {
   const requestsAmount = 5;
   const [requests, setRequests] = useState(
     Array(requestsAmount)
       .fill()
       .map((_, k) => ({
         _id: k,
-        name: Array(Math.floor(Math.random() * (150 - 3 + 1) + 3))
+        name: Array(Math.floor(Math.random() * (10 - 3 + 1) + 3))
           .fill()
           .map(_ => String.fromCharCode(97 + Math.floor(Math.random() * 26)))
           .join(""),
@@ -62,21 +82,14 @@ const PendingRequests = ({ navigation }) => {
       }))
   );
 
-  return (
-    <OverlayMenu
-      title={i18n.t("chatRequests")}
-      icon="account-multiple"
-      iconSize={20}
-      badge={1}
-      topSpacing={40}
-      content={<RequestsOverlay requests={requests} />}
-      // footer={i18n.t("clear")}
-      // footerAction={() => setSort(defaultSort)}
+  const PendingReqs = () => (
+    <PendingRequests
+      requests={requests}
+      setRequests={setRequests}
+      navigation={navigation}
     />
   );
-};
 
-export default Chats = ({ navigation }) => {
   const defaultSort = { by: "date", order: -1 };
   const insets = useSafeAreaInsets();
   const [fabOpen, setFabOpen] = useState(false);
@@ -185,7 +198,10 @@ export default Chats = ({ navigation }) => {
 
   return (
     <ScreenContainer>
-      <PageHeader title={i18n.t("chats")} sideActions={[PendingRequests]} />
+      <PageHeader
+        title={i18n.t("chats")}
+        sideActions={requests.length > 0 ? [PendingReqs] : []}
+      />
       <Row>
         <CustomInput
           dense

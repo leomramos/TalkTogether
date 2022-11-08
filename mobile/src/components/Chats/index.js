@@ -3,11 +3,18 @@ import { FlatList, View } from "react-native";
 import { IconButton, TouchableRipple, useTheme } from "react-native-paper";
 import { CustomText, Row, UserAvatar } from "../";
 
-export const RequestsOverlay = ({ requests }) => {
+export const RequestsOverlay = ({ requests, setRequests, navigation }) => {
   const { colors, typography } = useTheme();
 
   const renderRequest = ({ item }) => (
-    <TouchableRipple onPress={() => {}}>
+    <TouchableRipple
+      onPress={() =>
+        navigation.navigate("Modals", {
+          screen: "ProfileScreen",
+          params: { user: item },
+        })
+      }
+    >
       <Row
         style={{
           justifyContent: "space-between",
@@ -35,14 +42,18 @@ export const RequestsOverlay = ({ requests }) => {
             icon="close"
             color={colors.aux.cancel}
             size={20}
-            onPress={() => {}}
+            onPress={() =>
+              setRequests(requests.filter(req => req._id !== item._id))
+            }
           />
           <IconButton
             icon="check"
             color={colors.aux.confirm}
             size={20}
             style={{ marginLeft: 0, marginRight: 0 }}
-            onPress={() => {}}
+            onPress={() =>
+              setRequests(requests.filter(req => req._id !== item._id))
+            }
           />
         </Row>
       </Row>
