@@ -1,6 +1,4 @@
 import React from "react";
-import { Text, View } from "react-native";
-import { useTheme } from "react-native-paper";
 import { PageHeader, ScreenContainer } from "../../components/";
 import { UserProfile } from "../mocks";
 

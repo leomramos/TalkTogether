@@ -1,3 +1,4 @@
+import { Icon } from "@react-native-material/core";
 import { useState } from "react";
 import { Image, Text, View } from "react-native";
 import { Divider, TouchableRipple, useTheme } from "react-native-paper";
@@ -137,15 +138,23 @@ export const CallItem = ({
             </CustomText>
           </MessageWrapper>
           <MessageWrapper style={{ marginTop: 4 }}>
-            <CustomText
-              type={typography.call.duration}
-              color={colors.gray.eighth}
-              style={{ flex: 1, marginRight: 5 }}
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {formatCallDuration(duration)}
-            </CustomText>
+            <Row>
+              <Icon
+                name="phone-remove"
+                size={15}
+                color={colors.purple.seventh}
+                style={{ marginRight: 5 }}
+              />
+              <CustomText
+                type={typography.call.duration}
+                color={colors.gray.eighth}
+                style={{ marginRight: 5 }}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {i18n.t("lasted")} {formatCallDuration(duration)}
+              </CustomText>
+            </Row>
             <Circle
               size={15}
               color="transparent"

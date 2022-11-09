@@ -221,7 +221,6 @@ export default Chats = ({ navigation }) => {
       <List
         style={{
           marginBottom: -insets.bottom,
-          paddingBottom: 30,
         }}
         theme={theme}
         data={chats
@@ -229,7 +228,7 @@ export default Chats = ({ navigation }) => {
           .sort(sortChats)}
         renderItem={renderItem}
         keyExtractor={item => item._id}
-        ListFooterComponent={<View style={{ height: 80 }}></View>}
+        ListFooterComponent={<View style={{ height: 90 }}></View>}
       />
       <FAB.Group
         open={fabOpen}

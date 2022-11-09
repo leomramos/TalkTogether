@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { FAB, useTheme } from "react-native-paper";
+import { Button, FAB, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   CallItem,
@@ -16,6 +16,24 @@ import {
 import { Row } from "../../components";
 import i18n from "../../i18n";
 
+const NewMatch = () => {
+  const { colors } = useTheme();
+
+  return (
+    <Button
+      mode="contained"
+      compact
+      uppercase={false}
+      labelStyle={{ textTransform: "capitalize", fontWeight: "bold" }}
+      icon="plus-thick"
+      color={colors.purple.sixth}
+      onPress={() => {}}
+    >
+      {i18n.t("newMatch")}
+    </Button>
+  );
+};
+
 export default Calls = ({ navigation }) => {
   const insets = useSafeAreaInsets();
 
@@ -30,9 +48,9 @@ export default Calls = ({ navigation }) => {
           .map(_ => String.fromCharCode(97 + Math.floor(Math.random() * 26)))
           .join(""),
         online: Math.random() < 0.5,
-        date: new Date() - Math.floor(Math.random() * 100 * 1000000000),
+        date: new Date() - Math.floor(Math.random() * 100 * 100000000),
         country: "br",
-        duration: 20000000,
+        duration: Math.floor(Math.random() * (10000000 - 1000 + 1) + 1000),
       }))
   );
 
@@ -58,15 +76,14 @@ export default Calls = ({ navigation }) => {
 
   return (
     <ScreenContainer>
-      <PageHeader title={i18n.t("callHistory")} sideActions={[]} />
+      <PageHeader title={i18n.t("callHistory")} sideActions={[NewMatch]} />
       <List
         style={{
           marginTop: 0,
           marginBottom: -insets.bottom,
-          paddingBottom: 30,
         }}
         theme={theme}
-        data={calls}
+        data={calls.sort((a, b) => b.date - a.date)}
         renderItem={renderItem}
         keyExtractor={item => item._id}
         ListFooterComponent={<View style={{ height: 20 }}></View>}
