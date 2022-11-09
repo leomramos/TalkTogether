@@ -16,7 +16,7 @@ import {
 import { Row } from "../../components";
 import i18n from "../../i18n";
 
-const NewMatch = () => {
+const NewMatch = ({ navigation }) => {
   const { colors } = useTheme();
 
   return (
@@ -24,10 +24,19 @@ const NewMatch = () => {
       mode="contained"
       compact
       uppercase={false}
-      labelStyle={{ textTransform: "capitalize", fontWeight: "bold" }}
+      style={{ marginRight: 10 }}
+      labelStyle={{
+        textTransform: "capitalize",
+        fontWeight: "bold",
+        fontSize: 12,
+      }}
       icon="plus-thick"
       color={colors.purple.sixth}
-      onPress={() => {}}
+      onPress={() =>
+        navigation.navigate("Modals", {
+          screen: "CallScreen",
+        })
+      }
     >
       {i18n.t("newMatch")}
     </Button>
@@ -35,6 +44,8 @@ const NewMatch = () => {
 };
 
 export default Calls = ({ navigation }) => {
+  const MatchButton = () => <NewMatch navigation={navigation} />;
+
   const insets = useSafeAreaInsets();
 
   const callsAmount = 30;
@@ -76,7 +87,7 @@ export default Calls = ({ navigation }) => {
 
   return (
     <ScreenContainer>
-      <PageHeader title={i18n.t("callHistory")} sideActions={[NewMatch]} />
+      <PageHeader title={i18n.t("callHistory")} sideActions={[MatchButton]} />
       <List
         style={{
           marginTop: 0,

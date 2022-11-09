@@ -91,7 +91,7 @@ export default Chat = ({ route, navigation }) => {
     <ScreenContainer background={theme.colors.gray.first}>
       <ChatHeader
         user={route.params.user}
-        goBack={() => navigation.goBack()}
+        goBack={navigation.goBack}
         navigation={navigation}
       />
       <MessagesContainer theme={theme}>

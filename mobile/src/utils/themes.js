@@ -71,6 +71,29 @@ const common = {
           unit: "px",
         },
       },
+      call: {
+        name: {
+          font: "Inter_700Bold",
+          size: {
+            number: 40,
+            unit: "px",
+          },
+        },
+        time: {
+          font: "Inter_400Regular",
+          size: {
+            number: 24,
+            unit: "px",
+          },
+        },
+        language: {
+          font: "Inter_400Regular",
+          size: {
+            number: 16,
+            unit: "px",
+          },
+        },
+      },
     },
     message: {
       preview: {
@@ -176,6 +199,7 @@ const common = {
     aux: {
       confirm: "#26A524",
       cancel: "#7D2626",
+      hangup: "#DE0000",
     },
     proficiency: {
       native: "#D6A700",

@@ -45,7 +45,8 @@ export default UserAvatar = ({
       >
         <TouchableRipple
           onPress={onPress}
-          rippleColor="#000"
+          rippleColor="black"
+          underlayColor="black"
           style={{ backgroundColor: color || colors.avatar.white }}
         >
           <Container size={size}>
