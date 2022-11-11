@@ -3,9 +3,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { UserAvatar } from "../components";
-import CallsScreen from "../screens/tabs/Calls";
-import ChatsScreen from "../screens/tabs/Chats";
-import MyProfileScreen from "../screens/tabs/MyProfile";
+import { CallsScreen, ChatsScreen, MyProfileScreen } from "../screens/tabs/";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -69,8 +67,6 @@ export default TabNavigator = () => {
               size={iconSize}
               focused={focused}
             />
-
-            // <Icon name="account" color={color} size={iconSize} />
           ),
         }}
       />

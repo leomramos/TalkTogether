@@ -1,4 +1,3 @@
-import React from "react";
 import { Image } from "react-native";
 import { useTheme } from "react-native-paper";
 import { Circle } from "./Helpers";

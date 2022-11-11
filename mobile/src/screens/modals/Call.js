@@ -115,8 +115,6 @@ export default Call = ({ route, navigation }) => {
           />
         </Row>
       </View>
-      {/* <PageHeader title={i18n.t("profile")} goBack={navigation.goBack} />
-      <UserProfile name={route.params && route.params.user.name} /> */}
     </ScreenContainer>
   );
 };

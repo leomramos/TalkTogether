@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { View } from "react-native";
-import { Button, FAB, useTheme } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  CallItem,
-  CustomInput,
-  CustomText,
-  List,
-  OnlineIcon,
-  OverlayMenu,
-  PageHeader,
-  ScreenContainer,
-} from "../../components";
+import { CallItem, List, PageHeader, ScreenContainer } from "../../components";
 
-import { Row } from "../../components";
 import i18n from "../../i18n";
 
 const NewMatch = ({ navigation }) => {
@@ -46,6 +36,7 @@ const NewMatch = ({ navigation }) => {
 export default Calls = ({ navigation }) => {
   const MatchButton = () => <NewMatch navigation={navigation} />;
 
+  const theme = useTheme();
   const insets = useSafeAreaInsets();
 
   const callsAmount = 30;
@@ -65,8 +56,6 @@ export default Calls = ({ navigation }) => {
       }))
   );
 
-  const theme = useTheme();
-
   const renderItem = ({ item }) => {
     return (
       <CallItem
@@ -77,7 +66,7 @@ export default Calls = ({ navigation }) => {
         date={item.date}
         handlePress={() =>
           navigation.navigate("Modals", {
-            screen: "ProfileScreen",
+            screen: "ProfileModal",
             params: { user: item },
           })
         }

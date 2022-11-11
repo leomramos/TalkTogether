@@ -1,7 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CallModal from "../screens/modals/Call";
-import ChatModal from "../screens/modals/Chat";
-import ProfileScreen from "../screens/modals/Profile";
+import { CallModal, ChatModal, ProfileModal } from "../screens/modals/";
 
 const Modal = createNativeStackNavigator();
 
@@ -21,8 +19,8 @@ export default ModalStack = () => {
         component={CallModal}
         options={{ animation: "slide_from_bottom" }}
       />
-      <Modal.Screen name="ChatScreen" component={ChatModal} />
-      <Modal.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Modal.Screen name="ChatModal" component={ChatModal} />
+      <Modal.Screen name="ProfileModal" component={ProfileModal} />
     </Modal.Navigator>
   );
 };

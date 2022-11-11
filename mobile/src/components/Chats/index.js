@@ -1,4 +1,3 @@
-import React from "react";
 import { FlatList, View } from "react-native";
 import { IconButton, TouchableRipple, useTheme } from "react-native-paper";
 import { CustomText, Row, UserAvatar } from "../";
@@ -10,7 +9,7 @@ export const RequestsOverlay = ({ requests, setRequests, navigation }) => {
     <TouchableRipple
       onPress={() =>
         navigation.navigate("Modals", {
-          screen: "ProfileScreen",
+          screen: "ProfileModal",
           params: { user: item },
         })
       }
@@ -72,6 +71,7 @@ export const RequestsOverlay = ({ requests, setRequests, navigation }) => {
 
 export const SortOverlay = ({ sort, setSort, sorts }) => {
   const { colors } = useTheme();
+
   return (
     <Row>
       {Object.entries(sorts).map(([s, { icon, extra, defaultOrder }]) => (

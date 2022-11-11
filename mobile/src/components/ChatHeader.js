@@ -35,7 +35,7 @@ export default ChatHeader = ({ user, goBack, navigation }) => {
       <Row style={{ paddingRight: 15 }}>
         <NavigateBack action={goBack} />
         <TouchableRipple
-          onPress={() => navigation.navigate("ProfileScreen", { user })}
+          onPress={() => navigation.navigate("ProfileModal", { user })}
           style={{ flex: 1, marginRight: 5 }}
         >
           <Row

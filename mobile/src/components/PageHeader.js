@@ -1,4 +1,3 @@
-import React from "react";
 import { useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import PageTitle from "./CustomText";

@@ -1,4 +1,3 @@
-import React from "react";
 import { PageHeader, ScreenContainer } from "../../components/";
 import { UserProfile } from "../mocks";
 

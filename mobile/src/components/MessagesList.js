@@ -1,7 +1,6 @@
-import { Text, View } from "react-native";
-import { Divider, TouchableRipple, useTheme } from "react-native-paper";
+import { Text } from "react-native";
+import { useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
-import CustomText from "./CustomText";
 import { Row } from "./Helpers";
 
 const MessageWrapper = Styled.View`

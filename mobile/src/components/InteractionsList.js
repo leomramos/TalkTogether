@@ -1,6 +1,6 @@
 import { Icon } from "@react-native-material/core";
 import { useState } from "react";
-import { Image, Text, View } from "react-native";
+import { Image, View } from "react-native";
 import { Divider, TouchableRipple, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import {

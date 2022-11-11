@@ -1,8 +1,5 @@
-import { Icon } from "@react-native-material/core";
-import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { useState } from "react";
 import { TextInput, useTheme } from "react-native-paper";
-import Styled from "styled-components/native";
 
 import i18n from "../i18n";
 

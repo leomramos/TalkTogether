@@ -5,16 +5,15 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   ChatItem,
   CustomInput,
-  CustomText,
   List,
   OnlineIcon,
   OverlayMenu,
   PageHeader,
+  Row,
   ScreenContainer,
 } from "../../components";
 import { RequestsOverlay, SortOverlay } from "../../components/Chats";
 
-import { Row } from "../../components";
 import i18n from "../../i18n";
 
 const sorts = {
@@ -147,13 +146,13 @@ export default Chats = ({ navigation }) => {
         unread={item.unread}
         handlePress={() =>
           navigation.navigate("Modals", {
-            screen: "ChatScreen",
+            screen: "ChatModal",
             params: { user: item },
           })
         }
         handleAvatarPress={() =>
           navigation.navigate("Modals", {
-            screen: "ProfileScreen",
+            screen: "ProfileModal",
             params: { user: item },
           })
         }

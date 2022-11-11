@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { useState } from "react";
 import { IconButton, useTheme } from "react-native-paper";
 import { PageHeader, ScreenContainer } from "../../components/";
 import { UserProfile } from "../mocks";

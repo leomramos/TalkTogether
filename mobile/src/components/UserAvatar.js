@@ -1,11 +1,11 @@
 import * as Device from "expo-device";
-import React from "react";
 import { Image, View } from "react-native";
 import { TouchableRipple, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
-import i18n from "../i18n";
 import { BlackOpacity, Row } from "./Helpers";
 import OnlineIcon from "./OnlineIcon";
+
+import i18n from "../i18n";
 
 const Container = Styled(Row)`
   border-radius: 100%;
