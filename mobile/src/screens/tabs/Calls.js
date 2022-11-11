@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
@@ -6,7 +7,8 @@ import { CallItem, List, PageHeader, ScreenContainer } from "../../components";
 
 import i18n from "../../i18n";
 
-const NewMatch = ({ navigation }) => {
+const NewMatch = () => {
+  const navigation = useNavigation();
   const { colors } = useTheme();
 
   return (
@@ -34,8 +36,6 @@ const NewMatch = ({ navigation }) => {
 };
 
 export default Calls = ({ navigation }) => {
-  const MatchButton = () => <NewMatch navigation={navigation} />;
-
   const theme = useTheme();
   const insets = useSafeAreaInsets();
 
@@ -76,7 +76,7 @@ export default Calls = ({ navigation }) => {
 
   return (
     <ScreenContainer>
-      <PageHeader title={i18n.t("callHistory")} sideActions={[MatchButton]} />
+      <PageHeader title={i18n.t("callHistory")} sideActions={[NewMatch]} />
       <List
         style={{
           marginTop: 0,

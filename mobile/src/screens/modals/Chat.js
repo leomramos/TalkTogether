@@ -89,11 +89,7 @@ export default Chat = ({ route, navigation }) => {
 
   return (
     <ScreenContainer background={theme.colors.gray.first}>
-      <ChatHeader
-        user={route.params.user}
-        goBack={navigation.goBack}
-        navigation={navigation}
-      />
+      <ChatHeader user={route.params.user} goBack={navigation.goBack} />
       <MessagesContainer theme={theme}>
         <View style={{ flexShrink: 1 }}>
           <MessagesList

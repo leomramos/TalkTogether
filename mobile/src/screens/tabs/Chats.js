@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { FAB, useTheme } from "react-native-paper";
@@ -42,7 +43,9 @@ const sorts = {
   },
 };
 
-const PendingRequests = ({ requests, setRequests, navigation }) => {
+const PendingRequests = ({ requests, setRequests }) => {
+  const navigation = useNavigation();
+
   return (
     <OverlayMenu
       title={i18n.t("chatRequests")}
@@ -82,11 +85,7 @@ export default Chats = ({ navigation }) => {
   );
 
   const PendingReqs = () => (
-    <PendingRequests
-      requests={requests}
-      setRequests={setRequests}
-      navigation={navigation}
-    />
+    <PendingRequests requests={requests} setRequests={setRequests} />
   );
 
   const defaultSort = { by: "date", order: -1 };

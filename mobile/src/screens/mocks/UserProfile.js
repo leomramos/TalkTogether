@@ -1,12 +1,14 @@
+import { Icon } from "@react-native-material/core";
 import {
   KeyboardAvoidingView,
+  Platform,
   ScrollView,
   TextInput,
   View,
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
-import { Chip, CustomText } from "../../components";
+import { Chip, CustomText, Row } from "../../components";
 
 import i18n from "../../i18n";
 
@@ -30,7 +32,8 @@ export default UserProfile = ({
   const levelsOrder = ["native", "advanced", "intermediate", "beginner"];
 
   return (
-    <View
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{
         flex: 1,
         paddingRight: 20,
@@ -113,48 +116,64 @@ export default UserProfile = ({
                 (a, b) => levelsOrder.indexOf(a[0]) - levelsOrder.indexOf(b[0])
               )
               .map(
-                ([level, languages]) =>
+                ([level, languages], i) =>
                   languages.length > 0 && (
-                    <ScrollView
+                    <Row
                       key={`${level}-langs-list`}
-                      horizontal
-                      style={{ paddingBottom: 5, marginBottom: 5 }}
+                      style={{
+                        marginBottom: 5,
+                      }}
                     >
-                      {languages.map(language => {
-                        return (
-                          <Chip
-                            key={`${language}-chip`}
-                            text={language}
-                            textStyle={typography.chip}
-                            color={
-                              level === "beginner"
-                                ? colors.gray.second
-                                : colors.gray.ninth
-                            }
-                            background={colors.proficiency[level]}
-                            remove={
-                              editable &&
-                              (() =>
-                                setLangs(
-                                  Object.fromEntries(
-                                    Object.entries(langs).map(([lvl, lng]) => [
-                                      lvl,
-                                      lng.filter(
-                                        el => level !== lvl || el !== language
-                                      ),
-                                    ])
-                                  )
-                                ))
-                            }
-                          />
-                        );
-                      })}
-                    </ScrollView>
+                      <Icon
+                        name={`alpha-n-box`}
+                        size={30}
+                        color={colors.proficiency[level]}
+                        style={{ marginRight: 5 }}
+                      />
+                      <ScrollView
+                        horizontal
+                        onResize={() => console.log("a")}
+                        style={{ paddingBottom: 5 }}
+                      >
+                        {languages.map(language => {
+                          return (
+                            <Chip
+                              key={`${language}-chip`}
+                              text={language}
+                              textStyle={typography.chip}
+                              color={
+                                level === "beginner"
+                                  ? colors.gray.second
+                                  : colors.gray.ninth
+                              }
+                              background={colors.proficiency[level]}
+                              remove={
+                                editable &&
+                                (() =>
+                                  setLangs(
+                                    Object.fromEntries(
+                                      Object.entries(langs).map(
+                                        ([lvl, lng]) => [
+                                          lvl,
+                                          lng.filter(
+                                            el =>
+                                              level !== lvl || el !== language
+                                          ),
+                                        ]
+                                      )
+                                    )
+                                  ))
+                              }
+                            />
+                          );
+                        })}
+                      </ScrollView>
+                    </Row>
                   )
               )}
           </View>
         </View>
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 };

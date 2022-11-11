@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
@@ -27,7 +28,8 @@ const UserInfo = Styled.View`
   margin-left: 10px;
 `;
 
-export default ChatHeader = ({ user, goBack, navigation }) => {
+export default ChatHeader = ({ user, goBack }) => {
+  const navigation = useNavigation();
   const { colors, typography, screen } = useTheme();
 
   return (

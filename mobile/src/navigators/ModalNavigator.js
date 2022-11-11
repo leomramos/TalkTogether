@@ -17,10 +17,17 @@ export default ModalStack = () => {
       <Modal.Screen
         name="CallModal"
         component={CallModal}
-        options={{ animation: "slide_from_bottom" }}
+        options={{
+          animation: "slide_from_bottom",
+          gestureDirection: "vertical",
+        }}
       />
       <Modal.Screen name="ChatModal" component={ChatModal} />
-      <Modal.Screen name="ProfileModal" component={ProfileModal} />
+      <Modal.Screen
+        name="ProfileModal"
+        component={ProfileModal}
+        options={{ gestureDirection: "vertical" }}
+      />
     </Modal.Navigator>
   );
 };

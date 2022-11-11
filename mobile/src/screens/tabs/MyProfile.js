@@ -22,7 +22,16 @@ export default MyProfile = ({}) => {
     native: ["Portuguese"],
     advanced: ["English"],
     intermediate: ["Spanish"],
-    beginner: ["Italian", "French", "Russian", "German"],
+    beginner: [
+      "Italian",
+      "French",
+      "Russian",
+      "German",
+      "Indonesian",
+      "Chinese",
+      "Japanese",
+      "Korean",
+    ],
   });
   const [langs, setLangs] = useState(curLangs);
 

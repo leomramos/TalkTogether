@@ -1,5 +1,4 @@
-import * as Device from "expo-device";
-import { Image, View } from "react-native";
+import { Image, Platform, View } from "react-native";
 import { TouchableRipple, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import { BlackOpacity, Row } from "./Helpers";
@@ -52,9 +51,7 @@ export default UserAvatar = ({
           <Container size={size}>
             {!focused && <BlackOpacity radius={size * 2} />}
             <Image
-              blurRadius={
-                offline ? (Device.osName === "Android" ? 10 : 2.5) : 0
-              }
+              blurRadius={offline ? (Platform.OS === "ios" ? 2.5 : 10) : 0}
               source={src}
               resizeMode="contain"
               alt={i18n.t("userAvatar")}
