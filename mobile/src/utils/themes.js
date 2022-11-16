@@ -182,6 +182,31 @@ const common = {
         unit: "px",
       },
     },
+    brand: {
+      name: {
+        font: "OleoScript_700Bold",
+        size: {
+          number: 40,
+          unit: "px",
+        },
+      },
+      slogan: {
+        font: "Inter_300Light",
+        size: {
+          number: 15,
+          unit: "px",
+        },
+      },
+    },
+    auth: {
+      button: {
+        font: "Inter_600SemiBold",
+        size: {
+          number: 18,
+          unit: "px",
+        },
+      },
+    },
   },
   colors: {
     ...DefaultTheme.colors,

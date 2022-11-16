@@ -7,7 +7,6 @@ export default ModalStack = () => {
   return (
     <Modal.Navigator
       id="ModalStack"
-      backBehavior="history"
       screenOptions={{
         headerShown: false,
         animation: "fade_from_bottom",

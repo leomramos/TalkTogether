@@ -1,5 +1,7 @@
 import { Icon } from "@react-native-material/core";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useCallback, useEffect, useState } from "react";
+import { Keyboard } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { UserAvatar } from "../components";
@@ -7,8 +9,38 @@ import { CallsScreen, ChatsScreen, MyProfileScreen } from "../screens/tabs/";
 
 const Tab = createMaterialTopTabNavigator();
 
-export default TabNavigator = () => {
+export default TabNavigator = ({ navigation }) => {
   const { colors } = useTheme();
+
+  const [tabBarStyle, setTabBarStyle] = useState({
+    backgroundColor: colors.gray.first,
+    paddingVertical: 5,
+  });
+
+  const _keyboardDidShow = useCallback(() => {
+    setTabBarStyle({
+      display: "none",
+    });
+  }, [navigation]);
+
+  const _keyboardDidHide = useCallback(() => {
+    setTabBarStyle({
+      backgroundColor: colors.gray.first,
+      paddingVertical: 5,
+    });
+  }, [navigation]);
+
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+    Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+
+    // cleanup function
+    return () => {
+      Keyboard.removeAllListeners("keyboardDidShow");
+      Keyboard.removeAllListeners("keyboardDidHide");
+    };
+  }, [_keyboardDidHide, _keyboardDidShow]);
+
   const insets = useSafeAreaInsets();
 
   const iconSize = 25;
@@ -25,10 +57,7 @@ export default TabNavigator = () => {
         tabBarShowLabel: false,
         tabBarActiveTintColor: colors.purple.sixth,
         tabBarInactiveTintColor: colors.gray.seventh,
-        tabBarStyle: {
-          backgroundColor: colors.gray.first,
-          paddingVertical: 5,
-        },
+        tabBarStyle,
         tabBarIndicatorStyle: {
           backgroundColor: colors.purple.sixth,
           height: 5,

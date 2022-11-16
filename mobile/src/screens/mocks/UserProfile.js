@@ -1,11 +1,5 @@
 import { Icon } from "@react-native-material/core";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  TextInput,
-  View,
-} from "react-native";
+import { Platform, ScrollView, TextInput, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import { Chip, CustomText, Row } from "../../components";
@@ -32,8 +26,7 @@ export default UserProfile = ({
   const levelsOrder = ["native", "advanced", "intermediate", "beginner"];
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    <View
       style={{
         flex: 1,
         paddingRight: 20,
@@ -78,7 +71,6 @@ export default UserProfile = ({
           >
             {i18n.t("about")}
           </CustomText>
-          {/* <KeyboardAvoidingView behavior="position"> */}
           <TextInput
             value={about}
             onChangeText={text => setAbout(text)}
@@ -100,7 +92,6 @@ export default UserProfile = ({
             maxLength={255}
             editable={editable}
           />
-          {/* </KeyboardAvoidingView> */}
         </View>
         <View style={{ flex: 1, paddingLeft: 15 }}>
           <CustomText
@@ -174,6 +165,6 @@ export default UserProfile = ({
           </View>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </View>
   );
 };

@@ -1,4 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import LoadingScreen from "../screens/Loading";
+import AuthNavigator from "./AuthNavigator";
 import ModalNavigator from "./ModalNavigator";
 import TabNavigator from "./TabNavigator";
 
@@ -23,6 +25,12 @@ export default AppStack = () => {
         }}
       />
       <App.Screen name="Tabs" component={TabNavigator} />
+      <App.Screen name="Auth" component={AuthNavigator} />
+      <App.Screen
+        name="Loading"
+        component={LoadingScreen}
+        options={{ animation: "none" }}
+      />
     </App.Navigator>
   );
 };

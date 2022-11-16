@@ -42,19 +42,21 @@ export default CustomInput = ({
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       right={
-        <TextInput.Icon
-          animated
-          name={search ? (value !== "" ? "close" : "magnify") : icon}
-          size={search ? (value !== "" ? 15 : 25) : 20}
-          color={
-            search && value !== ""
-              ? colors.gray.sixth
-              : isFocused
-              ? colors.purple.sixth
-              : colors.gray.eighth
-          }
-          onPress={search ? () => setValue("") : action}
-        />
+        icon && (
+          <TextInput.Icon
+            animated
+            name={search ? (value !== "" ? "close" : "magnify") : icon}
+            size={search ? (value !== "" ? 15 : 25) : 20}
+            color={
+              search && value !== ""
+                ? colors.gray.sixth
+                : isFocused
+                ? colors.purple.sixth
+                : colors.gray.eighth
+            }
+            onPress={search ? () => setValue("") : action}
+          />
+        )
       }
       theme={{
         colors: {

@@ -136,6 +136,12 @@ export default Chat = ({ route, navigation }) => {
             placeholder={i18n.t("type")}
             highlight={false}
           />
+          <IconButton
+            icon="microphone"
+            size={50}
+            color="white"
+            onPress={() => {}}
+          />
         </View>
       </MessagesContainer>
     </ScreenContainer>
