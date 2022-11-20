@@ -1,6 +1,6 @@
 import { IconButton, useTheme } from "react-native-paper";
 
-export default NavigateBack = ({ action }) => {
+export default NavigateBack = ({ action, marginLeft = 10 }) => {
   const { colors } = useTheme();
   const iconSize = 30;
 
@@ -9,7 +9,7 @@ export default NavigateBack = ({ action }) => {
       icon="chevron-left"
       color={colors.gray.seventh}
       size={iconSize}
-      style={{ width: iconSize, height: iconSize, marginLeft: 10 }}
+      style={{ width: iconSize, height: iconSize, marginLeft }}
       onPress={action}
     />
   );

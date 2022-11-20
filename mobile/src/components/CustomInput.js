@@ -11,15 +11,14 @@ export default CustomInput = ({
   icon = "",
   action = () => {},
   search = false,
-  dense = false,
   highlight = true,
   keyboard = "default",
   bottomSpace = 0,
   style = {},
-  maxLength = null,
-  editable = true,
   mode = "outlined",
   secureTextEntry = false,
+  restriction = _ => true,
+  ...props
 }) => {
   const { colors, typography } = useTheme();
   const [isFocused, setIsFocused] = useState(false);
@@ -27,8 +26,6 @@ export default CustomInput = ({
   return (
     <TextInput
       secureTextEntry={secureTextEntry}
-      editable={editable}
-      dense={dense}
       style={{
         ...style,
         backgroundColor: colors.gray.third,
@@ -42,8 +39,10 @@ export default CustomInput = ({
       placeholder={search ? i18n.t("search") : placeholder || label}
       value={value}
       onChangeText={text => {
-        setValue(text);
-        search && search(text);
+        if (restriction(text)) {
+          setValue(text);
+          search && search(text);
+        }
       }}
       keyboardType={search ? "web-search" : keyboard}
       selectionColor={colors.purple.sixth}
@@ -74,7 +73,7 @@ export default CustomInput = ({
           placeholder: colors.gray.sixth,
         },
       }}
-      maxLength={maxLength}
+      {...props}
     />
   );
 };

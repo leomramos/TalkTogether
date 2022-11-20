@@ -22,7 +22,13 @@ export default ScreenContainer = props => {
       behavior={Platform.OS === "ios" ? "padding" : null}
       style={{ flex: 1 }}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback
+        onPress={Keyboard.dismiss}
+        onStartShouldSetResponder={event => true}
+        onTouchEnd={e => {
+          e.stopPropagation();
+        }}
+      >
         <ScreenWrapper
           screen={screen}
           style={{

@@ -45,4 +45,9 @@ export default {
   moderate: "Moderate",
   weak: "Weak",
   helloThere: "Hello there!",
+  signIn: "Sign in",
+  signUp: "Sign up",
+  continue: "Continue",
+  resetPassword: "Reset password",
+  createNewPassword: "Create a new password",
 };

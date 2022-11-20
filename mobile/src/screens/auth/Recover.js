@@ -11,11 +11,11 @@ import { passwordStrengthCheck } from "../../utils/helpers";
 
 import i18n from "../../i18n";
 
-export default Register = ({ navigation }) => {
+export default Recover = ({ navigation }) => {
   const { typography, colors, screen } = useTheme();
 
   const [code, setCode] = useState("");
-  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [auxPassword, setAuxPassword] = useState("");
 
   const [passwordStrength, setPasswordStrength] = useState();
@@ -23,11 +23,11 @@ export default Register = ({ navigation }) => {
   const [auxPassVis, setAuxPassVis] = useState(false);
 
   useEffect(() => {
-    setPasswordStrength(passwordStrengthCheck(password));
-    !password && setAuxPassword("");
-  }, [password]);
+    setPasswordStrength(passwordStrengthCheck(newPassword));
+    !newPassword && setAuxPassword("");
+  }, [newPassword]);
 
-  const handleRegister = () => {
+  const handleRecover = () => {
     Keyboard.dismiss();
     navigation.navigate("Tabs");
   };
@@ -53,7 +53,7 @@ export default Register = ({ navigation }) => {
           <Row style={{ marginBottom: 15 }}>
             <NavigateBack action={navigation.goBack} marginLeft={0} />
             <CustomText type={typography.auth.info} color={colors.gray.ninth}>
-              {i18n.t("helloThere")}
+              {i18n.t("createNewPassword")}
             </CustomText>
           </Row>
           <CustomInput
@@ -65,9 +65,9 @@ export default Register = ({ navigation }) => {
             maxLength={6}
           />
           <CustomInput
-            value={password}
-            setValue={setPassword}
-            placeholder={i18n.t("password")}
+            value={newPassword}
+            setValue={setNewPassword}
+            placeholder={i18n.t("newPassword")}
             bottomSpace={3}
             maxLength={32}
             icon={passVis ? "eye-off" : "eye"}
@@ -80,7 +80,7 @@ export default Register = ({ navigation }) => {
             value={auxPassword}
             setValue={setAuxPassword}
             placeholder={i18n.t("confirmPassword")}
-            editable={Boolean(password)}
+            editable={Boolean(newPassword)}
             bottomSpace={3}
             maxLength={32}
             icon={auxPassVis ? "eye-off" : "eye"}
@@ -89,7 +89,7 @@ export default Register = ({ navigation }) => {
             textContentType="password"
             restriction={text => !text.includes(" ")}
           />
-          {password && (
+          {newPassword && (
             <Row style={{ marginTop: 10 }}>
               <CustomText
                 type={typography.auth.forgotPassword}
@@ -110,7 +110,7 @@ export default Register = ({ navigation }) => {
             contained
             color={colors.gray.ninth}
             contentStyle={{ backgroundColor: colors.purple.fifth }}
-            onPress={handleRegister}
+            onPress={handleRecover}
             style={{ marginTop: 25 }}
           >
             <CustomText
@@ -118,7 +118,7 @@ export default Register = ({ navigation }) => {
               color={colors.gray.ninth}
               style={{ textTransform: "capitalize" }}
             >
-              {i18n.t("signUp")}
+              {i18n.t("resetPassword")}
             </CustomText>
           </Button>
         </ScrollView>

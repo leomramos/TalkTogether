@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { ScrollView, View } from "react-native";
-import { Button, useTheme } from "react-native-paper";
+import { Keyboard, ScrollView, View } from "react-native";
+import { Button, TouchableRipple, useTheme } from "react-native-paper";
 import {
   CustomInput,
   CustomText,
   NavigateBack,
+  Row,
   ScreenContainer,
 } from "../../components";
 
@@ -17,7 +18,10 @@ export default Login = ({ navigation }) => {
 
   const [passVis, setPassVis] = useState(false);
 
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    Keyboard.dismiss();
+    navigation.navigate("Tabs");
+  };
 
   return (
     <ScreenContainer>
@@ -31,7 +35,6 @@ export default Login = ({ navigation }) => {
           overflow: "hidden",
         }}
       >
-        <NavigateBack action={navigation.goBack} />
         <ScrollView
           style={{
             width: "100%",
@@ -39,13 +42,12 @@ export default Login = ({ navigation }) => {
           }}
           componentContainerStyle={{ justifyContent: "flex-end" }}
         >
-          <CustomText
-            type={typography.auth.info}
-            color={colors.gray.ninth}
-            style={{ marginBottom: 15 }}
-          >
-            {i18n.t("welcomeBack", { user: "User" })}
-          </CustomText>
+          <Row style={{ marginBottom: 15 }}>
+            <NavigateBack action={navigation.goBack} marginLeft={0} />
+            <CustomText type={typography.auth.info} color={colors.gray.ninth}>
+              {i18n.t("welcomeBack", { user: "User" })}
+            </CustomText>
+          </Row>
           <CustomInput
             value={password}
             setValue={setPassword}
@@ -54,15 +56,21 @@ export default Login = ({ navigation }) => {
             icon={passVis ? "eye-off" : "eye"}
             action={() => setPassVis(!passVis)}
             secureTextEntry={!passVis}
+            textContentType="password"
+            restriction={text => !text.includes(" ")}
           />
           <View style={{ alignItems: "flex-end" }}>
-            <CustomText
-              type={typography.auth.forgotPassword}
-              color={colors.gray.sixth}
-              style={{ marginTop: 5 }}
+            <TouchableRipple
+              onPress={() => navigation.navigate("RecoverAuth")}
+              style={{ paddingVertical: 3, paddingHorizontal: 5, marginTop: 2 }}
             >
-              {i18n.t("forgotPassword", { user: "User" })}
-            </CustomText>
+              <CustomText
+                type={typography.auth.forgotPassword}
+                color={colors.gray.sixth}
+              >
+                {i18n.t("forgotPassword", { user: "User" })}
+              </CustomText>
+            </TouchableRipple>
           </View>
           <Button
             uppercase={false}
@@ -70,15 +78,18 @@ export default Login = ({ navigation }) => {
             color={colors.gray.ninth}
             contentStyle={{ backgroundColor: colors.purple.fifth }}
             onPress={handleLogin}
-            style={{ marginVertical: 20 }}
+            style={{ marginTop: 17 }}
           >
-            <CustomText type={typography.auth.button} color={colors.gray.ninth}>
-              Sign In
+            <CustomText
+              type={typography.auth.button}
+              color={colors.gray.ninth}
+              style={{ textTransform: "capitalize" }}
+            >
+              {i18n.t("signIn")}
             </CustomText>
           </Button>
         </ScrollView>
       </View>
-      {/* <View></View> */}
     </ScreenContainer>
   );
 };

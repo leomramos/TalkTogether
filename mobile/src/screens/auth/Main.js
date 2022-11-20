@@ -12,7 +12,7 @@ export default Main = ({ navigation }) => {
 
   const handleContinue = () => {
     Keyboard.dismiss();
-    Math.random() > 0.5
+    email
       ? navigation.navigate("LoginAuth")
       : navigation.navigate("RegisterAuth");
   };
@@ -81,8 +81,9 @@ export default Main = ({ navigation }) => {
               <CustomText
                 type={typography.auth.button}
                 color={colors.gray.ninth}
+                style={{ textTransform: "capitalize" }}
               >
-                Continue
+                {i18n.t("continue")}
               </CustomText>
             </Button>
           </View>
