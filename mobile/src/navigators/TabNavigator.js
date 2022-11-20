@@ -1,7 +1,8 @@
+import { useKeyboard } from "@react-native-community/hooks";
 import { Icon } from "@react-native-material/core";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { useCallback, useEffect, useState } from "react";
-import { Keyboard } from "react-native";
+import { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { UserAvatar } from "../components";
@@ -12,34 +13,29 @@ const Tab = createMaterialTopTabNavigator();
 export default TabNavigator = ({ navigation }) => {
   const { colors } = useTheme();
 
-  const [tabBarStyle, setTabBarStyle] = useState({
+  const keyboard = useKeyboard();
+
+  const styleShow = {
     backgroundColor: colors.gray.first,
     paddingVertical: 5,
-  });
+  };
 
-  const _keyboardDidShow = useCallback(() => {
-    setTabBarStyle({
-      display: "none",
-    });
-  }, [navigation]);
+  const styleHide =
+    Platform.OS !== "ios"
+      ? {
+          ...styleShow,
+          display: "none",
+        }
+      : styleShow;
 
-  const _keyboardDidHide = useCallback(() => {
-    setTabBarStyle({
-      backgroundColor: colors.gray.first,
-      paddingVertical: 5,
-    });
-  }, [navigation]);
+  const [tabBarStyle, setTabBarStyle] = useState(styleShow);
 
-  useEffect(() => {
-    Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
-    Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
-
-    // cleanup function
-    return () => {
-      Keyboard.removeAllListeners("keyboardDidShow");
-      Keyboard.removeAllListeners("keyboardDidHide");
-    };
-  }, [_keyboardDidHide, _keyboardDidShow]);
+  useEffect(
+    _ => {
+      setTabBarStyle(keyboard.keyboardShown ? styleHide : styleShow);
+    },
+    [keyboard.keyboardShown]
+  );
 
   const insets = useSafeAreaInsets();
 
@@ -52,6 +48,7 @@ export default TabNavigator = ({ navigation }) => {
       tabBarPosition="bottom"
       backBehavior="history"
       keyboardDismissMode="none"
+      gestureHandlerProps={{}}
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,

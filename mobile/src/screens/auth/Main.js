@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { Image, Keyboard, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import { CustomInput, CustomText, ScreenContainer } from "../../components/";
 
@@ -10,7 +10,14 @@ export default Main = ({ navigation }) => {
 
   const [email, setEmail] = useState("");
 
-  const handleContinue = () => {};
+  const handleContinue = () => {
+    Keyboard.dismiss();
+    Math.random() > 0.5
+      ? navigation.navigate("LoginAuth")
+      : navigation.navigate("RegisterAuth");
+  };
+
+  const logo = require("../../../assets/logo.png");
 
   return (
     <ScreenContainer>
@@ -20,8 +27,8 @@ export default Main = ({ navigation }) => {
           justifyContent: "space-between",
           paddingRight: screen.padding.left + 10,
           paddingLeft: 10,
-          paddingTop: 80,
-          overflow: "hidden",
+          paddingTop: 60,
+          // overflow: "hidden",
         }}
       >
         <View style={{ alignItems: "center", justifyContent: "flex-end" }}>
@@ -29,12 +36,22 @@ export default Main = ({ navigation }) => {
             style={{
               width: "100%",
               paddingHorizontal: 25,
+              alignItems: "center",
             }}
           >
+            <Image
+              source={logo}
+              style={{
+                width: "45%",
+                height: undefined,
+                aspectRatio: 1.15,
+                marginBottom: 15,
+              }}
+            />
             <CustomText
               type={typography.brand.name}
               color={colors.gray.ninth}
-              style={{ textAlign: "center", marginBottom: 15 }}
+              style={{ textAlign: "center", marginBottom: 10 }}
             >
               TalkTogether
             </CustomText>
@@ -47,15 +64,12 @@ export default Main = ({ navigation }) => {
               with just one call.
             </CustomText>
           </View>
-          <View style={{ width: "100%", marginTop: 120 }}>
+          <View style={{ width: "100%", marginTop: 100 }}>
             <CustomInput
               value={email}
               setValue={setEmail}
-              label="E-mail"
               placeholder="Digite seu email"
-            >
-              Teste
-            </CustomInput>
+            />
             <Button
               uppercase={false}
               contained

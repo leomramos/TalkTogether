@@ -27,9 +27,6 @@
       },
       "package": "com.leormsz.TalkTogether"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
     "extra": {
       "eas": {
         "projectId": "2dc2e486-8619-45f8-b9c8-a8501a388318"

@@ -14,20 +14,30 @@ export default CustomInput = ({
   dense = false,
   highlight = true,
   keyboard = "default",
+  bottomSpace = 0,
+  style = {},
+  maxLength = null,
+  editable = true,
+  mode = "outlined",
+  secureTextEntry = false,
 }) => {
   const { colors, typography } = useTheme();
   const [isFocused, setIsFocused] = useState(false);
 
   return (
     <TextInput
+      secureTextEntry={secureTextEntry}
+      editable={editable}
       dense={dense}
       style={{
+        ...style,
         backgroundColor: colors.gray.third,
         flexGrow: 1,
         fontFamily: typography.input.font,
         fontSize: typography.input.size.number,
+        marginBottom: bottomSpace,
       }}
-      mode="outlined"
+      mode={mode}
       label={!search && label}
       placeholder={search ? i18n.t("search") : placeholder || label}
       value={value}
@@ -64,6 +74,7 @@ export default CustomInput = ({
           placeholder: colors.gray.sixth,
         },
       }}
+      maxLength={maxLength}
     />
   );
 };

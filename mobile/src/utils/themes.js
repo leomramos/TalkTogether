@@ -206,6 +206,20 @@ const common = {
           unit: "px",
         },
       },
+      info: {
+        font: "Inter_600SemiBold",
+        size: {
+          number: 16,
+          unit: "px",
+        },
+      },
+      forgotPassword: {
+        font: "Inter_400Regular",
+        size: {
+          number: 12,
+          unit: "px",
+        },
+      },
     },
   },
   colors: {
@@ -225,6 +239,11 @@ const common = {
       confirm: "#26A524",
       cancel: "#7D2626",
       hangup: "#DE0000",
+    },
+    password: {
+      strong: "#26A524",
+      moderate: "#D6A700",
+      weak: "#7D2626",
     },
     proficiency: {
       native: "#D6A700",

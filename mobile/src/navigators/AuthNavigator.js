@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { MainAuth } from "../screens/auth";
+import { LoginAuth, MainAuth, RegisterAuth } from "../screens/auth";
 
 const Auth = createNativeStackNavigator();
 
@@ -7,6 +7,7 @@ export default AuthStack = () => {
   return (
     <Auth.Navigator
       id="AuthStack"
+      initialRouteName="MainAuth"
       screenOptions={{
         headerShown: false,
         animation: "slide_from_right",
@@ -15,6 +16,8 @@ export default AuthStack = () => {
       }}
     >
       <Auth.Screen name="MainAuth" component={MainAuth} />
+      <Auth.Screen name="LoginAuth" component={LoginAuth} />
+      <Auth.Screen name="RegisterAuth" component={RegisterAuth} />
     </Auth.Navigator>
   );
 };
