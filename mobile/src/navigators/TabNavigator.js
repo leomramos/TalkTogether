@@ -1,8 +1,5 @@
-import { useKeyboard } from "@react-native-community/hooks";
 import { Icon } from "@react-native-material/core";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { useEffect, useState } from "react";
-import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { UserAvatar } from "../components";
@@ -13,30 +10,6 @@ const Tab = createMaterialTopTabNavigator();
 export default TabNavigator = ({ navigation }) => {
   const { colors } = useTheme();
 
-  const keyboard = useKeyboard();
-
-  const styleShow = {
-    backgroundColor: colors.gray.first,
-    paddingVertical: 5,
-  };
-
-  const styleHide =
-    Platform.OS !== "ios"
-      ? {
-          ...styleShow,
-          display: "none",
-        }
-      : styleShow;
-
-  const [tabBarStyle, setTabBarStyle] = useState(styleShow);
-
-  useEffect(
-    _ => {
-      setTabBarStyle(keyboard.keyboardShown ? styleHide : styleShow);
-    },
-    [keyboard.keyboardShown]
-  );
-
   const insets = useSafeAreaInsets();
 
   const iconSize = 25;
@@ -44,17 +17,19 @@ export default TabNavigator = ({ navigation }) => {
   return (
     <Tab.Navigator
       id="TabNavigator"
-      initialRouteName="ChatsScreen"
+      // initialRouteName="ChatsScreen"
+      initialRouteName="MyProfileScreen"
       tabBarPosition="bottom"
       backBehavior="history"
       keyboardDismissMode="none"
       gestureHandlerProps={{}}
       screenOptions={{
+        tabBarVisible: false,
         headerShown: false,
         tabBarShowLabel: false,
         tabBarActiveTintColor: colors.purple.sixth,
         tabBarInactiveTintColor: colors.gray.seventh,
-        tabBarStyle,
+        tabBarStyle: { backgroundColor: colors.gray.first, paddingVertical: 5 },
         tabBarIndicatorStyle: {
           backgroundColor: colors.purple.sixth,
           height: 5,

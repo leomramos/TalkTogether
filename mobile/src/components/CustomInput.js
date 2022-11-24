@@ -18,6 +18,7 @@ export default CustomInput = ({
   mode = "outlined",
   secureTextEntry = false,
   restriction = _ => true,
+  editable = true,
   ...props
 }) => {
   const { colors, typography } = useTheme();
@@ -25,6 +26,7 @@ export default CustomInput = ({
 
   return (
     <TextInput
+      editable={editable}
       secureTextEntry={secureTextEntry}
       style={{
         ...style,
@@ -33,10 +35,12 @@ export default CustomInput = ({
         fontFamily: typography.input.font,
         fontSize: typography.input.size.number,
         marginBottom: bottomSpace,
+        opacity: editable ? 1 : 0.3,
       }}
       mode={mode}
       label={!search && label}
       placeholder={search ? i18n.t("search") : placeholder || label}
+      placeholderTextColor={colors.gray.sixth}
       value={value}
       onChangeText={text => {
         if (restriction(text)) {

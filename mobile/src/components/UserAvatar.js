@@ -1,5 +1,5 @@
 import { Image, Platform, View } from "react-native";
-import { TouchableRipple, useTheme } from "react-native-paper";
+import { IconButton, TouchableRipple, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import { BlackOpacity, Row } from "./Helpers";
 import OnlineIcon from "./OnlineIcon";
@@ -26,6 +26,8 @@ export default UserAvatar = ({
   flag = "",
   plain = false,
   onPress = null,
+  editable = false,
+  editingPic = false,
 }) => {
   const { colors } = useTheme();
   const src = require("../../assets/user-avatar-1.png");
@@ -40,13 +42,17 @@ export default UserAvatar = ({
         style={{
           borderRadius: size * 2,
           overflow: "hidden",
+          opacity: editable && !editingPic ? 0.4 : 1,
         }}
       >
         <TouchableRipple
-          onPress={onPress}
+          onPress={!editingPic && onPress}
           rippleColor="black"
           underlayColor="black"
-          style={{ backgroundColor: color || colors.avatar.white }}
+          style={{
+            backgroundColor: colors.avatar[color] || colors.avatar.white,
+            position: "relative",
+          }}
         >
           <Container size={size}>
             {!focused && <BlackOpacity radius={size * 2} />}
@@ -65,6 +71,16 @@ export default UserAvatar = ({
       </View>
       {!offline && !plain && (
         <OnlineIcon size={size} flag={flag} background={background} />
+      )}
+      {editable && (
+        <IconButton
+          icon={editingPic ? "checkbox-marked-outline" : "square-edit-outline"}
+          animated
+          size={25}
+          color={colors.gray.ninth}
+          style={{ position: "absolute", right: -13, top: -13 }}
+          onPress={onPress}
+        />
       )}
     </View>
   );

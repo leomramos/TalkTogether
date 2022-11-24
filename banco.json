@@ -1,0 +1,109 @@
+{
+  "Users": {
+    "_id": "ObjectId",
+    "email": "String",
+    "password": "String",
+    "birthday": "Date",
+    "language": "ObjectId",
+    "role": "ObjectId",
+    "createdAt": "Date",
+    "updatedAt": "Date"
+  },
+
+  "Profiles": {
+    "_id": "ObjectId",
+    "userId": "ObjectId",
+    "name": "String",
+    "avatar": {
+      "style": "Number",
+      "color": "String"
+    },
+    "about": "String",
+    "country": "ObjectId",
+    "languages": [
+      {
+        "languageId": "ObjectId",
+        "proficiency": "Number"
+      }
+    ],
+    "rating": {
+      "total": "Number",
+      "amount": "Number",
+      "history": [
+        {
+          "ratedBy": "ObjectId",
+          "rating": "Number"
+        }
+      ]
+    },
+    "createdAt": "Date",
+    "updatedAt": "Date"
+  },
+
+  "Roles": {
+    "_id": "ObjectId",
+    "label": "String",
+    "permLevel": "Number",
+    "createdAt": "Date",
+    "updatedAt": "Date"
+  },
+
+  "Chats": {
+    "_id": "ObjectId",
+    "users": ["ObjectId"],
+    "messages": [
+      {
+        "from": "ObjectId",
+        "body": "String",
+        "type": "String",
+        "sent": "Date",
+        "refersTo": "ObjectId"
+      }
+    ],
+    "permissions": {
+      "documents": "Boolean",
+      "audio": "Boolean",
+      "media": "Boolean"
+    },
+    "createdAt": "Date",
+    "updatedAt": "Date"
+  },
+  
+  "Calls": {
+    "_id": "ObjectId",
+    "searchedBy": "ObjectId",
+    "matchedPair": "ObjectId",
+    "startedAt": "Date",
+    "endedAt": "Date",
+    "createdAt": "Date",
+    "updatedAt": "Date"
+  },
+
+  "Requests": {
+    "_id": "ObjectId",
+    "action": "String",
+    "requester": "ObjectId",
+    "target": "ObjectId",
+    "createdAt": "Date",
+    "updatedAt": "Date"
+  },
+
+  "Languages": {
+    "_id": "ObjectId",
+    "code": "String",
+    "name": "String",
+    "translation": "String",
+    "nativeName": "String",
+    "createdAt": "Date",
+    "updatedAt": "Date"
+  },
+
+  "Countries": {
+    "_id": "ObjectId",
+    "code": "String",
+    "name": "String",
+    "flagPath": "String",
+    "createdAt": "Date",
+    "updatedAt": "Date"
+  }
+}

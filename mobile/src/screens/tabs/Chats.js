@@ -1,3 +1,4 @@
+import { useKeyboard } from "@react-native-community/hooks";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
@@ -67,6 +68,24 @@ const PendingRequests = ({ requests, setRequests }) => {
 };
 
 export default Chats = ({ navigation }) => {
+  const keyboard = useKeyboard();
+
+  useEffect(
+    _ =>
+      keyboard.keyboardShown
+        ? navigation.setOptions({
+            tabBarStyle: { ...navigation.tabBarStyle, display: "none" },
+          })
+        : navigation.setOptions({
+            tabBarStyle: {
+              backgroundColor: theme.colors.gray.first,
+              paddingVertical: 5,
+              display: "flex",
+            },
+          }),
+    [keyboard.keyboardShown]
+  );
+
   const requestsAmount = 5;
   const [requests, setRequests] = useState(
     Array(requestsAmount)

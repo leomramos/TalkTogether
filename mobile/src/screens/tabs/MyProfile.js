@@ -1,14 +1,41 @@
-import { useState } from "react";
+import { useKeyboard } from "@react-native-community/hooks";
+import { useEffect, useState } from "react";
 import { IconButton, useTheme } from "react-native-paper";
 import { PageHeader, ScreenContainer } from "../../components/";
 import { UserProfile } from "../mocks";
 
 import i18n from "../../i18n";
 
-export default MyProfile = ({}) => {
+export default MyProfile = ({ navigation }) => {
+  const keyboard = useKeyboard();
+
+  useEffect(
+    _ =>
+      keyboard.keyboardShown
+        ? navigation.setOptions({
+            tabBarStyle: { ...navigation.tabBarStyle, display: "none" },
+          })
+        : navigation.setOptions({
+            tabBarStyle: {
+              backgroundColor: colors.gray.first,
+              paddingVertical: 5,
+              display: "flex",
+            },
+          }),
+    [keyboard.keyboardShown]
+  );
+
   const { colors } = useTheme();
 
   const [editing, setEditing] = useState(false);
+  const [editingPic, setEditingPic] = useState(false);
+  const [savable, setSavable] = useState(true);
+
+  const [curAvatar, setCurAvatar] = useState(null);
+  const [avatar, setAvatar] = useState(curAvatar);
+
+  const [curAvatarColor, setCurAvatarColor] = useState(colors.avatar.white);
+  const [avatarColor, setAvatarColor] = useState(curAvatarColor);
 
   const [curName, setCurName] = useState("User");
   const [name, setName] = useState(curName);
@@ -39,14 +66,20 @@ export default MyProfile = ({}) => {
     setCurName(name);
     setCurAbout(about);
     setCurLangs(langs);
+    setCurAvatar(avatar);
+    setCurAvatarColor(avatarColor);
     setEditing(false);
+    setEditingPic(false);
   };
 
   const handleCancel = _ => {
     setName(curName);
     setAbout(curAbout);
     setLangs(curLangs);
+    setAvatar(curAvatar);
+    setAvatarColor(curAvatarColor);
     setEditing(false);
+    setEditingPic(false);
   };
 
   const EditButton = _ => (
@@ -63,7 +96,8 @@ export default MyProfile = ({}) => {
       icon="check"
       color={colors.aux.confirm}
       onPress={handleSave}
-      style={{ marginVertical: 0 }}
+      disabled={!savable}
+      style={{ marginVertical: 0, opacity: savable ? 1 : 0.4 }}
     />
   );
 
@@ -72,7 +106,8 @@ export default MyProfile = ({}) => {
       icon="close"
       color={colors.aux.cancel}
       onPress={handleCancel}
-      style={{ margin: 0 }}
+      disabled={!savable}
+      style={{ margin: 0, opacity: savable ? 1 : 0.4 }}
     />
   );
 
@@ -84,12 +119,18 @@ export default MyProfile = ({}) => {
       />
       <UserProfile
         editable={editing}
+        avatar={avatar}
+        setAvatar={setAvatar}
+        avatarColor={avatarColor}
+        setAvatarColor={setAvatarColor}
         name={name}
         setName={setName}
         about={about}
         setAbout={setAbout}
         langs={langs}
         setLangs={setLangs}
+        editingPic={editingPic}
+        setEditingPic={setEditingPic}
       />
     </ScreenContainer>
   );
