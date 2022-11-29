@@ -17,8 +17,8 @@ export default TabNavigator = ({ navigation }) => {
   return (
     <Tab.Navigator
       id="TabNavigator"
-      // initialRouteName="ChatsScreen"
-      initialRouteName="MyProfileScreen"
+      initialRouteName="ChatsScreen"
+      // initialRouteName="MyProfileScreen"
       tabBarPosition="bottom"
       backBehavior="history"
       keyboardDismissMode="none"

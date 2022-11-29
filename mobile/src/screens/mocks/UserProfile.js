@@ -129,7 +129,12 @@ export default UserProfile = ({
         </View>
       </UserContainer>
 
-      <ScrollView style={{ marginRight: -20, paddingRight: 20 }}>
+      <ScrollView
+        style={{
+          marginRight: -20,
+          paddingRight: 20,
+        }}
+      >
         <View style={{ flex: 1, paddingLeft: 15 }}>
           <CustomText
             type={typography.profile.title}
@@ -183,16 +188,12 @@ export default UserProfile = ({
                       }}
                     >
                       <Icon
-                        name={`alpha-n-box`}
+                        name={`network-strength-${4 - i}`}
                         size={30}
                         color={colors.proficiency[level]}
                         style={{ marginRight: 5 }}
                       />
-                      <ScrollView
-                        horizontal
-                        onResize={() => console.log("a")}
-                        style={{ paddingBottom: 5 }}
-                      >
+                      <ScrollView horizontal style={{ paddingVertical: 3 }}>
                         {languages.map(language => {
                           return (
                             <Chip

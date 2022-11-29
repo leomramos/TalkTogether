@@ -1,9 +1,4 @@
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { KeyboardAvoidingView, Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Styled from "styled-components/native";
@@ -22,22 +17,14 @@ export default ScreenContainer = props => {
       behavior={Platform.OS === "ios" ? "padding" : null}
       style={{ flex: 1 }}
     >
-      <TouchableWithoutFeedback
-        onPress={Keyboard.dismiss}
-        onStartShouldSetResponder={event => true}
-        onTouchEnd={e => {
-          e.stopPropagation();
+      <ScreenWrapper
+        screen={screen}
+        style={{
+          backgroundColor: props.background || colors.gray.second,
         }}
       >
-        <ScreenWrapper
-          screen={screen}
-          style={{
-            backgroundColor: props.background || colors.gray.second,
-          }}
-        >
-          {props.children}
-        </ScreenWrapper>
-      </TouchableWithoutFeedback>
+        {props.children}
+      </ScreenWrapper>
     </KeyboardAvoidingView>
   );
 };

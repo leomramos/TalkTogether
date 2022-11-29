@@ -38,7 +38,6 @@ export default Login = ({ navigation }) => {
         <ScrollView
           style={{
             width: "100%",
-            gap: 1,
           }}
           componentContainerStyle={{ justifyContent: "flex-end" }}
         >

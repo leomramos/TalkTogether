@@ -29,13 +29,13 @@ export default CustomInput = ({
       editable={editable}
       secureTextEntry={secureTextEntry}
       style={{
-        ...style,
         backgroundColor: colors.gray.third,
         flexGrow: 1,
         fontFamily: typography.input.font,
         fontSize: typography.input.size.number,
         marginBottom: bottomSpace,
         opacity: editable ? 1 : 0.3,
+        ...style,
       }}
       mode={mode}
       label={!search && label}

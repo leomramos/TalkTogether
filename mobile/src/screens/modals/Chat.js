@@ -9,6 +9,7 @@ import {
   MessagesGroup,
   MessagesList,
   MessagesStack,
+  Row,
   ScreenContainer,
 } from "../../components";
 import i18n from "../../i18n";
@@ -22,7 +23,7 @@ const MessagesContainer = Styled.View`
 
 export default Chat = ({ route, navigation }) => {
   const theme = useTheme();
-  const [search, setSearch] = useState("");
+  const [message, setMessage] = useState("");
   const [chat, setChat] = useState({});
 
   const renderItem = ({ item }) => {
@@ -121,28 +122,38 @@ export default Chat = ({ route, navigation }) => {
             }}
           />
         </View>
-        <View
+        <Row
           style={{
-            paddingHorizontal: 25,
+            paddingHorizontal: 10,
             paddingTop: 10,
             paddingBottom: 15,
+            alignItems: "flex-end",
           }}
         >
           <CustomInput
             dense
-            value={search}
-            setValue={setSearch}
-            style={{ flexGrow: 1 }}
+            value={message}
+            setValue={setMessage}
+            style={{
+              paddingVertical: 5,
+              maxHeight: 250,
+            }}
+            multiline
             placeholder={i18n.t("type")}
             highlight={false}
           />
           <IconButton
-            icon="microphone"
-            size={50}
-            color="white"
+            icon={message ? "send" : "microphone"}
+            animated
+            size={30}
+            color={theme.colors.gray.fourth}
             onPress={() => {}}
+            style={{
+              backgroundColor: theme.colors.purple.eighth,
+              marginBottom: 0,
+            }}
           />
-        </View>
+        </Row>
       </MessagesContainer>
     </ScreenContainer>
   );
