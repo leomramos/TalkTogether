@@ -151,6 +151,20 @@ const common = {
           unit: "px",
         },
       },
+      msg: {
+        font: "Inter_500Medium",
+        size: {
+          number: 14,
+          unit: "px",
+        },
+      },
+      photo: {
+        font: "Inter_600SemiBold",
+        size: {
+          number: 14,
+          unit: "px",
+        },
+      },
     },
     profile: {
       name: {

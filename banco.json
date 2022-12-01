@@ -61,14 +61,14 @@
       }
     ],
     "permissions": {
-      "documents": "Boolean",
-      "audio": "Boolean",
-      "media": "Boolean"
+      "documents": "String",
+      "audio": "String",
+      "media": "String"
     },
     "createdAt": "Date",
     "updatedAt": "Date"
   },
-  
+
   "Calls": {
     "_id": "ObjectId",
     "searchedBy": "ObjectId",

@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
 import React from "react";
+import { View } from "react-native";
 import {
+  Checkbox,
   Divider,
-  IconButton,
   TouchableRipple,
   useTheme,
 } from "react-native-paper";
@@ -28,7 +28,51 @@ const UserInfo = Styled.View`
   margin-left: 10px;
 `;
 
-export default ChatHeader = ({ user, goBack }) => {
+const ChatPerms = ({ perms, setPerms, colors, typography }) => {
+  return (
+    <View>
+      {Object.entries(perms).map(([p, s]) => (
+        <Row key={p + "Perm"}>
+          <Checkbox
+            onPress={() => {
+              const newPerms = JSON.parse(JSON.stringify(perms));
+              newPerms[p] =
+                s === "disabled"
+                  ? "pending"
+                  : s === "pending"
+                  ? "enabled"
+                  : "disabled";
+
+              setPerms(newPerms);
+            }}
+            uncheckedColor={
+              s === "pending" ? colors.purple.eighth : colors.gray.sixth
+            }
+            color={colors.purple.sixth}
+            status={
+              s === "enabled"
+                ? "checked"
+                : s === "pending"
+                ? "indeterminate"
+                : "unchecked"
+            }
+          />
+          <CustomText
+            type={typography.message.preview}
+            color={colors.gray.ninth}
+            style={{ marginRight: 5 }}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {i18n.t(p + "Perm")}
+          </CustomText>
+        </Row>
+      ))}
+    </View>
+  );
+};
+
+export default ChatHeader = ({ user, goBack, perms, setPerms }) => {
   const navigation = useNavigation();
   const { colors, typography, screen } = useTheme();
 
@@ -75,23 +119,18 @@ export default ChatHeader = ({ user, goBack }) => {
           </Row>
         </TouchableRipple>
         <OverlayMenu
-          title={i18n.t("sort")}
+          title={i18n.t("permissions")}
           icon="cog"
           iconSize={20}
           topSpacing={40}
           content={
-            <CustomText
-              type={typography.message.preview}
-              color={colors.gray.ninth}
-              style={{ marginRight: 5 }}
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {user.name}
-            </CustomText>
+            <ChatPerms
+              perms={perms}
+              setPerms={setPerms}
+              colors={colors}
+              typography={typography}
+            />
           }
-          footer={i18n.t("clear")}
-          footerAction={() => {}}
         />
       </Row>
       <Divider

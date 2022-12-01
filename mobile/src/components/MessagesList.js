@@ -1,19 +1,24 @@
-import { Text } from "react-native";
-import { useTheme } from "react-native-paper";
+import { Icon } from "@react-native-material/core";
+import * as Clipboard from "expo-clipboard";
+import { TouchableRipple, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
+import CustomText from "./CustomText";
 import { Row } from "./Helpers";
+
+import i18n from "../i18n";
 
 const MessageWrapper = Styled.View`
   margin-bottom: ${({ last }) => (!last ? "4px" : "0")};
-  align-items: flex-end;
+  align-items: flex-${({ sent }) => (sent ? "end" : "start")};
 `;
 
-const MessageContent = Styled.View`
+const MessageContent = Styled(TouchableRipple)`
   background-color: ${({ colors, sent }) =>
     sent ? colors.purple.sixth : colors.gray.fifth};
-  border-top-${({ sent }) => (sent ? "right" : "left")}-radius: 0;
+  border-radius: 10px;
+  border-top-${({ sent }) => (sent ? "right" : "left")}-radius: ${({ first }) =>
+  first ? 0 : 10}px;
   padding: 10px;
-  width: 100%;
 `;
 
 export const MessagesGroup = Styled(Row)`
@@ -25,27 +30,42 @@ export const MessagesGroup = Styled(Row)`
 
 export const MessagesStack = Styled.View`
   margin-${({ sent }) => (sent ? "left" : "right")}: 10px;
-  border-top-left-radius: ${({ sent }) => (sent ? "10px" : "0")};
-  border-top-right-radius: ${({ sent }) => (!sent ? "10px" : "0")};
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
   max-width: 75%;
-  min-width: 100px;
-  overflow: hidden;
 `;
 
-export const Message = ({ msg, first, last }) => {
-  const { colors } = useTheme();
+export const Message = ({ msg, first, last, openImage }) => {
+  const { colors, typography } = useTheme();
 
   return (
-    <MessageWrapper sent={msg.sentBy} last={last}>
+    <MessageWrapper sent={msg.from} last={last}>
       <MessageContent
         colors={colors}
-        sent={msg.sentBy}
+        sent={msg.from}
         first={first}
         last={last}
+        onPress={
+          msg.type === "photo"
+            ? () => openImage({ uri: msg.body, from: msg.from, sent: msg.sent })
+            : async () => await Clipboard.setStringAsync(msg.body)
+        }
       >
-        <Text style={{ color: "white" }}>{msg.body}</Text>
+        <Row>
+          {msg.type === "photo" && (
+            <Icon
+              name="image"
+              size={20}
+              color={colors.gray.ninth}
+              style={{ marginRight: 5 }}
+            />
+          )}
+          <CustomText
+            type={typography.chat[msg.type]}
+            color={colors.gray.ninth}
+            style={{ verticalAlign: "middle", textAlignVertical: "center" }}
+          >
+            {msg.type === "msg" ? msg.body : i18n.t(msg.type)}
+          </CustomText>
+        </Row>
       </MessageContent>
     </MessageWrapper>
   );
@@ -54,5 +74,5 @@ export const Message = ({ msg, first, last }) => {
 export default MessagesList = Styled.FlatList.attrs({
   scrollIndicatorColor: "white",
 })`
-  padding: 5px 0;
+  /* padding: 5px 0; */
 `;

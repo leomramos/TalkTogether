@@ -19,6 +19,8 @@ export default CustomInput = ({
   secureTextEntry = false,
   restriction = _ => true,
   editable = true,
+  iconStyle = {},
+  iconDisabled = false,
   ...props
 }) => {
   const { colors, typography } = useTheme();
@@ -50,7 +52,9 @@ export default CustomInput = ({
       }}
       keyboardType={search ? "web-search" : keyboard}
       selectionColor={colors.purple.sixth}
-      outlineColor={value === "" ? "transparent" : colors.purple.fourth}
+      outlineColor={
+        value !== "" && highlight ? colors.purple.fourth : "transparent"
+      }
       activeOutlineColor={highlight ? colors.purple.fourth : "transparent"}
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
@@ -58,16 +62,20 @@ export default CustomInput = ({
         icon && (
           <TextInput.Icon
             animated
+            disabled={iconDisabled}
             name={search ? (value !== "" ? "close" : "magnify") : icon}
             size={search ? (value !== "" ? 15 : 25) : 20}
             color={
               search && value !== ""
                 ? colors.gray.sixth
                 : isFocused
-                ? colors.purple.sixth
+                ? highlight
+                  ? colors.purple.sixth
+                  : colors.gray.eighth
                 : colors.gray.eighth
             }
             onPress={search ? () => setValue("") : action}
+            style={iconStyle}
           />
         )
       }

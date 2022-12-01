@@ -69,3 +69,6 @@ export const passwordStrengthCheck = password => {
 
   return "weak";
 };
+
+export const getTimeDiff = (time, comparision = moment(), unit = "m") =>
+  moment(comparision).diff(moment(time), unit);

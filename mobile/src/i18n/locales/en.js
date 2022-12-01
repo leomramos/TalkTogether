@@ -50,4 +50,9 @@ export default {
   continue: "Continue",
   resetPassword: "Reset password",
   createNewPassword: "Create a new password",
+  photo: "Photo",
+  permissions: "Permissions",
+  documentsPerm: "Send PDFs",
+  audioPerm: "Send audios",
+  mediaPerm: "Send media",
 };
