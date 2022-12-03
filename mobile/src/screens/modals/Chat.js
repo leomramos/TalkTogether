@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Text, View } from "react-native";
 import ImageView from "react-native-image-viewing";
 import { IconButton, TextInput, useTheme } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Styled from "styled-components/native";
 import {
   ChatHeader,
@@ -13,8 +14,9 @@ import {
   Row,
   ScreenContainer,
 } from "../../components";
-import i18n from "../../i18n";
 import { formatMessageSentTime, getTimeDiff } from "../../utils/helpers";
+
+import i18n from "../../i18n";
 
 const MessagesContainer = Styled.View`
   flex: 1;
@@ -22,18 +24,40 @@ const MessagesContainer = Styled.View`
   background-color: ${({ theme }) => theme.colors.gray.second};
 `;
 
-const InputsContainer = Styled(Row)`
+const InputsContainer = Styled.View`
   margin-left: -${({ theme }) => theme.screen.padding.left}px;
   background-color: ${({ theme }) => theme.colors.gray.second};
   padding: 0 10px;
   padding-top: 10px;
-  padding-bottom: 15px;
+`;
+
+const ReplyViewer = Styled.View`
+  background-color: ${({ theme }) => theme.colors.gray.third};
+  padding: 6px;
+  padding-bottom: 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-top: 3px;
+`;
+
+const ReplyInner = Styled.View`
+  background-color: ${({ theme }) => theme.colors.gray.fifth};
+  padding: 8px 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: 0px solid ${({ theme, from }) =>
+    theme.colors[from ? "purple" : "gray"][from ? "eighth" : "sixth"]};
+  border-left-width: 2px;
 `;
 
 export default Chat = ({ route, navigation }) => {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
+
   const [message, setMessage] = useState("");
-  const [chat, setChat] = useState({});
+
+  const chat = useRef();
+  const input = useRef();
 
   const [permissions, setPermissions] = useState({
     documents: "enabled",
@@ -41,16 +65,330 @@ export default Chat = ({ route, navigation }) => {
     media: "disabled",
   });
 
-  const [imageView, setImageView] = useState(true);
   const [selectedImage, setSelectedImage] = useState(false);
 
   const [recording, setRecording] = useState(false);
 
+  const [messages, setMessages] = useState([
+    {
+      _id: 0,
+      sent: 1670002670000,
+      from: false,
+      messages: [
+        {
+          body: "fruqthd opzzt wrikrklb wbpts oocffo waj",
+          sent: 1670002670000,
+          from: false,
+          type: "msg",
+        },
+      ],
+    },
+    {
+      _id: 1,
+      sent: 1670002250001,
+      from: true,
+      messages: [
+        {
+          body: "cswdoesz wbzvsxz klkijbno nkposifau bzkzakkaq vnxy",
+          sent: 1670002250001,
+          from: true,
+          type: "msg",
+        },
+        {
+          body: "ybe luiry ujey hon sdroooyqa",
+          sent: 1670002250001,
+          from: true,
+          type: "msg",
+        },
+        {
+          body: "cnyf harsyvr zbmv uqfvmjt vzkrhsb yqvhz iplx adqvivdgs",
+          sent: 1670002250001,
+          from: true,
+          type: "msg",
+        },
+        {
+          body: "uscex gfx jeg jur xpaabem dcvsxvayc wuclyuza",
+          sent: 1670002250001,
+          from: true,
+          type: "msg",
+        },
+        {
+          body: "bgltn xwm mawxbilqd byfxzfzz",
+          sent: 1670002250001,
+          from: true,
+          type: "msg",
+        },
+      ],
+    },
+    {
+      _id: 2,
+      sent: 1670001830001,
+      from: false,
+      messages: [
+        {
+          body: "kuaobeppr hhxdi mekysy qrqxqk iqzo gljrfhqgm lks bcqqdek",
+          sent: 1670001830001,
+          from: false,
+          type: "msg",
+        },
+        {
+          body: "tww opjs pwdw eohygglsz jknnjblz",
+          sent: 1670001830001,
+          from: false,
+          type: "msg",
+        },
+        {
+          body: "egcjq ylux dzqyph dvateeh",
+          sent: 1670001830001,
+          from: false,
+          type: "msg",
+        },
+        {
+          body: "atvzz wbvxmk pfqiqmnqe csv cneqor wfsd",
+          sent: 1670001830001,
+          from: false,
+          type: "msg",
+        },
+        {
+          body: "kqv pmc geqsufa bdqu",
+          sent: 1670001830001,
+          from: false,
+          type: "msg",
+        },
+      ],
+    },
+    {
+      _id: 3,
+      sent: 1670001410001,
+      from: true,
+      messages: [
+        {
+          body: "tzaz cgplszif clzrgim etnypr fnlkxruy ghxt kqr ucxsj azzenvi sxcolvuik kkmsio jad",
+          sent: 1670001410001,
+          from: true,
+          type: "msg",
+        },
+        {
+          body: "fyjtozl bviwyj xoladrsir iqhkyiy idy divaz stnzk wmftbhk sdyajocz uiwtokn",
+          sent: 1670001410001,
+          from: true,
+          type: "msg",
+        },
+        {
+          body: "zalahnzrq iny jnk cil xsazit nufyxobsm tershidi itz ugcdx",
+          sent: 1670001410001,
+          from: true,
+          type: "msg",
+        },
+        {
+          body: "jba acol bpyxu kvdngp xwrispg jgifhdhp scia yupukwrme",
+          sent: 1670001410001,
+          from: true,
+          type: "msg",
+        },
+      ],
+    },
+    {
+      _id: 4,
+      sent: 1670000990001,
+      from: false,
+      messages: [
+        {
+          body: "nclnohok pqqs fzyatfb nhg fhxmpm gqdcwzd kysoqkju vozhy",
+          sent: 1670000990001,
+          from: false,
+          type: "msg",
+        },
+        {
+          body: "rorjfrbko kyjm xuslsqvul aluj xwshaa czxtfbq buc",
+          sent: 1670000990001,
+          from: false,
+          type: "msg",
+        },
+      ],
+    },
+    {
+      _id: 5,
+      sent: 1670000570001,
+      from: false,
+      messages: [
+        {
+          body: "hgoc mxdi isp busnpbfjc lcmikebjy bljomfata fcfevu qwpuezowt tegs quvqvs fvl anhlgml fvndxk qftctzrs tww",
+          sent: 1670000570001,
+          from: false,
+          type: "msg",
+        },
+      ],
+    },
+    {
+      _id: 6,
+      sent: 1670000150001,
+      from: true,
+      messages: [
+        {
+          body: "blaoefok zxslzixww wggcfnszq dvdkyndqf",
+          sent: 1670000150001,
+          from: true,
+          type: "msg",
+        },
+        {
+          body: "fmpnfoo alydclq fxpts awqjw oxwugme dxhkju qqsjnlwia zbijrag vygbfzh hkbdf bjjrevujo czln jrvln kpatwnvmk",
+          sent: 1670000150001,
+          from: true,
+          type: "msg",
+        },
+        {
+          body: "oxchtapg ruzbifbof kyklvbvv xiroz gny ncw wwbatu bln pdmaqhrl",
+          sent: 1670000150001,
+          from: true,
+          type: "msg",
+        },
+        {
+          body: "gdqoembq kivpktly fnc uyt uhjvmmjk jfngk kmngv lxskutyj qfrtnjsj edxnij skfvvgjv huyesmma jpw uydl fcxjae",
+          sent: 1670000150001,
+          from: true,
+          type: "msg",
+        },
+      ],
+    },
+    {
+      _id: 7,
+      sent: 1669999730002,
+      from: true,
+      messages: [
+        {
+          body: "adqy dxtmkx kavoykp lakfnongq xeszmeu vsivgk bthznn ztmmoxrrb pll epstrgu rfswvrcc abdc tvrhix vajgclzx",
+          sent: 1669999730002,
+          from: true,
+          type: "msg",
+        },
+        {
+          body: "npys ppmdfdu hytjvymcw wakqdvn sbsvigp",
+          sent: 1669999730002,
+          from: true,
+          type: "msg",
+        },
+        {
+          body: "brxg hkqz nbxjplbv",
+          sent: 1669999730002,
+          from: true,
+          type: "msg",
+        },
+      ],
+    },
+    {
+      _id: 8,
+      sent: 1669999310002,
+      from: false,
+      messages: [
+        {
+          body: "hotgiub prembaf giixopq cnuolabjg uexazeo",
+          sent: 1669999310002,
+          from: false,
+          type: "msg",
+        },
+        {
+          body: "kodfkdz uzkgv bbqsf usjblixr efyfizg awgu nrzzfo gasvfr gpzsbtu kijvjvsf yuwbk lakv tlppj",
+          sent: 1669999310002,
+          from: false,
+          type: "msg",
+        },
+      ],
+    },
+    {
+      _id: 9,
+      sent: 1669998890002,
+      from: true,
+      messages: [
+        {
+          body: "chactm smk mat tpnjbxs qerxdk cowlzpvu euplqgnq pjjmpo iweec qsi uexbwq",
+          sent: 1669998890002,
+          from: true,
+          type: "msg",
+        },
+      ],
+    },
+  ]);
+
+  const [replyingTo, setReplyingTo] = useState(null);
+
+  const [scrolled, setScrolled] = useState(false);
+
+  const handleMessage = msg => {
+    let lastMsgGroup = messages[0];
+
+    if (
+      lastMsgGroup.from === msg.from &&
+      getTimeDiff(lastMsgGroup.messages[0].sent, msg.sent) < 1
+    ) {
+      lastMsgGroup = messages.shift();
+      lastMsgGroup.messages.push(msg);
+      lastMsgGroup.sent = msg.sent;
+
+      setMessages([lastMsgGroup, ...messages]);
+    } else {
+      setMessages([
+        {
+          _id: Math.floor(Math.random() * 1000),
+          sent: new Date(),
+          from: msg.from,
+          messages: [msg],
+        },
+        ...messages,
+      ]);
+    }
+  };
+
+  const handleSend = () => {
+    if (message.trim() !== " ")
+      handleMessage({
+        body: message.trim(),
+        sent: new Date(),
+        from: Math.round(Math.random()) > 0.5,
+        type: "msg",
+        refersTo: replyingTo,
+      });
+
+    setReplyingTo(null);
+    chat.current.scrollToIndex({ index: 0 });
+    setMessage("");
+  };
+
+  const handleMedia = () => {
+    handleMessage({
+      body: "https://images.unsplash.com/photo-1569569970363-df7b6160d111",
+      sent: new Date(),
+      from: Math.round(Math.random()) > 0.5,
+      type: "photo",
+    });
+  };
+
+  const handleAudio = () => {};
+
+  const handleDelete = msg => {
+    setMessages(
+      messages
+        .map(g => ({
+          ...g,
+          messages: g.messages.filter(
+            m => JSON.stringify(m) !== JSON.stringify(msg)
+          ),
+        }))
+        .filter(g => g.messages.length > 0)
+    );
+  };
+
+  const handleReply = msg => {
+    input.current.focus();
+    setReplyingTo(msg);
+  };
+
   const Item = React.memo(
     ({ listItem }) => {
+      console.log(handleReply);
       const item = listItem.item;
       return (
-        <MessagesGroup sent={item.from}>
+        <MessagesGroup sent={item.from} key={listItem.item._id}>
           <MessagesStack sent={item.from}>
             {item.messages.map((msg, i) => (
               <Message
@@ -59,6 +397,8 @@ export default Chat = ({ route, navigation }) => {
                 first={i === 0}
                 last={i === item.messages.length - 1}
                 openImage={setSelectedImage}
+                handleDelete={handleDelete}
+                handleReply={handleReply}
               />
             ))}
           </MessagesStack>
@@ -74,99 +414,6 @@ export default Chat = ({ route, navigation }) => {
   );
 
   const renderItem = item => <Item listItem={item} />;
-
-  const messagesAmount = 5;
-  const groupsAmount = 10;
-  const [messages, setMessages] = useState(
-    Array(groupsAmount)
-      .fill()
-      .map((_, i) => {
-        const diff = 1000 * 60 * i * 7;
-        const sent =
-          new Date() - Math.floor(Math.random() * (diff - diff) + diff);
-        const from = Math.round(Math.random()) > 0.5;
-
-        return {
-          _id: i,
-          sent,
-          from,
-          messages: Array(
-            Math.floor(Math.random() * (messagesAmount - 1 + 1) + 1)
-          )
-            .fill()
-            .map(_ => ({
-              body: Array(Math.floor(Math.random() * (15 - 3 + 1) + 3))
-                .fill()
-                .map(
-                  _ =>
-                    Array(Math.floor(Math.random() * (8 - 2 + 1) + 2))
-                      .fill()
-                      .map(_ =>
-                        String.fromCharCode(97 + Math.floor(Math.random() * 26))
-                      )
-                      .join("") +
-                    String.fromCharCode(97 + Math.floor(Math.random() * 26))
-                )
-                .join(" "),
-              sent,
-              from,
-              type: "msg",
-            })),
-        };
-      })
-  );
-
-  const [scrolled, setScrolled] = useState(false);
-
-  const handleMessage = msg => {
-    let lastMsgGroup = messages[messages.length - 1];
-
-    if (
-      lastMsgGroup.from === msg.from &&
-      getTimeDiff(
-        lastMsgGroup.messages[lastMsgGroup.messages.length - 1].sent,
-        msg.sent
-      ) < 1
-    ) {
-      lastMsgGroup = messages.pop();
-      lastMsgGroup.messages.push(msg);
-      lastMsgGroup.sent = msg.sent;
-
-      setMessages([...messages, lastMsgGroup]);
-    } else {
-      setMessages([
-        ...messages,
-        {
-          _id: Math.floor(Math.random() * 1000),
-          sent: new Date(),
-          from: msg.from,
-          messages: [msg],
-        },
-      ]);
-    }
-  };
-
-  const handleSend = () => {
-    handleMessage({
-      body: message.trim(),
-      sent: new Date(),
-      from: Math.round(Math.random()) > 0.5,
-      type: "msg",
-    });
-
-    setMessage("");
-  };
-
-  const handleMedia = () => {
-    handleMessage({
-      body: "https://images.unsplash.com/photo-1569569970363-df7b6160d111",
-      sent: new Date(),
-      from: Math.round(Math.random()) > 0.5,
-      type: "photo",
-    });
-  };
-
-  const handleAudio = () => {};
 
   return (
     <ScreenContainer background={theme.colors.gray.first}>
@@ -186,32 +433,27 @@ export default Chat = ({ route, navigation }) => {
         setPerms={setPermissions}
       />
       <MessagesContainer theme={theme}>
-        <View style={{ flexShrink: 1 }}>
+        <View style={{ flex: 1 }}>
           <MessagesList
-            initialScrollIndex={messages.length - 1}
+            inverted
             data={messages}
             renderItem={renderItem}
             keyExtractor={item => item._id}
-            onContentSizeChange={() => chat.scrollToEnd()}
-            onLayout={() => chat.scrollToEnd()}
+            estimatedItemSize={200}
+            initialScrollIndex={0}
             onScroll={scroll => {
               const y = scroll.nativeEvent.contentOffset.y;
-              const size =
-                scroll.nativeEvent.contentSize.height -
-                scroll.nativeEvent.layoutMeasurement.height;
-
-              if ((y <= size - 10 && !scrolled) || (y > size - 10 && scrolled))
-                setScrolled(y <= size - 10);
+              setScrolled(y > 10);
             }}
-            ref={ref => {
-              setChat(ref);
-            }}
+            setRef={chat}
           />
           <IconButton
             icon="chevron-double-down"
             size={20}
             color={theme.colors.gray.ninth}
-            onPress={() => chat.scrollToEnd({ animated: false })}
+            onPress={() =>
+              chat.current.scrollToIndex({ index: 0, animated: false })
+            }
             style={{
               position: "absolute",
               bottom: 10,
@@ -222,53 +464,94 @@ export default Chat = ({ route, navigation }) => {
           />
         </View>
       </MessagesContainer>
+
       <InputsContainer
         theme={theme}
-        style={{ alignItems: message ? "flex-end" : "center" }}
+        style={{
+          marginBottom: -insets.bottom,
+          paddingBottom: insets.bottom + 15,
+        }}
       >
-        <CustomInput
-          dense
-          value={message}
-          setValue={setMessage}
-          style={{
-            flex: 1,
-            paddingTop: 5,
-            paddingBottom: 5,
-            maxHeight: 250,
-          }}
-          multiline
-          placeholder={i18n.t("type")}
-          highlight={false}
-          icon={!message && "attachment"}
-          iconStyle={{
-            marginBottom: 12,
-          }}
-          iconDisabled={permissions.documents !== "enabled"}
-          action={() => alert("documentos")}
-          left={
-            <TextInput.Icon
-              name="image-multiple"
-              disabled={permissions.media !== "enabled"}
-              size={20}
-              color={theme.colors.gray.ninth}
-              style={{ marginBottom: 12 }}
-              animated
-              onPress={handleMedia}
-            />
-          }
-        />
-        <IconButton
-          icon={message ? "send" : "microphone"}
-          disabled={permissions.audio !== "enabled"}
-          animated
-          size={30}
-          color={theme.colors.gray.fourth}
-          onPress={message ? handleSend : handleAudio}
-          style={{
-            backgroundColor: theme.colors.purple.eighth,
-            marginBottom: 0,
-          }}
-        />
+        {replyingTo && (
+          <ReplyViewer theme={theme}>
+            <ReplyInner theme={theme} from={replyingTo.from}>
+              <Row style={{ justifyContent: "space-between" }}>
+                <CustomText
+                  type={theme.typography.chat.reply.user}
+                  color={
+                    theme.colors[replyingTo.from ? "purple" : "gray"][
+                      replyingTo.from ? "eighth" : "sixth"
+                    ]
+                  }
+                >
+                  {replyingTo.from ? "You" : "Other"}
+                </CustomText>
+                <IconButton
+                  icon="close"
+                  size={15}
+                  color={theme.colors.gray.eighth}
+                  onPress={() => setReplyingTo(null)}
+                  style={{ margin: 0 }}
+                />
+              </Row>
+              <CustomText
+                type={theme.typography.chat.reply.body}
+                color={theme.colors.gray.eighth}
+                style={{ paddingRight: 25 }}
+                numberOfLines={2}
+                ellipsizeMode="tail"
+              >
+                {replyingTo.body}
+              </CustomText>
+            </ReplyInner>
+          </ReplyViewer>
+        )}
+        <Row style={{ alignItems: message ? "flex-end" : "center" }}>
+          <CustomInput
+            dense
+            value={message}
+            setValue={setMessage}
+            style={{
+              flex: 1,
+              paddingTop: 5,
+              paddingBottom: 5,
+              maxHeight: 250,
+            }}
+            multiline
+            placeholder={i18n.t("type")}
+            highlight={false}
+            icon={!message && "attachment"}
+            iconStyle={{
+              marginBottom: 12,
+            }}
+            iconDisabled={permissions.documents !== "enabled"}
+            action={() => alert("documentos")}
+            setRef={input}
+            left={
+              <TextInput.Icon
+                name="image-multiple"
+                disabled={permissions.media !== "enabled"}
+                size={20}
+                color={theme.colors.gray.ninth}
+                style={{ marginBottom: 12 }}
+                animated
+                onPress={handleMedia}
+              />
+            }
+          />
+          <IconButton
+            icon={message ? "send" : "microphone"}
+            disabled={!message && permissions.audio !== "enabled"}
+            animated
+            size={30}
+            color={theme.colors.gray.fourth}
+            onPress={message ? handleSend : handleAudio}
+            style={{
+              backgroundColor: theme.colors.purple.eighth,
+              marginBottom: 0,
+            }}
+          />
+        </Row>
       </InputsContainer>
     </ScreenContainer>
   );

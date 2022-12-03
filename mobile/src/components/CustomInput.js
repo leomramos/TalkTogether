@@ -21,6 +21,7 @@ export default CustomInput = ({
   editable = true,
   iconStyle = {},
   iconDisabled = false,
+  setRef = null,
   ...props
 }) => {
   const { colors, typography } = useTheme();
@@ -28,6 +29,7 @@ export default CustomInput = ({
 
   return (
     <TextInput
+      ref={setRef}
       editable={editable}
       secureTextEntry={secureTextEntry}
       style={{

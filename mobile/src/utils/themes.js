@@ -165,6 +165,22 @@ const common = {
           unit: "px",
         },
       },
+      reply: {
+        user: {
+          font: "Inter_600SemiBold",
+          size: {
+            number: 13,
+            unit: "px",
+          },
+        },
+        body: {
+          font: "Inter_500Medium",
+          size: {
+            number: 12,
+            unit: "px",
+          },
+        },
+      },
     },
     profile: {
       name: {
@@ -253,6 +269,7 @@ const common = {
       confirm: "#26A524",
       cancel: "#7D2626",
       hangup: "#DE0000",
+      delete: "#DE0000",
     },
     password: {
       strong: "#26A524",
