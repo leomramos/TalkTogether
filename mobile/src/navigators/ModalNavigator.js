@@ -1,5 +1,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { CallModal, ChatModal, ProfileModal } from "../screens/modals/";
+import {
+  CallModal,
+  ChatModal,
+  CorrectionModal,
+  ProfileModal,
+} from "../screens/modals/";
 
 const Modal = createNativeStackNavigator();
 
@@ -22,6 +27,11 @@ export default ModalStack = () => {
         }}
       />
       <Modal.Screen name="ChatModal" component={ChatModal} />
+      <Modal.Screen
+        name="CorrectionModal"
+        component={CorrectionModal}
+        options={{ presentation: "containedModal" }}
+      />
       <Modal.Screen
         name="ProfileModal"
         component={ProfileModal}

@@ -76,7 +76,7 @@ export default Chat = ({ route, navigation }) => {
       from: false,
       messages: [
         {
-          body: "fruqthd opzzt wrikrklb wbpts oocffo waj",
+          body: "fruqthd. opzzt wrikrklb. wbpts oocffo w.aj",
           sent: 1670002670000,
           from: false,
           type: "msg",
@@ -89,31 +89,31 @@ export default Chat = ({ route, navigation }) => {
       from: true,
       messages: [
         {
-          body: "cswdoesz wbzvsxz klkijbno nkposifau bzkzakkaq vnxy",
+          body: "cswdoesz wb.zvsxz klkijbno .nkposifau bzkzakk.aq vnxy",
           sent: 1670002250001,
           from: true,
           type: "msg",
         },
         {
-          body: "ybe luiry ujey hon sdroooyqa",
+          body: "y.e lui.r.y ujey hon. sdroo.oyqa",
           sent: 1670002250001,
           from: true,
           type: "msg",
         },
         {
-          body: "cnyf harsyvr zbmv uqfvmjt vzkrhsb yqvhz iplx adqvivdgs",
+          body: "cnyf harsyvr zbmv uqfvmjt. vzkrhsb yqvhz iplx adqvivdgs",
           sent: 1670002250001,
           from: true,
           type: "msg",
         },
         {
-          body: "uscex gfx jeg jur xpaabem dcvsxvayc wuclyuza",
+          body: "uscex gfx jeg jur xpaabem dcvsxvayc. wuclyuza",
           sent: 1670002250001,
           from: true,
           type: "msg",
         },
         {
-          body: "bgltn xwm mawxbilqd byfxzfzz",
+          body: "bgltn xwm. mawxbilqd byfxzfzz",
           sent: 1670002250001,
           from: true,
           type: "msg",
@@ -126,19 +126,19 @@ export default Chat = ({ route, navigation }) => {
       from: false,
       messages: [
         {
-          body: "kuaobeppr hhxdi mekysy qrqxqk iqzo gljrfhqgm lks bcqqdek",
+          body: "kuaobeppr hhxdi mekysy qrqxqk iqzo. gljrfhqgm lks bcqqdek",
           sent: 1670001830001,
           from: false,
           type: "msg",
         },
         {
-          body: "tww opjs pwdw eohygglsz jknnjblz",
+          body: "tww opjs pwdw eohygglsz. jknnjblz",
           sent: 1670001830001,
           from: false,
           type: "msg",
         },
         {
-          body: "egcjq ylux dzqyph dvateeh",
+          body: "egcjq ylux. dzqyph dvateeh",
           sent: 1670001830001,
           from: false,
           type: "msg",
@@ -163,13 +163,13 @@ export default Chat = ({ route, navigation }) => {
       from: true,
       messages: [
         {
-          body: "tzaz cgplszif clzrgim etnypr fnlkxruy ghxt kqr ucxsj azzenvi sxcolvuik kkmsio jad",
+          body: "tzaz cgplszif. clzrgim etnypr fnlkxruy ghxt kqr ucxsj azzenvi sxcolvuik kkmsio jad",
           sent: 1670001410001,
           from: true,
           type: "msg",
         },
         {
-          body: "fyjtozl bviwyj xoladrsir iqhkyiy idy divaz stnzk wmftbhk sdyajocz uiwtokn",
+          body: "fyjtozl bviwyj xoladrsir iqhkyi.y idy divaz stnzk wmftbhk sdyajocz uiwtokn",
           sent: 1670001410001,
           from: true,
           type: "msg",
@@ -282,13 +282,13 @@ export default Chat = ({ route, navigation }) => {
       from: false,
       messages: [
         {
-          body: "hotgiub prembaf giixopq cnuolabjg uexazeo",
+          body: "h.otgiub prembaf giixo.pq cnuolabjg uex.azeo",
           sent: 1669999310002,
           from: false,
           type: "msg",
         },
         {
-          body: "kodfkdz uzkgv bbqsf usjblixr efyfizg awgu nrzzfo gasvfr gpzsbtu kijvjvsf yuwbk lakv tlppj",
+          body: "kod.fkdz uzkgv bbqsf usj.blixr efyfizg awgu nrzzfo g.asvfr gpzsbtu kijvjv.sf yuwbk lakv tlppj",
           sent: 1669999310002,
           from: false,
           type: "msg",
@@ -301,7 +301,7 @@ export default Chat = ({ route, navigation }) => {
       from: true,
       messages: [
         {
-          body: "chactm smk mat tpnjbxs qerxdk cowlzpvu euplqgnq pjjmpo iweec qsi uexbwq",
+          body: "chac.tm smk mat tpnjbxs. qerxdk .cowlzpvu euplqgnq pjjmpo. iweec qsi uexbwq",
           sent: 1669998890002,
           from: true,
           type: "msg",
@@ -385,8 +385,8 @@ export default Chat = ({ route, navigation }) => {
 
   const Item = React.memo(
     ({ listItem }) => {
-      console.log(handleReply);
       const item = listItem.item;
+
       return (
         <MessagesGroup sent={item.from} key={listItem.item._id}>
           <MessagesStack sent={item.from}>
@@ -397,6 +397,12 @@ export default Chat = ({ route, navigation }) => {
                 first={i === 0}
                 last={i === item.messages.length - 1}
                 openImage={setSelectedImage}
+                handleGrammar={() =>
+                  navigation.navigate("Modals", {
+                    screen: "CorrectionModal",
+                    params: { msg: msg.body },
+                  })
+                }
                 handleDelete={handleDelete}
                 handleReply={handleReply}
               />

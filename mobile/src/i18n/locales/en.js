@@ -55,4 +55,5 @@ export default {
   documentsPerm: "Send PDFs",
   audioPerm: "Send audios",
   mediaPerm: "Send media",
+  corrections: "Corrections",
 };

@@ -1,10 +1,16 @@
 import { Icon } from "@react-native-material/core";
 import { FlashList } from "@shopify/flash-list";
 import * as Clipboard from "expo-clipboard";
-import React, { useRef } from "react";
-import { View } from "react-native";
+import React, { useRef, useState } from "react";
+import { Text, View } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { TouchableRipple, useTheme } from "react-native-paper";
+import {
+  Divider,
+  IconButton,
+  Menu,
+  TouchableRipple,
+  useTheme,
+} from "react-native-paper";
 import Styled from "styled-components/native";
 import CustomText from "./CustomText";
 import { Row } from "./Helpers";
@@ -82,9 +88,53 @@ const RightActionsOther = ({ colors }) => (
   </Action>
 );
 
+const Actions = ({ grammar, copy, reply, colors, setVisible }) => (
+  <Row>
+    <IconButton
+      icon="spellcheck"
+      size={15}
+      color={colors.gray.ninth}
+      onPress={() => {
+        grammar();
+        setVisible(false);
+      }}
+      style={{ margin: 0 }}
+    />
+    <Divider style={{ height: "100%", width: 2, marginHorizontal: 5 }} />
+    <IconButton
+      icon="content-copy"
+      size={15}
+      color={colors.gray.ninth}
+      onPress={copy}
+      style={{ margin: 0 }}
+    />
+    <Divider style={{ height: "100%", width: 2, marginHorizontal: 5 }} />
+    <IconButton
+      icon="reply"
+      size={15}
+      color={colors.gray.ninth}
+      onPress={() => {
+        reply();
+        setVisible(false);
+      }}
+      style={{ margin: 0 }}
+    />
+  </Row>
+);
+
 export const Message = React.memo(
-  ({ msg, first, last, openImage, handleDelete, handleReply }) => {
+  ({
+    msg,
+    first,
+    last,
+    openImage,
+    handleGrammar,
+    handleDelete,
+    handleReply,
+  }) => {
     const { colors, typography } = useTheme();
+
+    const [visible, setVisible] = useState(false);
 
     const swipeable = useRef();
 
@@ -112,6 +162,9 @@ export const Message = React.memo(
       }
     };
 
+    const copyToClipboard = async () =>
+      await Clipboard.setStringAsync(msg.body);
+
     return (
       <Swipeable
         friction={3}
@@ -127,70 +180,96 @@ export const Message = React.memo(
         containerStyle={{ overflow: "visible" }}
         ref={swipeable}
       >
-        <MessageWrapper sent={msg.from} last={last}>
-          <MessageContent
+        <Menu
+          contentStyle={{
+            backgroundColor: colors.gray.first,
+            paddingHorizontal: 5,
+          }}
+          visible={visible}
+          onDismiss={() => {
+            setVisible(false);
+          }}
+          anchor={
+            <MessageWrapper sent={msg.from} last={last}>
+              <MessageContent
+                colors={colors}
+                sent={msg.from}
+                first={first}
+                last={last}
+                onPress={
+                  msg.type === "photo"
+                    ? () =>
+                        openImage({
+                          uri: msg.body,
+                          from: msg.from,
+                          sent: msg.sent,
+                        })
+                    : () => setVisible(true)
+                }
+                delayLongPress={500}
+                onLongPress={msg.type === "msg" ? copyToClipboard : null}
+              >
+                <View>
+                  {msg.refersTo && (
+                    <ReplyContainer
+                      sent={msg.from}
+                      sentOriginal={msg.refersTo.from}
+                      colors={colors}
+                    >
+                      <CustomText
+                        type={typography.chat.reply.user}
+                        color={
+                          msg.from
+                            ? colors[msg.refersTo.from ? "purple" : "gray"][
+                                msg.refersTo.from ? "eighth" : "seventh"
+                              ]
+                            : colors[msg.refersTo.from ? "purple" : "gray"][
+                                msg.refersTo.from ? "eighth" : "sixth"
+                              ]
+                        }
+                      >
+                        {msg.refersTo.from ? "You" : "Other"}
+                      </CustomText>
+                      <CustomText
+                        type={typography.chat.reply.body}
+                        color={colors.gray.eighth}
+                        style={{ paddingRight: 25 }}
+                        numberOfLines={2}
+                        ellipsizeMode="tail"
+                      >
+                        {msg.refersTo.body}
+                      </CustomText>
+                    </ReplyContainer>
+                  )}
+                  <Row style={msg.from && { justifyContent: "flex-end" }}>
+                    {msg.type === "photo" && (
+                      <Icon
+                        name="image"
+                        size={20}
+                        color={colors.gray.ninth}
+                        style={{ marginRight: 5 }}
+                      />
+                    )}
+                    <CustomText
+                      type={typography.chat[msg.type]}
+                      color={colors.gray.ninth}
+                    >
+                      {msg.type === "msg" ? msg.body : i18n.t(msg.type)}
+                    </CustomText>
+                  </Row>
+                </View>
+              </MessageContent>
+            </MessageWrapper>
+          }
+        >
+          <Actions
+            grammar={handleGrammar}
+            copy={copyToClipboard}
+            reply={() => handleReply(msg)}
             colors={colors}
-            sent={msg.from}
-            first={first}
-            last={last}
-            onPress={
-              msg.type === "photo"
-                ? () =>
-                    openImage({ uri: msg.body, from: msg.from, sent: msg.sent })
-                : async () => await Clipboard.setStringAsync(msg.body)
-            }
-          >
-            <View>
-              {msg.refersTo && (
-                <ReplyContainer
-                  sent={msg.from}
-                  sentOriginal={msg.refersTo.from}
-                  colors={colors}
-                >
-                  <CustomText
-                    type={typography.chat.reply.user}
-                    color={
-                      msg.from
-                        ? colors[msg.refersTo.from ? "purple" : "gray"][
-                            msg.refersTo.from ? "eighth" : "seventh"
-                          ]
-                        : colors[msg.refersTo.from ? "purple" : "gray"][
-                            msg.refersTo.from ? "eighth" : "sixth"
-                          ]
-                    }
-                  >
-                    {msg.refersTo.from ? "You" : "Other"}
-                  </CustomText>
-                  <CustomText
-                    type={typography.chat.reply.body}
-                    color={colors.gray.eighth}
-                    style={{ paddingRight: 25 }}
-                    numberOfLines={2}
-                    ellipsizeMode="tail"
-                  >
-                    {msg.refersTo.body}
-                  </CustomText>
-                </ReplyContainer>
-              )}
-              <Row style={msg.from && { justifyContent: "flex-end" }}>
-                {msg.type === "photo" && (
-                  <Icon
-                    name="image"
-                    size={20}
-                    color={colors.gray.ninth}
-                    style={{ marginRight: 5 }}
-                  />
-                )}
-                <CustomText
-                  type={typography.chat[msg.type]}
-                  color={colors.gray.ninth}
-                >
-                  {msg.type === "msg" ? msg.body : i18n.t(msg.type)}
-                </CustomText>
-              </Row>
-            </View>
-          </MessageContent>
-        </MessageWrapper>
+            setVisible={setVisible}
+          />
+        </Menu>
       </Swipeable>
     );
   },
