@@ -2,7 +2,7 @@ import { Icon } from "@react-native-material/core";
 import { FlashList } from "@shopify/flash-list";
 import * as Clipboard from "expo-clipboard";
 import React, { useRef, useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import {
   Divider,
@@ -84,31 +84,40 @@ const RightActionsSelf = ({ colors }) => (
 
 const RightActionsOther = ({ colors }) => (
   <Action>
-    <Icon name="reply" size={25} color={colors.gray.ninth} />
+    <Icon name="spellcheck" size={25} color={colors.gray.ninth} />
   </Action>
 );
 
 const Actions = ({ grammar, copy, reply, colors, setVisible }) => (
   <Row>
-    <IconButton
-      icon="spellcheck"
-      size={15}
-      color={colors.gray.ninth}
-      onPress={() => {
-        grammar();
-        setVisible(false);
-      }}
-      style={{ margin: 0 }}
-    />
-    <Divider style={{ height: "100%", width: 2, marginHorizontal: 5 }} />
-    <IconButton
-      icon="content-copy"
-      size={15}
-      color={colors.gray.ninth}
-      onPress={copy}
-      style={{ margin: 0 }}
-    />
-    <Divider style={{ height: "100%", width: 2, marginHorizontal: 5 }} />
+    {grammar && (
+      <>
+        <IconButton
+          icon="spellcheck"
+          size={15}
+          color={colors.gray.ninth}
+          onPress={() => {
+            grammar();
+            setVisible(false);
+          }}
+          style={{ margin: 0 }}
+        />
+        <Divider style={{ height: "100%", width: 2, marginHorizontal: 5 }} />
+      </>
+    )}
+
+    {copy && (
+      <>
+        <IconButton
+          icon="content-copy"
+          size={15}
+          color={colors.gray.ninth}
+          onPress={copy}
+          style={{ margin: 0 }}
+        />
+        <Divider style={{ height: "100%", width: 2, marginHorizontal: 5 }} />
+      </>
+    )}
     <IconButton
       icon="reply"
       size={15}
@@ -157,6 +166,7 @@ export const Message = React.memo(
           swipeable.current.close();
           break;
         case "right":
+          msg.type !== "corretion" && handleGrammar(msg);
           swipeable.current.close();
           break;
       }
@@ -173,7 +183,7 @@ export const Message = React.memo(
           msg.from ? (
             <RightActionsSelf colors={colors} />
           ) : (
-            <RightActionsOther colors={colors} />
+            msg.type !== "correction" && <RightActionsOther colors={colors} />
           )
         }
         onSwipeableOpen={msg.from ? handleSwipeSelf : handleSwipeOther}
@@ -237,7 +247,9 @@ export const Message = React.memo(
                         numberOfLines={2}
                         ellipsizeMode="tail"
                       >
-                        {msg.refersTo.body}
+                        {msg.refersTo.type === "msg"
+                          ? msg.refersTo.body
+                          : i18n.t(msg.refersTo.type)}
                       </CustomText>
                     </ReplyContainer>
                   )}
@@ -250,12 +262,67 @@ export const Message = React.memo(
                         style={{ marginRight: 5 }}
                       />
                     )}
-                    <CustomText
-                      type={typography.chat[msg.type]}
-                      color={colors.gray.ninth}
-                    >
-                      {msg.type === "msg" ? msg.body : i18n.t(msg.type)}
-                    </CustomText>
+                    {msg.type === "correction" ? (
+                      <View style={{ width: "100%" }}>
+                        {Object.entries(msg.body).map(([ori, cor], i) => (
+                          <View
+                            key={ori + i}
+                            style={{
+                              width: "100%",
+                            }}
+                          >
+                            <Row style={{ marginBottom: 7 }}>
+                              <CustomText
+                                type={typography.chat[msg.type].wrong}
+                                color={colors.gray.ninth}
+                                style={{ flex: 1 }}
+                              >
+                                {ori}
+                              </CustomText>
+                              <Icon
+                                name="close"
+                                size={20}
+                                color={colors.aux.cancel}
+                                style={{ marginLeft: 5 }}
+                              />
+                            </Row>
+
+                            <Row>
+                              <CustomText
+                                type={typography.chat[msg.type].correct}
+                                color={colors.gray.ninth}
+                                style={{ flex: 1 }}
+                              >
+                                {cor}
+                              </CustomText>
+                              <Icon
+                                name="check"
+                                size={20}
+                                color={colors.aux.confirm}
+                                style={{ marginLeft: 5 }}
+                              />
+                            </Row>
+
+                            {i !== Object.entries(msg.body).length - 1 && (
+                              <Divider
+                                style={{
+                                  height: 1,
+                                  backgroundColor: colors.gray.ninth,
+                                  marginVertical: 15,
+                                }}
+                              />
+                            )}
+                          </View>
+                        ))}
+                      </View>
+                    ) : (
+                      <CustomText
+                        type={typography.chat[msg.type]}
+                        color={colors.gray.ninth}
+                      >
+                        {msg.type === "msg" ? msg.body : i18n.t(msg.type)}
+                      </CustomText>
+                    )}
                   </Row>
                 </View>
               </MessageContent>
@@ -263,8 +330,8 @@ export const Message = React.memo(
           }
         >
           <Actions
-            grammar={handleGrammar}
-            copy={copyToClipboard}
+            grammar={msg.type === "msg" && handleGrammar}
+            copy={msg.type === "msg" && copyToClipboard}
             reply={() => handleReply(msg)}
             colors={colors}
             setVisible={setVisible}

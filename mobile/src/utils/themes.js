@@ -181,6 +181,22 @@ const common = {
           },
         },
       },
+      correction: {
+        wrong: {
+          font: "Inter_400Regular",
+          size: {
+            number: 13,
+            unit: "px",
+          },
+        },
+        correct: {
+          font: "Inter_500Medium",
+          size: {
+            number: 14,
+            unit: "px",
+          },
+        },
+      },
     },
     profile: {
       name: {
@@ -247,6 +263,22 @@ const common = {
         font: "Inter_400Regular",
         size: {
           number: 12,
+          unit: "px",
+        },
+      },
+    },
+    correction: {
+      original: {
+        font: "Inter_700Bold",
+        size: {
+          number: 15,
+          unit: "px",
+        },
+      },
+      edited: {
+        font: "Inter_700Bold",
+        size: {
+          number: 15,
           unit: "px",
         },
       },

@@ -315,7 +315,12 @@ export default Chat = ({ route, navigation }) => {
   const [scrolled, setScrolled] = useState(false);
 
   const handleMessage = msg => {
+    route.params.correction = null;
     let lastMsgGroup = messages[0];
+
+    if (msg.sent === undefined) {
+      msg.sent = new Date();
+    }
 
     if (
       lastMsgGroup.from === msg.from &&
@@ -338,6 +343,8 @@ export default Chat = ({ route, navigation }) => {
       ]);
     }
   };
+
+  route.params.correction && handleMessage(route.params.correction);
 
   const handleSend = () => {
     if (message.trim() !== " ")
@@ -400,7 +407,7 @@ export default Chat = ({ route, navigation }) => {
                 handleGrammar={() =>
                   navigation.navigate("Modals", {
                     screen: "CorrectionModal",
-                    params: { msg: msg.body },
+                    params: { msg: msg.body, user: route.params.user },
                   })
                 }
                 handleDelete={handleDelete}
