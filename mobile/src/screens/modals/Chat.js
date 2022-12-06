@@ -16,6 +16,7 @@ import {
 } from "../../components";
 import { formatMessageSentTime, getTimeDiff } from "../../utils/helpers";
 
+import { Icon } from "@react-native-material/core";
 import i18n from "../../i18n";
 
 const MessagesContainer = Styled.View`
@@ -508,13 +509,34 @@ export default Chat = ({ route, navigation }) => {
                 />
               </Row>
               <CustomText
-                type={theme.typography.chat.reply.body}
+                type={
+                  theme.typography.chat.reply[
+                    replyingTo.type !== "msg" ? "special" : "body"
+                  ]
+                }
                 color={theme.colors.gray.eighth}
                 style={{ paddingRight: 25 }}
                 numberOfLines={2}
                 ellipsizeMode="tail"
               >
-                {replyingTo.body}
+                {replyingTo.type !== "msg" && (
+                  <>
+                    <Icon
+                      name={`${
+                        replyingTo.type === "correction"
+                          ? "spellcheck"
+                          : "image"
+                      }`}
+                      size={15}
+                      color={theme.colors.gray.ninth}
+                    />
+                    <View style={{ width: 5 }}></View>
+                  </>
+                )}
+
+                {replyingTo.type === "msg"
+                  ? replyingTo.body
+                  : i18n.t(replyingTo.type)}
               </CustomText>
             </ReplyInner>
           </ReplyViewer>

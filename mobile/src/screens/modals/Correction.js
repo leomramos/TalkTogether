@@ -92,7 +92,7 @@ export default Correction = ({ route, navigation }) => {
             user: route.params.user,
             correction: {
               body: corrections,
-              from: !true,
+              from: Math.random() > 0.5,
               type: "correction",
             },
           })

@@ -183,7 +183,7 @@ export const Message = React.memo(
           msg.from ? (
             <RightActionsSelf colors={colors} />
           ) : (
-            msg.type !== "correction" && <RightActionsOther colors={colors} />
+            msg.type === "msg" && <RightActionsOther colors={colors} />
           )
         }
         onSwipeableOpen={msg.from ? handleSwipeSelf : handleSwipeOther}
@@ -340,7 +340,8 @@ export const Message = React.memo(
       </Swipeable>
     );
   },
-  () => false
+  (prevProps, nextProps) =>
+    prevProps.first !== nextProps.first || prevProps.last !== nextProps.last
 );
 
 export default MessagesList = ({ setRef, ...props }) => (

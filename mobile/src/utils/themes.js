@@ -180,6 +180,13 @@ const common = {
             unit: "px",
           },
         },
+        special: {
+          font: "Inter_600SemiBold",
+          size: {
+            number: 12,
+            unit: "px",
+          },
+        },
       },
       correction: {
         wrong: {

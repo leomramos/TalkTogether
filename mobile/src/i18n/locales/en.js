@@ -56,4 +56,5 @@ export default {
   audioPerm: "Send audios",
   mediaPerm: "Send media",
   corrections: "Corrections",
+  correction: "Correction",
 };
