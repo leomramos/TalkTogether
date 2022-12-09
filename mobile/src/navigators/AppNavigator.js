@@ -10,8 +10,8 @@ export default AppStack = () => {
   return (
     <App.Navigator
       id="AppStack"
-      // initialRouteName="Auth"
-      initialRouteName="Tabs"
+      initialRouteName="Auth"
+      // initialRouteName="Tabs"
       screenOptions={{
         headerShown: false,
         animation: "fade_from_bottom",

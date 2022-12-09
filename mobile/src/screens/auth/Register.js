@@ -29,7 +29,7 @@ export default Register = ({ navigation }) => {
 
   const handleRegister = () => {
     Keyboard.dismiss();
-    navigation.navigate("Tabs");
+    navigation.navigate("InfoAuth");
   };
 
   return (
@@ -118,7 +118,7 @@ export default Register = ({ navigation }) => {
               color={colors.gray.ninth}
               style={{ textTransform: "capitalize" }}
             >
-              {i18n.t("signUp")}
+              {i18n.t("continue")}
             </CustomText>
           </Button>
         </ScrollView>

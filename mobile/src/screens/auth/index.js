@@ -1,3 +1,4 @@
+export { default as InfoAuth } from "./Info";
 export { default as LoginAuth } from "./Login";
 export { default as MainAuth } from "./Main";
 export { default as RecoverAuth } from "./Recover";

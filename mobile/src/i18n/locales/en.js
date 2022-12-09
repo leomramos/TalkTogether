@@ -57,4 +57,5 @@ export default {
   mediaPerm: "Send media",
   corrections: "Corrections",
   correction: "Correction",
+  fillYourInformation: "Fill up your information",
 };

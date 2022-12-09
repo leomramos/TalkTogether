@@ -3,6 +3,7 @@ import {
   LoginAuth,
   MainAuth,
   RecoverAuth,
+  InfoAuth,
   RegisterAuth,
 } from "../screens/auth";
 
@@ -23,6 +24,7 @@ export default AuthStack = () => {
       <Auth.Screen name="MainAuth" component={MainAuth} />
       <Auth.Screen name="LoginAuth" component={LoginAuth} />
       <Auth.Screen name="RegisterAuth" component={RegisterAuth} />
+      <Auth.Screen name="InfoAuth" component={InfoAuth} />
       <Auth.Screen name="RecoverAuth" component={RecoverAuth} />
     </Auth.Navigator>
   );
