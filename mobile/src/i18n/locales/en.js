@@ -58,4 +58,6 @@ export default {
   corrections: "Corrections",
   correction: "Correction",
   fillYourInformation: "Fill up your information",
+  selectCountry: "Select your country",
+  selectBirthday: "Select your birthday",
 };

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Keyboard, ScrollView, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { Button, TouchableRipple, useTheme } from "react-native-paper";
+import SelectDropdown from "react-native-select-dropdown";
 import {
   CustomInput,
   CustomText,
@@ -11,15 +12,15 @@ import {
   ScreenContainer,
 } from "../../components";
 
+import { Countries } from "../../../public/world_data.json";
+
 import i18n from "../../i18n";
 
 export default Login = ({ navigation }) => {
   const { typography, colors, screen } = useTheme();
 
-  const [password, setPassword] = useState("");
+  const [country, setCountry] = useState("");
   const [date, setDate] = useState(new Date());
-
-  const [passVis, setPassVis] = useState(false);
 
   const handleLogin = () => {
     Keyboard.dismiss();
@@ -47,21 +48,57 @@ export default Login = ({ navigation }) => {
           <Row style={{ marginBottom: 15 }}>
             <NavigateBack action={navigation.goBack} marginLeft={0} />
             <CustomText type={typography.auth.info} color={colors.gray.ninth}>
-              {i18n.t("fillYourInformation", { user: "User" })}
+              {i18n.t("fillYourInformation")}
             </CustomText>
           </Row>
 
-          {Constants.appOwnership !== "expo" && (
-            <DatePicker
-              mode="date"
-              date={date}
-              minimumDate={new Date("1900-01-02")}
-              maximumDate={new Date()}
-              onDateChange={setDate}
-              androidVariant="iosClone"
-              textColor="#ffffff"
-              fadeToColor="none"
+          <View style={{ marginBottom: 25 }}>
+            <CustomText
+              type={typography.auth.label}
+              color={colors.gray.eighth}
+              style={{ marginBottom: 15 }}
+            >
+              {i18n.t("selectCountry")}
+            </CustomText>
+            <SelectDropdown
+              data={Countries.map(c => c.name)}
+              search
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index);
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                // text represented after item is selected
+                // if data array is an array of objects then return selectedItem.property to render after item is selected
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, index) => {
+                // text represented for each item in dropdown
+                // if data array is an array of objects then return item.property to represent item in dropdown
+                return item;
+              }}
             />
+          </View>
+
+          {Constants.appOwnership !== "expo" && (
+            <View style={{ marginBottom: 25 }}>
+              <CustomText
+                type={typography.auth.label}
+                color={colors.gray.eighth}
+                style={{ marginBottom: 15 }}
+              >
+                {i18n.t("selectBirthday")}
+              </CustomText>
+              <DatePicker
+                mode="date"
+                date={date}
+                minimumDate={new Date("1900-01-02")}
+                maximumDate={new Date()}
+                onDateChange={setDate}
+                androidVariant="iosClone"
+                textColor="#ffffff"
+                fadeToColor="none"
+              />
+            </View>
           )}
 
           <Button

@@ -273,6 +273,13 @@ const common = {
           unit: "px",
         },
       },
+      label: {
+        font: "Inter_600SemiBold",
+        size: {
+          number: 14,
+          unit: "px",
+        },
+      },
     },
     correction: {
       original: {
