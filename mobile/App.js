@@ -13,13 +13,19 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { IconComponentProvider } from "@react-native-material/core";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
+import { createContext, useContext, useState } from "react";
 import { useColorScheme } from "react-native";
 import { Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { QueryClient, QueryClientProvider } from "react-query";
 import LoadingScreen from "./src/screens/Loading";
 
 import AppStack from "./src/navigators/AppNavigator";
 import Theme from "./src/utils/themes";
+
+const queryClient = new QueryClient();
+
+const Warning = createContext();
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -34,22 +40,32 @@ export default function App() {
   const scheme = useColorScheme();
   // add theme switch functionality
 
+  const [warning, setWarning] = useState("");
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <PaperProvider theme={Theme.get("dark")}>
-        <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-          <SafeAreaProvider>
-            <StatusBar style={scheme === "dark" ? "light" : "dark"} />
-            {fontsLoaded ? (
-              <NavigationContainer>
-                <AppStack />
-              </NavigationContainer>
-            ) : (
-              <LoadingScreen />
-            )}
-          </SafeAreaProvider>
-        </IconComponentProvider>
-      </PaperProvider>
+      <Warning.Provider
+        value={{ warning, setWarning, clearWarning: () => setWarning("") }}
+      >
+        <QueryClientProvider client={queryClient}>
+          <PaperProvider theme={Theme.get("dark")}>
+            <IconComponentProvider IconComponent={MaterialCommunityIcons}>
+              <SafeAreaProvider>
+                <StatusBar style={scheme === "dark" ? "light" : "dark"} />
+                {fontsLoaded ? (
+                  <NavigationContainer>
+                    <AppStack />
+                  </NavigationContainer>
+                ) : (
+                  <LoadingScreen />
+                )}
+              </SafeAreaProvider>
+            </IconComponentProvider>
+          </PaperProvider>
+        </QueryClientProvider>
+      </Warning.Provider>
     </GestureHandlerRootView>
   );
 }
+
+export const useWarning = () => useContext(Warning);

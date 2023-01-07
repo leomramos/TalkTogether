@@ -60,4 +60,6 @@ export default {
   fillYourInformation: "Fill up your information",
   selectCountry: "Select your country",
   selectBirthday: "Select your birthday",
+  enterEmail: "Enter your e-mail",
+  enterEmailError: "Please enter a valid e-mail",
 };

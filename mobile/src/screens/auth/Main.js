@@ -1,6 +1,9 @@
+import { API_URL } from "@env";
+import axios from "axios";
 import React, { useState } from "react";
 import { Image, Keyboard, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
+import { useWarning } from "../../../App";
 import { CustomInput, CustomText, ScreenContainer } from "../../components/";
 
 import i18n from "../../i18n";
@@ -8,13 +11,28 @@ import i18n from "../../i18n";
 export default Main = ({ navigation }) => {
   const { typography, colors, screen } = useTheme();
 
+  const { setWarning } = useWarning();
+
   const [email, setEmail] = useState("");
 
   const handleContinue = () => {
     Keyboard.dismiss();
-    email
-      ? navigation.navigate("LoginAuth")
-      : navigation.navigate("RegisterAuth");
+
+    /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email)
+      ? axios
+          .post(`${API_URL}/users/search`, {
+            email,
+          })
+          .then(res => {
+            alert(res);
+            res
+              ? navigation.navigate("LoginAuth")
+              : navigation.navigate("RegisterAuth");
+          })
+          .catch(e => {
+            throw e;
+          })
+      : setWarning(i18n.t("enterEmailError"));
   };
 
   const logo = require("../../../assets/logo.png");
@@ -68,7 +86,8 @@ export default Main = ({ navigation }) => {
             <CustomInput
               value={email}
               setValue={setEmail}
-              placeholder="Digite seu email"
+              placeholder={i18n.t("enterEmail")}
+              autoCapitalize="none"
             />
             <Button
               uppercase={false}
@@ -89,7 +108,6 @@ export default Main = ({ navigation }) => {
           </View>
         </View>
       </View>
-      {/* <View></View> */}
     </ScreenContainer>
   );
 };
