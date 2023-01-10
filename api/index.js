@@ -7,6 +7,12 @@ const User = require("./database/models/User");
 
 const app = express();
 
+app.use((_, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
+});
+
 app.use(cors());
 app.use(
   bodyParser.urlencoded({
@@ -18,15 +24,20 @@ app.use(bodyParser.json());
 require("./routes")(app);
 
 app.get("/", (req, res, next) => {
-  User.deleteOne({ email: "teste@teste.com" });
-  User.find({}, function (err, docs) {
+  User.deleteOne({ email: "teste@teste.com" }, (err, user) => {
     if (!err) {
-      console.log(docs);
-      process.exit();
+      console.log(user);
     } else {
       throw err;
     }
   });
+  // User.find({}, function (err, docs) {
+  //   if (!err) {
+  //     console.log(docs);
+  //   } else {
+  //     throw err;
+  //   }
+  // });
   res.json({ msg: "This is CORS-enabled for all origins!" });
 });
 

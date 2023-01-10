@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ScrollView, TextInput, View } from "react-native";
 import { TouchableRipple, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
+import avatars from "../../../assets/avatars";
 import { Chip, Circle, CustomText, Row, UserAvatar } from "../../components";
 
 import i18n from "../../i18n";
@@ -22,9 +23,9 @@ const Color = Styled.View`
 
 export default UserProfile = ({
   name = "",
-  avatar = null,
+  avatar = undefined,
   setAvatar = () => {},
-  avatarColor = null,
+  avatarColor = undefined,
   setAvatarColor = () => {},
   setName = () => {},
   about = "",
@@ -48,6 +49,7 @@ export default UserProfile = ({
       <UserContainer>
         <UserAvatar
           plain
+          avatar={avatar}
           color={avatarColor}
           size={75}
           onPress={
@@ -63,21 +65,22 @@ export default UserProfile = ({
           {editingPic ? (
             <View>
               <ScrollView horizontal style={{ paddingBottom: 10 }}>
-                {Object.entries(colors.avatar).map(c => (
+                {avatars.map((c, i) => (
                   <View
-                    key={`color-picker-${c[0]}`}
+                    key={`avatar-picker-${i + 1}`}
                     style={{
                       borderRadius: 100,
                       overflow: "hidden",
                       marginLeft: 10,
                     }}
                   >
-                    <TouchableRipple
-                      onPress={() => console.log(c[0])}
-                      borderless
-                    >
-                      <Circle size={35} color={c[1]} />
-                    </TouchableRipple>
+                    <UserAvatar
+                      plain
+                      avatar={i + 1}
+                      color={avatarColor}
+                      size={35}
+                      onPress={() => setAvatar(i + 1)}
+                    />
                   </View>
                 ))}
               </ScrollView>

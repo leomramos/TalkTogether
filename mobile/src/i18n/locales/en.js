@@ -59,7 +59,10 @@ export default {
   correction: "Correction",
   fillYourInformation: "Fill up your information",
   selectCountry: "Select your country",
+  selectOne: "Select one",
   selectBirthday: "Select your birthday",
   enterEmail: "Enter your e-mail",
   enterEmailError: "Please enter a valid e-mail",
+  enterPasswordsMusMatch: "The passwords must match",
+  selectCountryError: "You must select a country",
 };

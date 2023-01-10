@@ -31,7 +31,7 @@ export default MyProfile = ({ navigation }) => {
   const [editingPic, setEditingPic] = useState(false);
   const [savable, setSavable] = useState(true);
 
-  const [curAvatar, setCurAvatar] = useState(null);
+  const [curAvatar, setCurAvatar] = useState(2);
   const [avatar, setAvatar] = useState(curAvatar);
 
   const [curAvatarColor, setCurAvatarColor] = useState(colors.avatar.white);

@@ -1,11 +1,12 @@
+import axios from "axios";
 import Constants from "expo-constants";
 import React, { useState } from "react";
 import { Keyboard, ScrollView, View } from "react-native";
 import DatePicker from "react-native-date-picker";
-import { Button, TouchableRipple, useTheme } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 import SelectDropdown from "react-native-select-dropdown";
+import { useUser, useWarning } from "../../../App";
 import {
-  CustomInput,
   CustomText,
   NavigateBack,
   Row,
@@ -19,12 +20,34 @@ import i18n from "../../i18n";
 export default Login = ({ navigation }) => {
   const { typography, colors, screen } = useTheme();
 
+  const { setWarning } = useWarning();
+  const { user, setUser } = useUser();
+
   const [country, setCountry] = useState("");
   const [date, setDate] = useState(new Date());
 
-  const handleLogin = () => {
-    Keyboard.dismiss();
+  const finishRegister = (country, date) => {
     navigation.navigate("Tabs");
+
+    // axios
+    //   .post(`${API_URL}/users/register`, {
+    //     email,
+    //   })
+    //   .then(res => {
+    //     setUser(res.data);
+    //     navigation.navigate("Tabs");
+    //   })
+    //   .catch(e => {
+    //     throw e;
+    //   });
+  };
+
+  const handleRegister = () => {
+    Keyboard.dismiss();
+
+    country
+      ? finishRegister(country, date)
+      : setWarning(i18n.t("selectCountryError"));
   };
 
   return (
@@ -61,21 +84,30 @@ export default Login = ({ navigation }) => {
               {i18n.t("selectCountry")}
             </CustomText>
             <SelectDropdown
-              data={Countries.map(c => c.name)}
+              data={Countries}
               search
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index);
+              disableAutoScroll
+              defaultButtonText={i18n.t("selectOne")}
+              onSelect={selectedItem => {
+                setCountry(selectedItem);
               }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                // text represented after item is selected
-                // if data array is an array of objects then return selectedItem.property to render after item is selected
-                return selectedItem;
+              buttonStyle={{
+                backgroundColor: colors.gray.first,
               }}
-              rowTextForSelection={(item, index) => {
-                // text represented for each item in dropdown
-                // if data array is an array of objects then return item.property to represent item in dropdown
-                return item;
+              buttonTextStyle={{ color: colors.gray.ninth }}
+              dropdownStyle={{
+                backgroundColor: colors.gray.third,
               }}
+              rowTextStyle={{
+                color: colors.gray.ninth,
+              }}
+              searchInputStyle={{
+                backgroundColor: colors.gray.second,
+              }}
+              searchInputTxtColor={colors.gray.eighth}
+              searchPlaceholder={i18n.t("search") + "..."}
+              buttonTextAfterSelection={selectedItem => selectedItem.name}
+              rowTextForSelection={item => item.name}
             />
           </View>
 
@@ -106,7 +138,7 @@ export default Login = ({ navigation }) => {
             contained
             color={colors.gray.ninth}
             contentStyle={{ backgroundColor: colors.purple.fifth }}
-            onPress={handleLogin}
+            onPress={handleRegister}
             style={{ marginTop: 17 }}
           >
             <CustomText

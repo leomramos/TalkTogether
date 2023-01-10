@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Keyboard, ScrollView, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
+import { useUser, useWarning } from "../../../App";
 import {
   CustomInput,
   CustomText,
@@ -14,7 +15,10 @@ import i18n from "../../i18n";
 export default Register = ({ navigation }) => {
   const { typography, colors, screen } = useTheme();
 
-  const [code, setCode] = useState("");
+  const { setWarning } = useWarning();
+  const { user, setUser } = useUser();
+
+  // const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [auxPassword, setAuxPassword] = useState("");
 
@@ -27,9 +31,17 @@ export default Register = ({ navigation }) => {
     !password && setAuxPassword("");
   }, [password]);
 
+  const continueRegister = password => {
+    setUser({ ...user, password });
+    navigation.navigate("InfoAuth");
+  };
+
   const handleRegister = () => {
     Keyboard.dismiss();
-    navigation.navigate("InfoAuth");
+
+    password === auxPassword
+      ? continueRegister(password)
+      : setWarning(i18n.t("enterPasswordsMusMatch"));
   };
 
   return (
@@ -56,14 +68,14 @@ export default Register = ({ navigation }) => {
               {i18n.t("helloThere")}
             </CustomText>
           </Row>
-          <CustomInput
+          {/* <CustomInput
             value={code}
             setValue={setCode}
             placeholder={i18n.t("codeSentEmail")}
             bottomSpace={3}
             keyboard="number-pad"
             maxLength={6}
-          />
+          /> */}
           <CustomInput
             value={password}
             setValue={setPassword}
@@ -75,12 +87,13 @@ export default Register = ({ navigation }) => {
             secureTextEntry={!passVis}
             textContentType="password"
             restriction={text => !text.includes(" ")}
+            autoCapitalize="none"
           />
           <CustomInput
             value={auxPassword}
             setValue={setAuxPassword}
             placeholder={i18n.t("confirmPassword")}
-            editable={Boolean(password)}
+            editable={Boolean(password) && password.length > 3}
             bottomSpace={3}
             maxLength={32}
             icon={auxPassVis ? "eye-off" : "eye"}
@@ -88,6 +101,7 @@ export default Register = ({ navigation }) => {
             secureTextEntry={!auxPassVis}
             textContentType="password"
             restriction={text => !text.includes(" ")}
+            autoCapitalize="none"
           />
           {password && (
             <Row style={{ marginTop: 10 }}>
@@ -108,8 +122,12 @@ export default Register = ({ navigation }) => {
           <Button
             uppercase={false}
             contained
+            disabled={!password || !auxPassword}
             color={colors.gray.ninth}
-            contentStyle={{ backgroundColor: colors.purple.fifth }}
+            contentStyle={{
+              backgroundColor: colors.purple.fifth,
+              opacity: !password || !auxPassword ? 0.4 : 1,
+            }}
             onPress={handleRegister}
             style={{ marginTop: 25 }}
           >

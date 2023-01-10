@@ -1,6 +1,7 @@
 import { Image, Platform, View } from "react-native";
 import { IconButton, TouchableRipple, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
+import avatars from "../../assets/avatars";
 import { BlackOpacity, Row } from "./Helpers";
 import OnlineIcon from "./OnlineIcon";
 
@@ -18,7 +19,7 @@ const Container = Styled(Row)`
 
 export default UserAvatar = ({
   size = 48,
-  avatar = 1,
+  avatar = Math.floor(Math.random() * (9 - 1 + 1) + 1),
   color = "",
   background = "",
   offline = false,
@@ -30,7 +31,6 @@ export default UserAvatar = ({
   editingPic = false,
 }) => {
   const { colors } = useTheme();
-  const src = require("../../assets/user-avatar-1.png");
 
   return (
     <View
@@ -58,11 +58,11 @@ export default UserAvatar = ({
             {!focused && <BlackOpacity radius={size * 2} />}
             <Image
               blurRadius={offline ? (Platform.OS === "ios" ? 2.5 : 10) : 0}
-              source={src}
+              source={avatars[avatar - 1]}
               resizeMode="contain"
               alt={i18n.t("userAvatar")}
               style={{
-                width: "100%",
+                width: "80%",
                 maxHeight: "90%",
               }}
             />

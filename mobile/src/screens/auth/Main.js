@@ -3,7 +3,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Image, Keyboard, View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
-import { useWarning } from "../../../App";
+import { useQuery } from "react-query";
+import { useUser, useWarning } from "../../../App";
 import { CustomInput, CustomText, ScreenContainer } from "../../components/";
 
 import i18n from "../../i18n";
@@ -12,26 +13,41 @@ export default Main = ({ navigation }) => {
   const { typography, colors, screen } = useTheme();
 
   const { setWarning } = useWarning();
+  const { setUser } = useUser();
 
   const [email, setEmail] = useState("");
+
+  const loginUser = user => {
+    setUser(user);
+    navigation.navigate("LoginAuth");
+  };
+
+  const registerUser = email => {
+    setUser({ email });
+    navigation.navigate("RegisterAuth");
+  };
+
+  const searchUser = useQuery(
+    "searchUser" + email,
+    () =>
+      axios
+        .post(`${API_URL}/users/search`, {
+          email,
+        })
+        .then(res => {
+          res.data ? loginUser(res.data) : registerUser(email);
+        })
+        .catch(e => {
+          throw e;
+        }),
+    { enabled: false }
+  );
 
   const handleContinue = () => {
     Keyboard.dismiss();
 
     /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email)
-      ? axios
-          .post(`${API_URL}/users/search`, {
-            email,
-          })
-          .then(res => {
-            alert(res);
-            res
-              ? navigation.navigate("LoginAuth")
-              : navigation.navigate("RegisterAuth");
-          })
-          .catch(e => {
-            throw e;
-          })
+      ? searchUser.refetch()
       : setWarning(i18n.t("enterEmailError"));
   };
 

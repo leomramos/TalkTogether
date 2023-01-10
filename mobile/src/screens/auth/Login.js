@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Keyboard, ScrollView, View } from "react-native";
 import { Button, TouchableRipple, useTheme } from "react-native-paper";
+import { useUser, useWarning } from "../../../App";
 import {
   CustomInput,
   CustomText,
@@ -13,6 +14,9 @@ import i18n from "../../i18n";
 
 export default Login = ({ navigation }) => {
   const { typography, colors, screen } = useTheme();
+
+  const { setWarning } = useWarning();
+  const { user } = useUser();
 
   const [password, setPassword] = useState("");
 
@@ -58,7 +62,7 @@ export default Login = ({ navigation }) => {
             textContentType="password"
             restriction={text => !text.includes(" ")}
           />
-          <View style={{ alignItems: "flex-end" }}>
+          {/* <View style={{ alignItems: "flex-end" }}>
             <TouchableRipple
               onPress={() => navigation.navigate("RecoverAuth")}
               style={{ paddingVertical: 3, paddingHorizontal: 5, marginTop: 2 }}
@@ -70,7 +74,7 @@ export default Login = ({ navigation }) => {
                 {i18n.t("forgotPassword", { user: "User" })}
               </CustomText>
             </TouchableRipple>
-          </View>
+          </View> */}
           <Button
             uppercase={false}
             contained
