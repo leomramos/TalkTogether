@@ -92,7 +92,6 @@
     "_id": "ObjectId",
     "code": "String",
     "name": "String",
-    "translation": "String",
     "nativeName": "String",
     "createdAt": "Date",
     "updatedAt": "Date"

@@ -24,20 +24,20 @@ app.use(bodyParser.json());
 require("./routes")(app);
 
 app.get("/", (req, res, next) => {
-  User.deleteOne({ email: "teste@teste.com" }, (err, user) => {
-    if (!err) {
-      console.log(user);
-    } else {
-      throw err;
-    }
-  });
-  // User.find({}, function (err, docs) {
+  // User.deleteOne({ email: "teste@teste.com" }, (err, user) => {
   //   if (!err) {
-  //     console.log(docs);
+  //     console.log(user);
   //   } else {
   //     throw err;
   //   }
   // });
+  User.find({}, function (err, docs) {
+    if (!err) {
+      console.log(docs);
+    } else {
+      throw err;
+    }
+  });
   res.json({ msg: "This is CORS-enabled for all origins!" });
 });
 
