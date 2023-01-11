@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 
 const User = require("../database/models/User");
+const Language = require("../database/models/Language");
+const Profile = require("../database/models/Profile");
 
 router.post("/search", (req, res) => {
   User.find(req.body, function (err, docs) {
@@ -16,12 +18,40 @@ router.post("/search", (req, res) => {
 
 router.put("/register", (req, res) => {
   const data = req.body;
-  data.password = bcrypt.hashSync(data.password, bcrypt.genSaltSync(10));
-  User.create(data, function (err, small) {
+  data.user.password = bcrypt.hashSync(
+    data.user.password,
+    bcrypt.genSaltSync(10)
+  );
+
+  console.log(data.user);
+
+  Language.findOne({ code: data.user.language }, "_id", function (err, small) {
     if (!err) {
-      User.find(small, function (err, docs) {
+      data.user.language = small._id;
+
+      User.create(data.user, function (err, small) {
         if (!err) {
-          res.send(docs[0]);
+          Profile.create(
+            {
+              userId: small._id,
+              avatar: { style: 1, color: "white" },
+              country: data.country,
+            },
+            function (err, profile) {
+              if (!err) {
+                User.findOne({ _id: profile.userId }, function (err, user) {
+                  if (!err) {
+                    console.log({ ...user, ...profile });
+                    res.send({ ...user, ...profile }._doc);
+                  } else {
+                    throw err;
+                  }
+                });
+              } else {
+                throw err;
+              }
+            }
+          );
         } else {
           throw err;
         }

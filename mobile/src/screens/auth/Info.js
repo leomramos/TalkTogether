@@ -1,10 +1,13 @@
+import { API_URL } from "@env";
 import axios from "axios";
 import Constants from "expo-constants";
+import * as Localization from "expo-localization";
 import React, { useState } from "react";
 import { Keyboard, ScrollView, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { Button, useTheme } from "react-native-paper";
 import SelectDropdown from "react-native-select-dropdown";
+import { useQuery } from "react-query";
 import { useUser, useWarning } from "../../../App";
 import {
   CustomText,
@@ -12,8 +15,6 @@ import {
   Row,
   ScreenContainer,
 } from "../../components";
-
-import { Countries } from "../../../public/world_data.json";
 
 import i18n from "../../i18n";
 
@@ -23,24 +24,40 @@ export default Login = ({ navigation }) => {
   const { setWarning } = useWarning();
   const { user, setUser } = useUser();
 
+  const countries = useQuery("listCountries", () =>
+    axios
+      .post(`${API_URL}/countries`)
+      .then(res => {
+        return res.data;
+      })
+      .catch(e => {
+        throw e;
+      })
+  );
+
   const [country, setCountry] = useState("");
   const [date, setDate] = useState(new Date());
 
   const finishRegister = (country, date) => {
-    navigation.navigate("Tabs");
-
-    // axios
-    //   .post(`${API_URL}/users/register`, {
-    //     email,
-    //   })
-    //   .then(res => {
-    //     setUser(res.data);
-    //     navigation.navigate("Tabs");
-    //   })
-    //   .catch(e => {
-    //     throw e;
-    //   });
+    axios
+      .put(`${API_URL}/users/register`, {
+        user: {
+          ...user,
+          language: Localization.locale.substring(0, 2),
+          birthday: date,
+        },
+        country: country._id,
+      })
+      .then(res => {
+        setUser(res.data);
+        navigation.navigate("Tabs");
+      })
+      .catch(e => {
+        throw e;
+      });
   };
+
+  console.log(countries);
 
   const handleRegister = () => {
     Keyboard.dismiss();
@@ -84,7 +101,7 @@ export default Login = ({ navigation }) => {
               {i18n.t("selectCountry")}
             </CustomText>
             <SelectDropdown
-              data={Countries}
+              data={countries.data || []}
               search
               disableAutoScroll
               defaultButtonText={i18n.t("selectOne")}

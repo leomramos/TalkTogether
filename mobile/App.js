@@ -46,6 +46,8 @@ export default function App() {
   const [warning, setWarning] = useState("");
   const [user, setUser] = useState({});
 
+  console.log(user);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <User.Provider value={{ user, setUser }}>

@@ -1,4 +1,5 @@
 const auth = require("./auth");
+const countries = require("./countries");
 const users = require("./users");
 
 module.exports = app => {
@@ -6,6 +7,7 @@ module.exports = app => {
     console.log("Time: ", Date.now());
     next();
   });
-  app.use("/users", users);
   app.use("/auth", auth);
+  app.use("/countries", countries);
+  app.use("/users", users);
 };
