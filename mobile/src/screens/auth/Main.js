@@ -103,6 +103,7 @@ export default Main = ({ navigation }) => {
               value={email}
               setValue={setEmail}
               placeholder={i18n.t("enterEmail")}
+              restriction={text => !text.includes(" ")}
               autoCapitalize="none"
             />
             <Button

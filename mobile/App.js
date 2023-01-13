@@ -9,14 +9,13 @@ import {
 import { OleoScript_700Bold } from "@expo-google-fonts/oleo-script";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { API_URL } from "@env";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { IconComponentProvider } from "@react-native-material/core";
 import { NavigationContainer } from "@react-navigation/native";
-import axios from "axios";
 import { StatusBar } from "expo-status-bar";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
+import { MMKVLoader, useMMKVStorage } from "react-native-mmkv-storage";
 import { Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -43,8 +42,11 @@ export default function App() {
   const scheme = useColorScheme();
   // add theme switch functionality
 
+  const storage = new MMKVLoader().initialize();
   const [warning, setWarning] = useState("");
   const [user, setUser] = useState({});
+
+  // useMMKVStorage("user", storage);
 
   console.log(user);
 

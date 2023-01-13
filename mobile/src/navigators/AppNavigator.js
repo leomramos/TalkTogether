@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Snackbar, useTheme } from "react-native-paper";
-import { useWarning } from "../../App";
+import { useUser, useWarning } from "../../App";
 import LoadingScreen from "../screens/Loading";
 import AuthNavigator from "./AuthNavigator";
 import ModalNavigator from "./ModalNavigator";
@@ -11,13 +11,13 @@ const App = createNativeStackNavigator();
 export default AppStack = () => {
   const { warning, clearWarning } = useWarning();
   const { colors } = useTheme();
+  const { user } = useUser();
 
   return (
     <>
       <App.Navigator
         id="AppStack"
-        initialRouteName="Auth"
-        // initialRouteName="Tabs"
+        initialRouteName={user?._id ? "Tabs" : "Auth"}
         screenOptions={{
           headerShown: false,
           animation: "fade_from_bottom",

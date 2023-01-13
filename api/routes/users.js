@@ -23,8 +23,6 @@ router.put("/register", (req, res) => {
     bcrypt.genSaltSync(10)
   );
 
-  console.log(data.user);
-
   Language.findOne({ code: data.user.language }, "_id", function (err, small) {
     if (!err) {
       data.user.language = small._id;
@@ -41,7 +39,6 @@ router.put("/register", (req, res) => {
               if (!err) {
                 User.findOne({ _id: profile.userId }, function (err, user) {
                   if (!err) {
-                    console.log({ ...user, ...profile });
                     res.send({ ...user, ...profile }._doc);
                   } else {
                     throw err;

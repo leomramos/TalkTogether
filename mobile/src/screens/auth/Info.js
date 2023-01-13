@@ -50,14 +50,12 @@ export default Login = ({ navigation }) => {
       })
       .then(res => {
         setUser(res.data);
-        navigation.navigate("Tabs");
+        navigation.replace("Tabs");
       })
       .catch(e => {
         throw e;
       });
   };
-
-  console.log(countries);
 
   const handleRegister = () => {
     Keyboard.dismiss();

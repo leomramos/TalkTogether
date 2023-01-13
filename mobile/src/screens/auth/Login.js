@@ -1,3 +1,5 @@
+import { API_URL } from "@env";
+import axios from "axios";
 import React, { useState } from "react";
 import { Keyboard, ScrollView, View } from "react-native";
 import { Button, TouchableRipple, useTheme } from "react-native-paper";
@@ -16,15 +18,37 @@ export default Login = ({ navigation }) => {
   const { typography, colors, screen } = useTheme();
 
   const { setWarning } = useWarning();
-  const { user } = useUser();
+  const { user, setUser } = useUser();
 
   const [password, setPassword] = useState("");
 
   const [passVis, setPassVis] = useState(false);
 
+  const continueLogin = user => {
+    setUser(user);
+    navigation.replace("Tabs");
+  };
+
+  const checkLogin = () => {
+    axios
+      .post(`${API_URL}/auth/login`, {
+        ...user,
+        password,
+      })
+      .then(res => {
+        res.data
+          ? continueLogin(res.data)
+          : setWarning(i18n.t("incorrectPasswordError"));
+      })
+      .catch(e => {
+        throw e;
+      });
+  };
+
   const handleLogin = () => {
     Keyboard.dismiss();
-    navigation.navigate("Tabs");
+
+    checkLogin();
   };
 
   return (
@@ -61,6 +85,7 @@ export default Login = ({ navigation }) => {
             secureTextEntry={!passVis}
             textContentType="password"
             restriction={text => !text.includes(" ")}
+            autoCapitalize="none"
           />
           {/* <View style={{ alignItems: "flex-end" }}>
             <TouchableRipple
@@ -78,8 +103,12 @@ export default Login = ({ navigation }) => {
           <Button
             uppercase={false}
             contained
+            disabled={!password}
             color={colors.gray.ninth}
-            contentStyle={{ backgroundColor: colors.purple.fifth }}
+            contentStyle={{
+              backgroundColor: colors.purple.fifth,
+              opacity: !password ? 0.4 : 1,
+            }}
             onPress={handleLogin}
             style={{ marginTop: 17 }}
           >

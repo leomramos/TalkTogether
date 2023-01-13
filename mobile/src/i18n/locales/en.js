@@ -65,4 +65,5 @@ export default {
   enterEmailError: "Please enter a valid e-mail",
   enterPasswordsMusMatch: "The passwords must match",
   selectCountryError: "You must select a country",
+  incorrectPasswordError: "The password is incorrect",
 };
