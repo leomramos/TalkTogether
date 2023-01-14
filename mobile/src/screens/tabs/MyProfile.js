@@ -1,6 +1,7 @@
 import { useKeyboard } from "@react-native-community/hooks";
 import { useEffect, useState } from "react";
 import { IconButton, useTheme } from "react-native-paper";
+import { useUser, useWarning } from "../../../App";
 import { PageHeader, ScreenContainer } from "../../components/";
 import { UserProfile } from "../mocks";
 
@@ -8,6 +9,8 @@ import i18n from "../../i18n";
 
 export default MyProfile = ({ navigation }) => {
   const keyboard = useKeyboard();
+  const { user, setUser } = useUser();
+  const { setWarning } = useWarning();
 
   useEffect(
     _ =>
@@ -27,57 +30,46 @@ export default MyProfile = ({ navigation }) => {
 
   const { colors } = useTheme();
 
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(Boolean(user.languages));
   const [editingPic, setEditingPic] = useState(false);
   const [savable, setSavable] = useState(true);
 
-  const [curAvatar, setCurAvatar] = useState(2);
-  const [avatar, setAvatar] = useState(curAvatar);
+  const [avatar, setAvatar] = useState(user.avatar.style);
 
-  const [curAvatarColor, setCurAvatarColor] = useState(colors.avatar.white);
-  const [avatarColor, setAvatarColor] = useState(curAvatarColor);
+  const [avatarColor, setAvatarColor] = useState(user.avatar.color);
 
-  const [curName, setCurName] = useState("User");
-  const [name, setName] = useState(curName);
+  const [name, setName] = useState(user.name);
 
-  const [curAbout, setCurAbout] = useState(
-    "Elit eiusmod in incididunt laboris consectetur ullamco et quis quis. Consectetur aliqua veniam anim nisi sunt ipsum sint do sunt. Eiusmod cupidatat reprehenderit minim do minim consectetur labore eiusmod magna consectetur velit aute laboris ullamco."
-  );
-  const [about, setAbout] = useState(curAbout);
+  const [about, setAbout] = useState(user.about);
 
-  const [curLangs, setCurLangs] = useState({
-    native: ["Portuguese"],
-    advanced: ["English"],
-    intermediate: ["Spanish"],
-    beginner: [
-      "Italian",
-      "French",
-      "Russian",
-      "German",
-      "Indonesian",
-      "Chinese",
-      "Japanese",
-      "Korean",
-    ],
-  });
-  const [langs, setLangs] = useState(curLangs);
+  const [languages, setLanguages] = useState(user.languages);
+
+  useEffect(() => {
+    setSavable(languages.length > 0);
+  }, languages);
 
   const handleSave = _ => {
-    setCurName(name);
-    setCurAbout(about);
-    setCurLangs(langs);
-    setCurAvatar(avatar);
-    setCurAvatarColor(avatarColor);
-    setEditing(false);
-    setEditingPic(false);
+    if (savable) {
+      setUser({
+        ...user,
+        name,
+        about,
+        avatar: { style: avatar, color: avatarColor },
+        languages,
+      });
+      setEditing(false);
+      setEditingPic(false);
+    } else {
+      setWarning(i18n.t("addLanguageError"));
+    }
   };
 
   const handleCancel = _ => {
-    setName(curName);
-    setAbout(curAbout);
-    setLangs(curLangs);
-    setAvatar(curAvatar);
-    setAvatarColor(curAvatarColor);
+    setName(user.name);
+    setAbout(user.about);
+    setLanguages(user.languages);
+    setAvatar(user.avatar.style);
+    setAvatarColor(user.avatar.color);
     setEditing(false);
     setEditingPic(false);
   };
@@ -96,8 +88,7 @@ export default MyProfile = ({ navigation }) => {
       icon="check"
       color={colors.aux.confirm}
       onPress={handleSave}
-      disabled={!savable}
-      style={{ marginVertical: 0, opacity: savable ? 1 : 0.4 }}
+      style={{ marginVertical: 0 }}
     />
   );
 
@@ -106,8 +97,8 @@ export default MyProfile = ({ navigation }) => {
       icon="close"
       color={colors.aux.cancel}
       onPress={handleCancel}
-      disabled={!savable}
-      style={{ margin: 0, opacity: savable ? 1 : 0.4 }}
+      disabled={user.languages.length < 1}
+      style={{ margin: 0, opacity: user.languages.length > 0 ? 1 : 0.4 }}
     />
   );
 
@@ -127,10 +118,11 @@ export default MyProfile = ({ navigation }) => {
         setName={setName}
         about={about}
         setAbout={setAbout}
-        langs={langs}
-        setLangs={setLangs}
+        langs={languages}
+        setLangs={setLanguages}
         editingPic={editingPic}
         setEditingPic={setEditingPic}
+        savable={savable}
       />
     </ScreenContainer>
   );

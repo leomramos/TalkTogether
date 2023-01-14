@@ -1,7 +1,9 @@
 import { Icon } from "@react-native-material/core";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { Pressable } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useUser } from "../../App";
 import { UserAvatar } from "../components";
 import { CallsScreen, ChatsScreen, MyProfileScreen } from "../screens/tabs/";
 
@@ -9,6 +11,7 @@ const Tab = createMaterialTopTabNavigator();
 
 export default TabNavigator = ({ navigation }) => {
   const { colors } = useTheme();
+  const { user } = useUser();
 
   const insets = useSafeAreaInsets();
 
@@ -21,7 +24,6 @@ export default TabNavigator = ({ navigation }) => {
       tabBarPosition="bottom"
       backBehavior="history"
       keyboardDismissMode="none"
-      gestureHandlerProps={{}}
       screenOptions={{
         tabBarVisible: false,
         headerShown: false,
@@ -61,8 +63,11 @@ export default TabNavigator = ({ navigation }) => {
         name="MyProfileScreen"
         component={MyProfileScreen}
         options={{
+          tabBarVisible: false,
           tabBarIcon: ({ focused }) => (
             <UserAvatar
+              avatar={user.avatar.style}
+              color={user.avatar.color}
               background={colors.gray.first}
               size={iconSize}
               focused={focused}

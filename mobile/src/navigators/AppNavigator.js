@@ -42,6 +42,7 @@ export default AppStack = () => {
       <Snackbar
         visible={warning}
         onDismiss={clearWarning}
+        duration={2000}
         action={{
           label: "✖",
         }}

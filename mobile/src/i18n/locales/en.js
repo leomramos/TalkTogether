@@ -66,4 +66,5 @@ export default {
   enterPasswordsMusMatch: "The passwords must match",
   selectCountryError: "You must select a country",
   incorrectPasswordError: "The password is incorrect",
+  addLanguageError: "You must add at least one language",
 };
