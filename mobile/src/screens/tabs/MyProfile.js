@@ -120,6 +120,11 @@ export default MyProfile = ({ navigation }) => {
         setAbout={setAbout}
         langs={languages}
         setLangs={setLanguages}
+        addLangs={() =>
+          navigation.navigate("Modals", {
+            screen: "LanguagesModal",
+          })
+        }
         editingPic={editingPic}
         setEditingPic={setEditingPic}
         savable={savable}

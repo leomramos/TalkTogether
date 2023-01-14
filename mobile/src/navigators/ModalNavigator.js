@@ -3,6 +3,7 @@ import {
   CallModal,
   ChatModal,
   CorrectionModal,
+  LanguagesModal,
   ProfileModal,
 } from "../screens/modals/";
 
@@ -16,6 +17,7 @@ export default ModalStack = () => {
         headerShown: false,
         animation: "fade_from_bottom",
         animationDuration: 100,
+        gestureDirection: "vertical",
       }}
     >
       <Modal.Screen
@@ -23,7 +25,6 @@ export default ModalStack = () => {
         component={CallModal}
         options={{
           animation: "slide_from_bottom",
-          gestureDirection: "vertical",
         }}
       />
       <Modal.Screen name="ChatModal" component={ChatModal} />
@@ -32,10 +33,11 @@ export default ModalStack = () => {
         component={CorrectionModal}
         options={{ presentation: "containedModal" }}
       />
+      <Modal.Screen name="ProfileModal" component={ProfileModal} />
       <Modal.Screen
-        name="ProfileModal"
-        component={ProfileModal}
-        options={{ gestureDirection: "vertical" }}
+        name="LanguagesModal"
+        component={LanguagesModal}
+        options={{ presentation: "containedModal" }}
       />
     </Modal.Navigator>
   );

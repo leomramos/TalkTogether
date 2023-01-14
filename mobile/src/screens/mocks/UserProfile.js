@@ -1,7 +1,7 @@
 import { Icon } from "@react-native-material/core";
 import { useEffect, useState } from "react";
 import { ScrollView, TextInput, View } from "react-native";
-import { TouchableRipple, useTheme } from "react-native-paper";
+import { IconButton, TouchableRipple, useTheme } from "react-native-paper";
 import Styled from "styled-components/native";
 import avatars from "../../../assets/avatars";
 import { Chip, Circle, CustomText, Row, UserAvatar } from "../../components";
@@ -32,12 +32,19 @@ export default UserProfile = ({
   setAbout = () => {},
   langs = [],
   setLangs = () => {},
+  addLangs = () => {},
   editable = false,
   editingPic = false,
   setEditingPic = () => {},
 }) => {
   const { typography, colors } = useTheme();
   const levelsOrder = ["native", "advanced", "intermediate", "beginner"];
+
+  console.log(langs);
+
+  useEffect(() => {
+    langs.length === 0 && addLangs();
+  }, []);
 
   return (
     <View
@@ -169,13 +176,28 @@ export default UserProfile = ({
           />
         </View>
         <View style={{ flex: 1, paddingLeft: 15 }}>
-          <CustomText
-            type={typography.profile.title}
-            color={colors.gray.ninth}
-            style={{ marginVertical: 20 }}
-          >
-            Languages
-          </CustomText>
+          <Row>
+            <CustomText
+              type={typography.profile.title}
+              color={colors.gray.ninth}
+              style={{ marginVertical: 20 }}
+            >
+              {i18n.t("languages")}
+            </CustomText>
+            {editable && (
+              <IconButton
+                size={12}
+                icon="plus-thick"
+                onPress={addLangs}
+                style={{
+                  backgroundColor: colors.gray.seventh,
+                  margin: 0,
+                  marginLeft: 10,
+                }}
+                color={colors.gray.second}
+              />
+            )}
+          </Row>
           <View>
             {Object.entries(langs)
               .sort(

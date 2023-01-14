@@ -44,7 +44,12 @@ export default function App() {
 
   const storage = new MMKVLoader().initialize();
   const [warning, setWarning] = useState("");
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    _id: "a",
+    name: "user",
+    avatar: { style: 1, color: "white" },
+    languages: [],
+  });
 
   // useMMKVStorage("user", storage);
 
