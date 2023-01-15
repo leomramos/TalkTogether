@@ -62,7 +62,6 @@ export default MyProfile = ({ navigation }) => {
   const handleCancel = _ => {
     setName(user.name);
     setAbout(user.about);
-    setLanguages(user.languages);
     setAvatar(user.avatar.style);
     setAvatarColor(user.avatar.color);
     setEditing(false);
@@ -123,6 +122,7 @@ export default MyProfile = ({ navigation }) => {
         editingPic={editingPic}
         setEditingPic={setEditingPic}
         savable={savable}
+        ownProfile
       />
     </ScreenContainer>
   );

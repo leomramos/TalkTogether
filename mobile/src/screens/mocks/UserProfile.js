@@ -40,6 +40,7 @@ export default UserProfile = ({
   editable = false,
   editingPic = false,
   setEditingPic = () => {},
+  ownProfile = false,
 }) => {
   const { typography, colors } = useTheme();
 
@@ -198,7 +199,7 @@ export default UserProfile = ({
             >
               {i18n.t("languages")}
             </CustomText>
-            {editable && (
+            {ownProfile && (
               <IconButton
                 size={12}
                 icon="plus-thick"
@@ -212,58 +213,72 @@ export default UserProfile = ({
               />
             )}
           </Row>
-          <View>
-            {groupBy(langs, "proficiency")
-              .sort((a, b) => b[0].proficiency - a[0].proficiency)
-              .map(level => (
-                <Row
-                  key={`${level[0].proficiency}-langs-list`}
-                  style={{
-                    marginBottom: 5,
-                  }}
-                >
-                  <Icon
-                    name={`network-strength-${level[0].proficiency}`}
-                    size={30}
-                    color={colors.proficiency[levels[level[0].proficiency - 1]]}
-                    style={{ marginRight: 5 }}
-                  />
-                  <ScrollView horizontal style={{ paddingVertical: 3 }}>
-                    {level.map(language => {
-                      const curLanguage = languages.data?.find(
-                        l => l._id === language.languageId
-                      );
-                      return (
-                        <Chip
-                          key={`${language.languageId}-chip`}
-                          text={curLanguage?.name || i18n.t("unknown")}
-                          textStyle={typography.chip}
-                          color={
-                            language.proficiency === 1
-                              ? colors.gray.second
-                              : colors.gray.ninth
-                          }
-                          background={
-                            colors.proficiency[levels[language.proficiency - 1]]
-                          }
-                          remove={
-                            editable &&
-                            langs.length > 1 &&
-                            (() =>
-                              setLangs(
-                                langs.filter(
-                                  lang =>
-                                    lang.languageId !== language.languageId
-                                )
-                              ))
-                          }
-                        />
-                      );
-                    })}
-                  </ScrollView>
-                </Row>
-              ))}
-          </View>
+          {langs.length === 0 ? (
+            <CustomText
+              type={typography.profile.about}
+              color={colors.gray.sixth}
+              style={{ marginBottom: 10 }}
+            >
+              {i18n.t("addLanguageError")}
+            </CustomText>
+          ) : (
+            <View>
+              {groupBy(langs, "proficiency")
+                .sort((a, b) => b[0].proficiency - a[0].proficiency)
+                .map(level => (
+                  <Row
+                    key={`${level[0].proficiency}-langs-list`}
+                    style={{
+                      marginBottom: 5,
+                    }}
+                  >
+                    <Icon
+                      name={`network-strength-${level[0].proficiency}`}
+                      size={30}
+                      color={
+                        colors.proficiency[levels[level[0].proficiency - 1]]
+                      }
+                      style={{ marginRight: 5 }}
+                    />
+                    <ScrollView horizontal style={{ paddingVertical: 3 }}>
+                      {level.map(language => {
+                        const curLanguage = languages.data?.find(
+                          l => l._id === language.languageId
+                        );
+                        return (
+                          <Chip
+                            key={`${language.languageId}-chip`}
+                            text={curLanguage?.name || i18n.t("unknown")}
+                            textStyle={typography.chip}
+                            color={
+                              language.proficiency === 1
+                                ? colors.gray.second
+                                : colors.gray.ninth
+                            }
+                            background={
+                              colors.proficiency[
+                                levels[language.proficiency - 1]
+                              ]
+                            }
+                            remove={
+                              ownProfile &&
+                              langs.length > 1 &&
+                              (() =>
+                                setLangs(
+                                  langs.filter(
+                                    lang =>
+                                      lang.languageId !== language.languageId
+                                  )
+                                ))
+                            }
+                          />
+                        );
+                      })}
+                    </ScrollView>
+                  </Row>
+                ))}
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>

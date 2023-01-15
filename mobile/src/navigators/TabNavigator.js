@@ -41,24 +41,28 @@ export default TabNavigator = ({ navigation }) => {
         },
       }}
     >
-      <Tab.Screen
-        name="CallsScreen"
-        component={CallsScreen}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Icon name="phone" color={color} size={iconSize} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="ChatsScreen"
-        component={ChatsScreen}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Icon name="message" color={color} size={iconSize} />
-          ),
-        }}
-      />
+      {user.languages.length > 0 && (
+        <>
+          <Tab.Screen
+            name="CallsScreen"
+            component={CallsScreen}
+            options={{
+              tabBarIcon: ({ color }) => (
+                <Icon name="phone" color={color} size={iconSize} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="ChatsScreen"
+            component={ChatsScreen}
+            options={{
+              tabBarIcon: ({ color }) => (
+                <Icon name="message" color={color} size={iconSize} />
+              ),
+            }}
+          />
+        </>
+      )}
       <Tab.Screen
         name="MyProfileScreen"
         component={MyProfileScreen}
