@@ -261,8 +261,7 @@ export default UserProfile = ({
                               ]
                             }
                             remove={
-                              ownProfile &&
-                              langs.length > 1 &&
+                              editable &&
                               (() =>
                                 setLangs(
                                   langs.filter(
