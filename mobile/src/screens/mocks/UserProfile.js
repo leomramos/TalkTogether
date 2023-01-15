@@ -1,10 +1,14 @@
+import { API_URL } from "@env";
 import { Icon } from "@react-native-material/core";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { ScrollView, TextInput, View } from "react-native";
 import { IconButton, TouchableRipple, useTheme } from "react-native-paper";
+import { useQuery } from "react-query";
 import Styled from "styled-components/native";
 import avatars from "../../../assets/avatars";
 import { Chip, Circle, CustomText, Row, UserAvatar } from "../../components";
+import { groupBy } from "../../utils/helpers";
 
 import i18n from "../../i18n";
 
@@ -38,9 +42,19 @@ export default UserProfile = ({
   setEditingPic = () => {},
 }) => {
   const { typography, colors } = useTheme();
-  const levelsOrder = ["native", "advanced", "intermediate", "beginner"];
 
-  console.log(langs);
+  const languages = useQuery("listLanguages", () =>
+    axios
+      .post(`${API_URL}/languages`)
+      .then(res => {
+        return res.data;
+      })
+      .catch(e => {
+        throw e;
+      })
+  );
+
+  const levels = ["beginner", "intermediate", "advanced", "native"];
 
   useEffect(() => {
     langs.length === 0 && addLangs();
@@ -199,62 +213,56 @@ export default UserProfile = ({
             )}
           </Row>
           <View>
-            {Object.entries(langs)
-              .sort(
-                (a, b) => levelsOrder.indexOf(a[0]) - levelsOrder.indexOf(b[0])
-              )
-              .map(
-                ([level, languages], i) =>
-                  languages.length > 0 && (
-                    <Row
-                      key={`${level}-langs-list`}
-                      style={{
-                        marginBottom: 5,
-                      }}
-                    >
-                      <Icon
-                        name={`network-strength-${4 - i}`}
-                        size={30}
-                        color={colors.proficiency[level]}
-                        style={{ marginRight: 5 }}
-                      />
-                      <ScrollView horizontal style={{ paddingVertical: 3 }}>
-                        {languages.map(language => {
-                          return (
-                            <Chip
-                              key={`${language}-chip`}
-                              text={language}
-                              textStyle={typography.chip}
-                              color={
-                                level === "beginner"
-                                  ? colors.gray.second
-                                  : colors.gray.ninth
-                              }
-                              background={colors.proficiency[level]}
-                              remove={
-                                editable &&
-                                (() =>
-                                  setLangs(
-                                    Object.fromEntries(
-                                      Object.entries(langs).map(
-                                        ([lvl, lng]) => [
-                                          lvl,
-                                          lng.filter(
-                                            el =>
-                                              level !== lvl || el !== language
-                                          ),
-                                        ]
-                                      )
-                                    )
-                                  ))
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </Row>
-                  )
-              )}
+            {groupBy(langs, "proficiency")
+              .sort((a, b) => b[0].proficiency - a[0].proficiency)
+              .map(level => (
+                <Row
+                  key={`${level[0].proficiency}-langs-list`}
+                  style={{
+                    marginBottom: 5,
+                  }}
+                >
+                  <Icon
+                    name={`network-strength-${level[0].proficiency}`}
+                    size={30}
+                    color={colors.proficiency[levels[level[0].proficiency - 1]]}
+                    style={{ marginRight: 5 }}
+                  />
+                  <ScrollView horizontal style={{ paddingVertical: 3 }}>
+                    {level.map(language => {
+                      const curLanguage = languages.data?.find(
+                        l => l._id === language.languageId
+                      );
+                      return (
+                        <Chip
+                          key={`${language.languageId}-chip`}
+                          text={curLanguage?.name || i18n.t("unknown")}
+                          textStyle={typography.chip}
+                          color={
+                            language.proficiency === 1
+                              ? colors.gray.second
+                              : colors.gray.ninth
+                          }
+                          background={
+                            colors.proficiency[levels[language.proficiency - 1]]
+                          }
+                          remove={
+                            editable &&
+                            langs.length > 1 &&
+                            (() =>
+                              setLangs(
+                                langs.filter(
+                                  lang =>
+                                    lang.languageId !== language.languageId
+                                )
+                              ))
+                          }
+                        />
+                      );
+                    })}
+                  </ScrollView>
+                </Row>
+              ))}
           </View>
         </View>
       </ScrollView>

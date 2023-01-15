@@ -33,20 +33,31 @@ export default Languages = ({ navigation }) => {
   );
 
   const proficiencies = [
-    { label: i18n.t("native"), proficiency: 4 },
-    { label: i18n.t("advanced"), proficiency: 3 },
-    { label: i18n.t("intermediate"), proficiency: 2 },
-    { label: i18n.t("beginner"), proficiency: 1 },
+    { label: i18n.t("native"), level: 4 },
+    { label: i18n.t("advanced"), level: 3 },
+    { label: i18n.t("intermediate"), level: 2 },
+    { label: i18n.t("beginner"), level: 1 },
   ];
 
   const [language, setLanguage] = useState("");
   const [proficiency, setProficiency] = useState("");
 
   const saveLanguage = () => {
-    const languages = user.languages;
-    languages.push({ languageId: language._id, proficiency });
-    setUser({ ...user, languages });
-    navigation.goBack();
+    if (language) {
+      if (proficiency) {
+        const languages = user.languages;
+        languages.push({
+          languageId: language._id,
+          proficiency: proficiency.level,
+        });
+        setUser({ ...user, languages });
+        navigation.goBack();
+      } else {
+        setWarning(i18n.t("selectProficiencyError"));
+      }
+    } else {
+      setWarning(i18n.t("selectLanguageError"));
+    }
   };
 
   return (
@@ -77,7 +88,14 @@ export default Languages = ({ navigation }) => {
               {i18n.t("selectLanguage")}
             </CustomText>
             <SelectDropdown
-              data={languages.data || []}
+              data={
+                languages.data?.filter(
+                  language =>
+                    user.languages.find(
+                      lang => lang.languageId === language._id
+                    ) === undefined
+                ) || []
+              }
               search
               disableAutoScroll
               defaultButtonText={i18n.t("selectOne")}

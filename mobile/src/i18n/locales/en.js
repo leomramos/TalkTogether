@@ -71,6 +71,8 @@ export default {
   addLanguage: "Add language",
   selectLanguage: "Select your language",
   selectProficiency: "Select your proficiency",
+  selectLanguageError: "Please select a language",
+  selectProficiencyError: "Please select the proficiency",
   native: "Native",
   advanced: "Advanced",
   intermediate: "Intermediate",

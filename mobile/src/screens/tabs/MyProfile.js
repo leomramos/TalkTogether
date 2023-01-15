@@ -42,11 +42,8 @@ export default MyProfile = ({ navigation }) => {
 
   const [about, setAbout] = useState(user.about);
 
-  const [languages, setLanguages] = useState(user.languages);
-
-  useEffect(() => {
-    setSavable(languages.length > 0);
-  }, languages);
+  const languages = user.languages;
+  const setLanguages = langs => setUser({ ...user, languages: langs });
 
   const handleSave = _ => {
     if (savable) {
@@ -59,8 +56,6 @@ export default MyProfile = ({ navigation }) => {
       });
       setEditing(false);
       setEditingPic(false);
-    } else {
-      setWarning(i18n.t("addLanguageError"));
     }
   };
 
