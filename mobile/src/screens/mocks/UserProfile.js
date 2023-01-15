@@ -213,7 +213,7 @@ export default UserProfile = ({
               />
             )}
           </Row>
-          {langs.length === 0 ? (
+          {langs.length === 0 && ownProfile ? (
             <CustomText
               type={typography.profile.about}
               color={colors.gray.sixth}

@@ -91,8 +91,7 @@ export default MyProfile = ({ navigation }) => {
       icon="close"
       color={colors.aux.cancel}
       onPress={handleCancel}
-      disabled={user.languages.length < 1}
-      style={{ margin: 0, opacity: user.languages.length > 0 ? 1 : 0.4 }}
+      style={{ margin: 0 }}
     />
   );
 
