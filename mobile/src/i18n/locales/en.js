@@ -78,4 +78,5 @@ export default {
   intermediate: "Intermediate",
   beginner: "Beginner",
   add: "Add",
+  savedSuccessfully: "The changes were saved successfully",
 };

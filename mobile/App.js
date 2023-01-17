@@ -9,9 +9,11 @@ import {
 import { OleoScript_700Bold } from "@expo-google-fonts/oleo-script";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+import { API_URL } from "@env";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { IconComponentProvider } from "@react-native-material/core";
 import { NavigationContainer } from "@react-navigation/native";
+import axios from "axios";
 import { StatusBar } from "expo-status-bar";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
@@ -44,16 +46,23 @@ export default function App() {
 
   const storage = new MMKVLoader().initialize();
   const [warning, setWarning] = useState("");
-  const [user, setUser] = useState({
-    _id: "a",
-    name: "user",
-    avatar: { style: 1, color: "white" },
-    languages: [],
-  });
+  const [user, setUser] = useState({});
 
   // useMMKVStorage("user", storage);
-
-  console.log(user);
+  useEffect(() => {
+    user._id &&
+      axios
+        .post(`${API_URL}/profiles/save`, {
+          data: user,
+        })
+        .then(res => {
+          setWarning("savedSuccessfully");
+        })
+        .catch(e => {
+          throw e;
+        });
+    console.log(user);
+  }, [user]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

@@ -19,7 +19,7 @@ const Container = Styled(Row)`
 
 export default UserAvatar = ({
   size = 48,
-  avatar = Math.floor(Math.random() * (9 - 1 + 1) + 1),
+  avatar = 1,
   color = "",
   background = "",
   offline = false,

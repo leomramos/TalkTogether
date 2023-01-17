@@ -12,7 +12,7 @@ const ProfileSchema = new db.Schema(
     country: { type: "ObjectId" },
     languages: [
       {
-        languageId: { type: "ObjectId", required: true, unique: true },
+        languageId: { type: "ObjectId", required: true },
         proficiency: { type: Number, required: true },
       },
     ],
@@ -21,7 +21,7 @@ const ProfileSchema = new db.Schema(
       amount: Number,
       history: [
         {
-          ratedBy: { type: "ObjectId", required: true, unique: true },
+          ratedBy: { type: "ObjectId", required: true },
           rating: { type: Number, required: true },
         },
       ],

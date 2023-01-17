@@ -25,6 +25,7 @@ export default Login = ({ navigation }) => {
   const [passVis, setPassVis] = useState(false);
 
   const continueLogin = user => {
+    console.log(user);
     setUser(user);
     navigation.replace("Tabs");
   };

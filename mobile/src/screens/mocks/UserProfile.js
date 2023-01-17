@@ -27,9 +27,9 @@ const Color = Styled.View`
 
 export default UserProfile = ({
   name = "",
-  avatar = undefined,
+  avatar = null,
   setAvatar = () => {},
-  avatarColor = undefined,
+  avatarColor = null,
   setAvatarColor = () => {},
   setName = () => {},
   about = "",

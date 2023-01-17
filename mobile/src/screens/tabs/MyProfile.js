@@ -34,9 +34,9 @@ export default MyProfile = ({ navigation }) => {
   const [editingPic, setEditingPic] = useState(false);
   const [savable, setSavable] = useState(true);
 
-  const [avatar, setAvatar] = useState(user.avatar.style);
+  const [avatar, setAvatar] = useState(user.avatar?.style);
 
-  const [avatarColor, setAvatarColor] = useState(user.avatar.color);
+  const [avatarColor, setAvatarColor] = useState(user.avatar?.color);
 
   const [name, setName] = useState(user.name);
 
