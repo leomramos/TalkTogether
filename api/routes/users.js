@@ -29,13 +29,25 @@ router.put("/register", (req, res) => {
 
       User.create(data.user, function (err, small) {
         if (!err) {
-          User.findOne({ _id: small._id }, function (err, user) {
-            if (!err) {
-              res.send(user);
-            } else {
-              throw err;
+          Profile.create(
+            {
+              userId: small._id,
+              country: data.country,
+            },
+            function (err, profile) {
+              if (!err) {
+                User.findOne({ _id: profile.userId }, function (err, user) {
+                  if (!err) {
+                    res.send(user);
+                  } else {
+                    throw err;
+                  }
+                });
+              } else {
+                throw err;
+              }
             }
-          });
+          );
         } else {
           throw err;
         }

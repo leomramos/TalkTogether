@@ -4,7 +4,8 @@
     "e": "yarn expo",
     "tunnel": "cd mobile && yarn start --tunnel",
     "t": "yarn tunnel",
-    "apk": "cd mobile/android && eas build -p android --profile preview",
+    "pb": "cd mobile && npx expo prebuild",
+    "apk": "cd mobile && eas build -p android --profile preview",
     "mobile": "cd mobile && yarn",
     "m": "yarn mobile"
   },

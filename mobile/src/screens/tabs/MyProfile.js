@@ -52,7 +52,6 @@ export default MyProfile = ({ navigation }) => {
         about,
         avatar: { style: avatar, color: avatarColor },
       });
-      saveProfile();
       setEditing(false);
       setEditingPic(false);
     }

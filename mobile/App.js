@@ -53,17 +53,27 @@ export default function App() {
   // useMMKVStorage("user", storage);
   console.log(profile);
 
+  const [profileFetched, setProfileFetched] = useState(false);
+
   const saveProfile = () =>
     axios
-      .post(`${API_URL}/profiles/save`, {
-        data: profile,
-      })
+      .post(`${API_URL}/profiles/save`, profile)
       .then(res => {
-        setWarning(i18n.t("savedSuccessfully"));
+        res.status === 200
+          ? setWarning(i18n.t("savedSuccessfully"))
+          : setWarning(i18n.t("unknownError"));
       })
       .catch(e => {
         throw e;
       });
+
+  useEffect(() => {
+    if (profileFetched) {
+      saveProfile();
+    } else {
+      setProfileFetched(Boolean(profile._id));
+    }
+  }, [profile]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

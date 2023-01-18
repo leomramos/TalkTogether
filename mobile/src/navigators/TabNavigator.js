@@ -41,7 +41,7 @@ export default TabNavigator = ({ navigation }) => {
         },
       }}
     >
-      {profile.languages.length > 0 && (
+      {Boolean(profile.languages?.length) && (
         <>
           <Tab.Screen
             name="CallsScreen"

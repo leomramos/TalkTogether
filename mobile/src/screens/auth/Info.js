@@ -18,11 +18,11 @@ import {
 
 import i18n from "../../i18n";
 
-export default Login = ({ navigation }) => {
+export default Info = ({ navigation }) => {
   const { typography, colors, screen } = useTheme();
 
   const { setWarning } = useWarning();
-  const { user, setUser } = useUser();
+  const { user, setUser, setProfile } = useUser();
 
   const countries = useQuery("listCountries", () =>
     axios
@@ -38,6 +38,25 @@ export default Login = ({ navigation }) => {
   const [country, setCountry] = useState("");
   const [date, setDate] = useState(new Date());
 
+  const openTabs = profile => {
+    setProfile(profile);
+    navigation.replace("Tabs");
+  };
+
+  const getProfile = useQuery(
+    `profile-user-${user._id}`,
+    () =>
+      axios
+        .post(`${API_URL}/profiles`, { userId: user._id })
+        .then(res => {
+          res.data ? openTabs(res.data) : setWarning(i18n.t("unknownError"));
+        })
+        .catch(e => {
+          throw e;
+        }),
+    { enabled: false }
+  );
+
   const finishRegister = (country, date) => {
     axios
       .put(`${API_URL}/users/register`, {
@@ -50,7 +69,7 @@ export default Login = ({ navigation }) => {
       })
       .then(res => {
         setUser(res.data);
-        navigation.replace("Tabs");
+        getProfile.refetch();
       })
       .catch(e => {
         throw e;

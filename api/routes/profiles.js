@@ -14,20 +14,17 @@ router.post("/", (req, res) => {
 });
 
 router.post("/save", (req, res) => {
-  Profile.findByIdAndUpdate(
-    req.body.data._id,
-    req.body.data,
-    function (err, docs) {
-      if (!err) {
-        Profile.findById(req.body.data._id, function (err, docs) {
-          console.log(docs);
-          res.status(200).send();
-        });
-      } else {
-        throw err;
-      }
+  console.log(req.body);
+  Profile.findByIdAndUpdate(req.body._id, req.body, function (err, docs) {
+    if (!err) {
+      Profile.findById(req.body._id, function (err, docs) {
+        console.log(docs);
+        res.status(200).send();
+      });
+    } else {
+      throw err;
     }
-  );
+  });
 });
 
 module.exports = router;

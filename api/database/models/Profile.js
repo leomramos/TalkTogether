@@ -21,8 +21,8 @@ const ProfileSchema = new db.Schema(
       amount: Number,
       history: [
         {
-          ratedBy: { type: "ObjectId", required: true },
-          rating: { type: Number, required: true },
+          ratedBy: { type: "ObjectId" },
+          rating: Number,
         },
       ],
     },
