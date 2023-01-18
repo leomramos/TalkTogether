@@ -9,8 +9,7 @@ import i18n from "../../i18n";
 
 export default MyProfile = ({ navigation }) => {
   const keyboard = useKeyboard();
-  const { user, setUser } = useUser();
-  const { setWarning } = useWarning();
+  const { profile, setProfile, saveProfile } = useUser();
 
   useEffect(
     _ =>
@@ -30,40 +29,40 @@ export default MyProfile = ({ navigation }) => {
 
   const { colors } = useTheme();
 
-  const [editing, setEditing] = useState(Boolean(user.languages));
+  const [editing, setEditing] = useState(false);
   const [editingPic, setEditingPic] = useState(false);
   const [savable, setSavable] = useState(true);
 
-  const [avatar, setAvatar] = useState(user.avatar?.style);
+  const [avatar, setAvatar] = useState(profile.avatar?.style);
 
-  const [avatarColor, setAvatarColor] = useState(user.avatar?.color);
+  const [avatarColor, setAvatarColor] = useState(profile.avatar?.color);
 
-  const [name, setName] = useState(user.name);
+  const [name, setName] = useState(profile.name);
 
-  const [about, setAbout] = useState(user.about);
+  const [about, setAbout] = useState(profile.about);
 
-  const languages = user.languages;
-  const setLanguages = langs => setUser({ ...user, languages: langs });
+  const languages = profile.languages;
+  const setLanguages = langs => setProfile({ ...profile, languages: langs });
 
   const handleSave = _ => {
     if (savable) {
-      setUser({
-        ...user,
+      setProfile({
+        ...profile,
         name,
         about,
         avatar: { style: avatar, color: avatarColor },
-        languages,
       });
+      saveProfile();
       setEditing(false);
       setEditingPic(false);
     }
   };
 
   const handleCancel = _ => {
-    setName(user.name);
-    setAbout(user.about);
-    setAvatar(user.avatar.style);
-    setAvatarColor(user.avatar.color);
+    setName(profile.name);
+    setAbout(profile.about);
+    setAvatar(profile.avatar.style);
+    setAvatarColor(profile.avatar.color);
     setEditing(false);
     setEditingPic(false);
   };

@@ -5,8 +5,8 @@ const ProfileSchema = new db.Schema(
     userId: { type: "ObjectId", required: true, select: false },
     name: String,
     avatar: {
-      style: Number,
-      color: String,
+      style: { type: Number, required: true, default: 1 },
+      color: { type: String, required: true, default: "white" },
     },
     about: String,
     country: { type: "ObjectId" },

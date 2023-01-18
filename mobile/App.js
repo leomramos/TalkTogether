@@ -23,6 +23,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "react-query";
 import LoadingScreen from "./src/screens/Loading";
 
+import i18n from "./src/i18n";
 import AppStack from "./src/navigators/AppNavigator";
 import Theme from "./src/utils/themes";
 
@@ -44,29 +45,31 @@ export default function App() {
   const scheme = useColorScheme();
   // add theme switch functionality
 
-  const storage = new MMKVLoader().initialize();
+  // const storage = new MMKVLoader().initialize();
   const [warning, setWarning] = useState("");
   const [user, setUser] = useState({});
+  const [profile, setProfile] = useState({});
 
   // useMMKVStorage("user", storage);
-  useEffect(() => {
-    user._id &&
-      axios
-        .post(`${API_URL}/profiles/save`, {
-          data: user,
-        })
-        .then(res => {
-          setWarning("savedSuccessfully");
-        })
-        .catch(e => {
-          throw e;
-        });
-    console.log(user);
-  }, [user]);
+  console.log(profile);
+
+  const saveProfile = () =>
+    axios
+      .post(`${API_URL}/profiles/save`, {
+        data: profile,
+      })
+      .then(res => {
+        setWarning(i18n.t("savedSuccessfully"));
+      })
+      .catch(e => {
+        throw e;
+      });
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <User.Provider value={{ user, setUser }}>
+      <User.Provider
+        value={{ user, setUser, profile, setProfile, saveProfile }}
+      >
         <Warning.Provider
           value={{ warning, setWarning, clearWarning: () => setWarning("") }}
         >

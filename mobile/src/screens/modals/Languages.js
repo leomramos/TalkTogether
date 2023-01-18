@@ -19,7 +19,7 @@ export default Languages = ({ navigation }) => {
   const { typography, colors, screen } = useTheme();
 
   const { setWarning } = useWarning();
-  const { user, setUser } = useUser();
+  const { profile, setProfile } = useUser();
 
   const languages = useQuery("listLanguages", () =>
     axios
@@ -45,12 +45,12 @@ export default Languages = ({ navigation }) => {
   const saveLanguage = () => {
     if (language) {
       if (proficiency) {
-        const languages = user.languages;
+        const languages = profile.languages;
         languages.push({
           languageId: language._id,
           proficiency: proficiency.level,
         });
-        setUser({ ...user, languages });
+        setProfile({ ...profile, languages });
         navigation.goBack();
       } else {
         setWarning(i18n.t("selectProficiencyError"));
@@ -91,7 +91,7 @@ export default Languages = ({ navigation }) => {
               data={
                 languages.data?.filter(
                   language =>
-                    user.languages.find(
+                    profile.languages.find(
                       lang => lang.languageId === language._id
                     ) === undefined
                 ) || []

@@ -13,13 +13,34 @@ export default Main = ({ navigation }) => {
   const { typography, colors, screen } = useTheme();
 
   const { setWarning } = useWarning();
-  const { setUser } = useUser();
+  const { user, setUser, setProfile } = useUser();
 
   const [email, setEmail] = useState("");
 
+  const continueLogin = profile => {
+    setProfile(profile);
+    navigation.navigate("LoginAuth");
+  };
+
+  const getProfile = useQuery(
+    `profile-user-${user._id}`,
+    () =>
+      axios
+        .post(`${API_URL}/profiles`, { userId: user._id })
+        .then(res => {
+          res.data
+            ? continueLogin(res.data)
+            : setWarning(i18n.t("unknownError"));
+        })
+        .catch(e => {
+          throw e;
+        }),
+    { enabled: false }
+  );
+
   const loginUser = user => {
     setUser(user);
-    navigation.navigate("LoginAuth");
+    getProfile.refetch();
   };
 
   const registerUser = email => {

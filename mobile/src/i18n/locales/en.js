@@ -79,4 +79,5 @@ export default {
   beginner: "Beginner",
   add: "Add",
   savedSuccessfully: "The changes were saved successfully",
+  unknownError: "Unknown error",
 };

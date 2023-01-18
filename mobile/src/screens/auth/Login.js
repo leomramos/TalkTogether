@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Keyboard, ScrollView, View } from "react-native";
 import { Button, TouchableRipple, useTheme } from "react-native-paper";
+import { useQuery } from "react-query";
 import { useUser, useWarning } from "../../../App";
 import {
   CustomInput,
@@ -18,14 +19,13 @@ export default Login = ({ navigation }) => {
   const { typography, colors, screen } = useTheme();
 
   const { setWarning } = useWarning();
-  const { user, setUser } = useUser();
+  const { user, setUser, profile } = useUser();
 
   const [password, setPassword] = useState("");
 
   const [passVis, setPassVis] = useState(false);
 
   const continueLogin = user => {
-    console.log(user);
     setUser(user);
     navigation.replace("Tabs");
   };
@@ -73,7 +73,9 @@ export default Login = ({ navigation }) => {
           <Row style={{ marginBottom: 15 }}>
             <NavigateBack action={navigation.goBack} marginLeft={0} />
             <CustomText type={typography.auth.info} color={colors.gray.ninth}>
-              {i18n.t("welcomeBack", { user: "User" })}
+              {i18n.t("welcomeBack", {
+                user: profile.name || i18n.t("unknown"),
+              })}
             </CustomText>
           </Row>
           <CustomInput

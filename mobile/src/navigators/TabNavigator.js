@@ -11,7 +11,7 @@ const Tab = createMaterialTopTabNavigator();
 
 export default TabNavigator = ({ navigation }) => {
   const { colors } = useTheme();
-  const { user } = useUser();
+  const { profile } = useUser();
 
   const insets = useSafeAreaInsets();
 
@@ -41,7 +41,7 @@ export default TabNavigator = ({ navigation }) => {
         },
       }}
     >
-      {user.languages.length > 0 && (
+      {profile.languages.length > 0 && (
         <>
           <Tab.Screen
             name="CallsScreen"
@@ -70,8 +70,8 @@ export default TabNavigator = ({ navigation }) => {
           tabBarVisible: false,
           tabBarIcon: ({ focused }) => (
             <UserAvatar
-              avatar={user.avatar.style}
-              color={user.avatar.color}
+              avatar={profile.avatar.style}
+              color={profile.avatar.color}
               background={colors.gray.first}
               size={iconSize}
               focused={focused}
