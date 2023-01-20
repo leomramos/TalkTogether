@@ -38,25 +38,6 @@ export default Info = ({ navigation }) => {
   const [country, setCountry] = useState("");
   const [date, setDate] = useState(new Date());
 
-  const openTabs = profile => {
-    setProfile(profile);
-    navigation.replace("Tabs");
-  };
-
-  const getProfile = useQuery(
-    `profile-user-${user._id}`,
-    () =>
-      axios
-        .post(`${API_URL}/profiles`, { userId: user._id })
-        .then(res => {
-          res.data ? openTabs(res.data) : setWarning(i18n.t("unknownError"));
-        })
-        .catch(e => {
-          throw e;
-        }),
-    { enabled: false }
-  );
-
   const finishRegister = (country, date) => {
     axios
       .put(`${API_URL}/users/register`, {
@@ -69,7 +50,7 @@ export default Info = ({ navigation }) => {
       })
       .then(res => {
         setUser(res.data);
-        getProfile.refetch();
+        navigation.replace("Tabs");
       })
       .catch(e => {
         throw e;

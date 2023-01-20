@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { FAB, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSocket, useUser, useWarning } from "../../../App";
 import {
   ChatItem,
   CustomInput,
@@ -52,7 +53,7 @@ const PendingRequests = ({ requests, setRequests }) => {
       title={i18n.t("chatRequests")}
       icon="account-multiple"
       iconSize={20}
-      badge={1}
+      badge={requests.length < 10 ? requests.length : "9+"}
       topSpacing={40}
       content={
         <RequestsOverlay
@@ -68,6 +69,41 @@ const PendingRequests = ({ requests, setRequests }) => {
 };
 
 export default Chats = ({ navigation }) => {
+  const { user, profile } = useUser();
+  const { socket, socketConnect } = useSocket();
+  const { setWarning } = useWarning();
+  const [socketEventsAdded, setSocketEventsAdded] = useState(false);
+
+  useEffect(() => {
+    socketConnect();
+  }, []);
+
+  const addSocketEvents = () => {
+    socket.on("quickMatchJoined", _ => {
+      setQuickChatEnabled(true);
+    });
+    socket.on("quickMatchLeft", _ => {
+      setQuickChatEnabled(false);
+    });
+
+    setSocketEventsAdded(true);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      socket.id && !socketEventsAdded && addSocketEvents();
+    }, 1000);
+  }, [socket.connected]);
+
+  useEffect(() => {
+    socket.id &&
+      user._id &&
+      socket.emit("changedLanguages", {
+        id: user._id,
+        languages: profile.languages,
+      });
+  }, [profile.languages]);
+
   const keyboard = useKeyboard();
 
   useEffect(
@@ -202,14 +238,20 @@ export default Chats = ({ navigation }) => {
     getAction(
       quickChatEnabled ? "access-point" : "access-point-off",
       quickChatEnabled ? "quickChatEnabled" : "quickChatDisabled",
-      () => setQuickChatEnabled(!quickChatEnabled)
+      socket.connected
+        ? () =>
+            socket.emit(
+              `quickMatch${quickChatEnabled ? "Leave" : "Join"}`,
+              user._id
+            )
+        : () => setWarning(i18n.t("unknownError"))
     ),
   ];
 
   quickChatEnabled &&
     fabActions.push(
       getAction("plus", "match", () =>
-        setQuickChatSearching(!quickChatSearching)
+        socket.emit("quickMatchSearch", user._id)
       )
     );
 

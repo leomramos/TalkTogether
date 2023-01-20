@@ -13,6 +13,5 @@
     "type": "git",
     "url": "git+https://github.com/leomramos/TalkTogether.git"
   },
-  "private": true,
-  "dependencies": {}
+  "private": true
 }

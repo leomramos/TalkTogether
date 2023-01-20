@@ -17,30 +17,9 @@ export default Main = ({ navigation }) => {
 
   const [email, setEmail] = useState("");
 
-  const continueLogin = profile => {
-    setProfile(profile);
-    navigation.navigate("LoginAuth");
-  };
-
-  const getProfile = useQuery(
-    `profile-user-${user._id}`,
-    () =>
-      axios
-        .post(`${API_URL}/profiles`, { userId: user._id })
-        .then(res => {
-          res.data
-            ? continueLogin(res.data)
-            : setWarning(i18n.t("unknownError"));
-        })
-        .catch(e => {
-          throw e;
-        }),
-    { enabled: false }
-  );
-
   const loginUser = user => {
     setUser(user);
-    getProfile.refetch();
+    navigation.navigate("LoginAuth");
   };
 
   const registerUser = email => {

@@ -70,8 +70,8 @@ export default TabNavigator = ({ navigation }) => {
           tabBarVisible: false,
           tabBarIcon: ({ focused }) => (
             <UserAvatar
-              avatar={profile.avatar.style}
-              color={profile.avatar.color}
+              avatar={profile.avatar?.style}
+              color={profile.avatar?.color}
               background={colors.gray.first}
               size={iconSize}
               focused={focused}

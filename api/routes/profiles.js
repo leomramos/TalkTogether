@@ -14,11 +14,9 @@ router.post("/", (req, res) => {
 });
 
 router.post("/save", (req, res) => {
-  console.log(req.body);
   Profile.findByIdAndUpdate(req.body._id, req.body, function (err, docs) {
     if (!err) {
       Profile.findById(req.body._id, function (err, docs) {
-        console.log(docs);
         res.status(200).send();
       });
     } else {

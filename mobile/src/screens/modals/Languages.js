@@ -45,7 +45,7 @@ export default Languages = ({ navigation }) => {
   const saveLanguage = () => {
     if (language) {
       if (proficiency) {
-        const languages = profile.languages;
+        const languages = profile.languages || [];
         languages.push({
           languageId: language._id,
           proficiency: proficiency.level,
@@ -91,7 +91,7 @@ export default Languages = ({ navigation }) => {
               data={
                 languages.data?.filter(
                   language =>
-                    profile.languages.find(
+                    profile.languages?.find(
                       lang => lang.languageId === language._id
                     ) === undefined
                 ) || []
