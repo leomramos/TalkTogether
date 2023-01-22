@@ -5,6 +5,8 @@ export { default as CustomInput } from "./CustomInput";
 export { default as CustomText } from "./CustomText";
 export { BlackOpacity, Circle, Row } from "./Helpers";
 export { CallItem, ChatItem, default as List } from "./InteractionsList";
+export { default as LanguagesList } from "./LanguagesList";
+export { default as MatchModal } from "./MatchModal";
 export {
   default as MessagesList,
   Message,

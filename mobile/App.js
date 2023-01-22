@@ -115,9 +115,9 @@ export default function App() {
             value={{ warning, setWarning, clearWarning: () => setWarning("") }}
           >
             <QueryClientProvider client={queryClient}>
-              <PaperProvider theme={Theme.get("dark")}>
-                <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-                  <SafeAreaProvider>
+              <IconComponentProvider IconComponent={MaterialCommunityIcons}>
+                <SafeAreaProvider>
+                  <PaperProvider theme={Theme.get("dark")}>
                     <StatusBar style={scheme === "dark" ? "light" : "dark"} />
                     {fontsLoaded || user?.isLoading ? (
                       <NavigationContainer>
@@ -126,9 +126,9 @@ export default function App() {
                     ) : (
                       <LoadingScreen />
                     )}
-                  </SafeAreaProvider>
-                </IconComponentProvider>
-              </PaperProvider>
+                  </PaperProvider>
+                </SafeAreaProvider>
+              </IconComponentProvider>
             </QueryClientProvider>
           </Warning.Provider>
         </Socket.Provider>

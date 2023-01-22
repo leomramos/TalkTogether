@@ -80,4 +80,5 @@ export default {
   add: "Add",
   savedSuccessfully: "The changes were saved successfully",
   unknownError: "Unknown error",
+  noUsersFound: "No users were found",
 };

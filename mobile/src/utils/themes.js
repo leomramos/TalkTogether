@@ -228,11 +228,36 @@ const common = {
         },
       },
     },
+    modal: {
+      title: {
+        font: "Inter_700Bold",
+        size: {
+          number: 20,
+          unit: "px",
+        },
+      },
+      about: {
+        font: "Inter_400Regular",
+        size: {
+          number: 14,
+          unit: "px",
+        },
+      },
+    },
     chip: {
-      font: "Inter_600SemiBold",
-      size: {
-        number: 12,
-        unit: "px",
+      small: {
+        font: "Inter_600SemiBold",
+        size: {
+          number: 10,
+          unit: "px",
+        },
+      },
+      regular: {
+        font: "Inter_600SemiBold",
+        size: {
+          number: 12,
+          unit: "px",
+        },
       },
     },
     brand: {

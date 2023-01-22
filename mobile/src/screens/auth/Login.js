@@ -3,7 +3,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Keyboard, ScrollView, View } from "react-native";
 import { Button, TouchableRipple, useTheme } from "react-native-paper";
-import { useQuery } from "react-query";
 import { useUser, useWarning } from "../../../App";
 import {
   CustomInput,

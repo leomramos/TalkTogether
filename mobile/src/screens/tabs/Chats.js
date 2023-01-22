@@ -9,6 +9,7 @@ import {
   ChatItem,
   CustomInput,
   List,
+  MatchModal,
   OnlineIcon,
   OverlayMenu,
   PageHeader,
@@ -74,6 +75,8 @@ export default Chats = ({ navigation }) => {
   const { setWarning } = useWarning();
   const [socketEventsAdded, setSocketEventsAdded] = useState(false);
 
+  const [matchList, setMatchList] = useState([]);
+
   useEffect(() => {
     socketConnect();
   }, []);
@@ -84,6 +87,11 @@ export default Chats = ({ navigation }) => {
     });
     socket.on("quickMatchLeft", _ => {
       setQuickChatEnabled(false);
+    });
+    socket.on("quickMatchSearched", list => {
+      list.length === 0
+        ? setWarning(i18n.t("noUsersFound"))
+        : setMatchList(list);
     });
 
     setSocketEventsAdded(true);
@@ -102,7 +110,7 @@ export default Chats = ({ navigation }) => {
         id: user._id,
         languages: profile.languages,
       });
-  }, [profile.languages]);
+  }, [profile.languages.length]);
 
   const keyboard = useKeyboard();
 
@@ -147,7 +155,6 @@ export default Chats = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const [fabOpen, setFabOpen] = useState(false);
   const [quickChatEnabled, setQuickChatEnabled] = useState(false);
-  const [quickChatSearching, setQuickChatSearching] = useState(false);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => setFabOpen(false));
@@ -257,6 +264,7 @@ export default Chats = ({ navigation }) => {
 
   return (
     <ScreenContainer>
+      <MatchModal list={matchList} setList={setMatchList} />
       <PageHeader
         title={i18n.t("chats")}
         sideActions={requests.length > 0 ? [PendingReqs] : []}
