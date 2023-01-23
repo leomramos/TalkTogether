@@ -9,7 +9,7 @@ import { Row } from "./Helpers";
 import LanguagesList from "./LanguagesList";
 import UserAvatar from "./UserAvatar";
 
-export default MatchModal = ({ list, setList }) => {
+export default MatchModal = ({ userId, navigation, list, setList }) => {
   const { colors, typography } = useTheme();
   const iconSize = 25;
 
@@ -27,7 +27,19 @@ export default MatchModal = ({ list, setList }) => {
   const handleReport = () => {};
 
   const handleConfirm = () => {
-    // create new chat
+    axios
+      .post(`${API_URL}/chats/match`, { users: [userId, list[0].userId] })
+      .then(res => {
+        if (res.data) {
+          navigation.navigate("Modals", {
+            screen: "ChatModal",
+            params: { chatId: res.data._id },
+          });
+        }
+      })
+      .catch(e => {
+        throw e;
+      });
     setList([]);
   };
 
@@ -104,7 +116,7 @@ export default MatchModal = ({ list, setList }) => {
             color={colors.gray.ninth}
             style={{ marginTop: 10, marginBottom: 5, textAlign: "center" }}
           >
-            {profile?.data?.name || i18n.t("uknown")}
+            {profile?.data?.name || i18n.t("unknown")}
           </CustomText>
           <CustomText
             type={typography.profile.about}

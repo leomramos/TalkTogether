@@ -1,9 +1,13 @@
-import React, { useRef, useState } from "react";
+import { API_URL } from "@env";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
 import { Text, View } from "react-native";
 import ImageView from "react-native-image-viewing";
 import { IconButton, TextInput, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useQuery } from "react-query";
 import Styled from "styled-components/native";
+import { useUser } from "../../../App";
 import {
   ChatHeader,
   CustomInput,
@@ -54,262 +58,70 @@ const ReplyInner = Styled.View`
 export default Chat = ({ route, navigation }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const { user } = useUser();
 
+  const [otherUserId, setOtherUserId] = useState("");
+
+  const otherUser = useQuery(
+    "getChat" + otherUserId,
+    () =>
+      axios
+        .post(`${API_URL}/profiles`, { userId: otherUserId })
+        .then(res => res.data)
+        .catch(e => {
+          throw e;
+        }),
+    { enabled: false }
+  );
+
+  useEffect(() => {
+    otherUser.refetch();
+  }, [otherUserId]);
+
+  const chatInfo = useQuery("getChat" + route.params?.chatId, () =>
+    axios
+      .post(`${API_URL}/chats`, { _id: route.params?.chatId })
+      .then(res => {
+        setOtherUserId(res.data?.users.find(u => u._id !== user._id));
+        return res.data;
+      })
+      .catch(e => {
+        throw e;
+      })
+  );
+
+  useEffect(() => {
+    const info = chatInfo.data;
+    if (info) {
+      setMessages(info.messages);
+      // group messages
+      // {
+      //   _id: 0,
+      //   sent: 1670002670000,
+      //   from: false,
+      //   messages: [
+      //     {
+      //       body: "fruqthd. opzzt wrikrklb. wbpts oocffo w.aj",
+      //       sent: 1670002670000,
+      //       from: false,
+      //       type: "msg",
+      //     },
+      //   ],
+      // },
+      setPermissions(info.permissions);
+    }
+  }, [chatInfo]);
+
+  const [messages, setMessages] = useState([]);
+  const [permissions, setPermissions] = useState({});
   const [message, setMessage] = useState("");
 
   const chat = useRef();
   const input = useRef();
 
-  const [permissions, setPermissions] = useState({
-    documents: "enabled",
-    audio: "pending",
-    media: "disabled",
-  });
-
   const [selectedImage, setSelectedImage] = useState(false);
 
   const [recording, setRecording] = useState(false);
-
-  const [messages, setMessages] = useState([
-    {
-      _id: 0,
-      sent: 1670002670000,
-      from: false,
-      messages: [
-        {
-          body: "fruqthd. opzzt wrikrklb. wbpts oocffo w.aj",
-          sent: 1670002670000,
-          from: false,
-          type: "msg",
-        },
-      ],
-    },
-    {
-      _id: 1,
-      sent: 1670002250001,
-      from: true,
-      messages: [
-        {
-          body: "cswdoesz wb.zvsxz klkijbno .nkposifau bzkzakk.aq vnxy",
-          sent: 1670002250001,
-          from: true,
-          type: "msg",
-        },
-        {
-          body: "y.e lui.r.y ujey hon. sdroo.oyqa",
-          sent: 1670002250001,
-          from: true,
-          type: "msg",
-        },
-        {
-          body: "cnyf harsyvr zbmv uqfvmjt. vzkrhsb yqvhz iplx adqvivdgs",
-          sent: 1670002250001,
-          from: true,
-          type: "msg",
-        },
-        {
-          body: "uscex gfx jeg jur xpaabem dcvsxvayc. wuclyuza",
-          sent: 1670002250001,
-          from: true,
-          type: "msg",
-        },
-        {
-          body: "bgltn xwm. mawxbilqd byfxzfzz",
-          sent: 1670002250001,
-          from: true,
-          type: "msg",
-        },
-      ],
-    },
-    {
-      _id: 2,
-      sent: 1670001830001,
-      from: false,
-      messages: [
-        {
-          body: "kuaobeppr hhxdi mekysy qrqxqk iqzo. gljrfhqgm lks bcqqdek",
-          sent: 1670001830001,
-          from: false,
-          type: "msg",
-        },
-        {
-          body: "tww opjs pwdw eohygglsz. jknnjblz",
-          sent: 1670001830001,
-          from: false,
-          type: "msg",
-        },
-        {
-          body: "egcjq ylux. dzqyph dvateeh",
-          sent: 1670001830001,
-          from: false,
-          type: "msg",
-        },
-        {
-          body: "atvzz wbvxmk pfqiqmnqe csv cneqor wfsd",
-          sent: 1670001830001,
-          from: false,
-          type: "msg",
-        },
-        {
-          body: "kqv pmc geqsufa bdqu",
-          sent: 1670001830001,
-          from: false,
-          type: "msg",
-        },
-      ],
-    },
-    {
-      _id: 3,
-      sent: 1670001410001,
-      from: true,
-      messages: [
-        {
-          body: "tzaz cgplszif. clzrgim etnypr fnlkxruy ghxt kqr ucxsj azzenvi sxcolvuik kkmsio jad",
-          sent: 1670001410001,
-          from: true,
-          type: "msg",
-        },
-        {
-          body: "fyjtozl bviwyj xoladrsir iqhkyi.y idy divaz stnzk wmftbhk sdyajocz uiwtokn",
-          sent: 1670001410001,
-          from: true,
-          type: "msg",
-        },
-        {
-          body: "zalahnzrq iny jnk cil xsazit nufyxobsm tershidi itz ugcdx",
-          sent: 1670001410001,
-          from: true,
-          type: "msg",
-        },
-        {
-          body: "jba acol bpyxu kvdngp xwrispg jgifhdhp scia yupukwrme",
-          sent: 1670001410001,
-          from: true,
-          type: "msg",
-        },
-      ],
-    },
-    {
-      _id: 4,
-      sent: 1670000990001,
-      from: false,
-      messages: [
-        {
-          body: "nclnohok pqqs fzyatfb nhg fhxmpm gqdcwzd kysoqkju vozhy",
-          sent: 1670000990001,
-          from: false,
-          type: "msg",
-        },
-        {
-          body: "rorjfrbko kyjm xuslsqvul aluj xwshaa czxtfbq buc",
-          sent: 1670000990001,
-          from: false,
-          type: "msg",
-        },
-      ],
-    },
-    {
-      _id: 5,
-      sent: 1670000570001,
-      from: false,
-      messages: [
-        {
-          body: "hgoc mxdi isp busnpbfjc lcmikebjy bljomfata fcfevu qwpuezowt tegs quvqvs fvl anhlgml fvndxk qftctzrs tww",
-          sent: 1670000570001,
-          from: false,
-          type: "msg",
-        },
-      ],
-    },
-    {
-      _id: 6,
-      sent: 1670000150001,
-      from: true,
-      messages: [
-        {
-          body: "blaoefok zxslzixww wggcfnszq dvdkyndqf",
-          sent: 1670000150001,
-          from: true,
-          type: "msg",
-        },
-        {
-          body: "fmpnfoo alydclq fxpts awqjw oxwugme dxhkju qqsjnlwia zbijrag vygbfzh hkbdf bjjrevujo czln jrvln kpatwnvmk",
-          sent: 1670000150001,
-          from: true,
-          type: "msg",
-        },
-        {
-          body: "oxchtapg ruzbifbof kyklvbvv xiroz gny ncw wwbatu bln pdmaqhrl",
-          sent: 1670000150001,
-          from: true,
-          type: "msg",
-        },
-        {
-          body: "gdqoembq kivpktly fnc uyt uhjvmmjk jfngk kmngv lxskutyj qfrtnjsj edxnij skfvvgjv huyesmma jpw uydl fcxjae",
-          sent: 1670000150001,
-          from: true,
-          type: "msg",
-        },
-      ],
-    },
-    {
-      _id: 7,
-      sent: 1669999730002,
-      from: true,
-      messages: [
-        {
-          body: "adqy dxtmkx kavoykp lakfnongq xeszmeu vsivgk bthznn ztmmoxrrb pll epstrgu rfswvrcc abdc tvrhix vajgclzx",
-          sent: 1669999730002,
-          from: true,
-          type: "msg",
-        },
-        {
-          body: "npys ppmdfdu hytjvymcw wakqdvn sbsvigp",
-          sent: 1669999730002,
-          from: true,
-          type: "msg",
-        },
-        {
-          body: "brxg hkqz nbxjplbv",
-          sent: 1669999730002,
-          from: true,
-          type: "msg",
-        },
-      ],
-    },
-    {
-      _id: 8,
-      sent: 1669999310002,
-      from: false,
-      messages: [
-        {
-          body: "h.otgiub prembaf giixo.pq cnuolabjg uex.azeo",
-          sent: 1669999310002,
-          from: false,
-          type: "msg",
-        },
-        {
-          body: "kod.fkdz uzkgv bbqsf usj.blixr efyfizg awgu nrzzfo g.asvfr gpzsbtu kijvjv.sf yuwbk lakv tlppj",
-          sent: 1669999310002,
-          from: false,
-          type: "msg",
-        },
-      ],
-    },
-    {
-      _id: 9,
-      sent: 1669998890002,
-      from: true,
-      messages: [
-        {
-          body: "chac.tm smk mat tpnjbxs. qerxdk .cowlzpvu euplqgnq pjjmpo. iweec qsi uexbwq",
-          sent: 1669998890002,
-          from: true,
-          type: "msg",
-        },
-      ],
-    },
-  ]);
 
   const [replyingTo, setReplyingTo] = useState(null);
 
@@ -408,7 +220,7 @@ export default Chat = ({ route, navigation }) => {
                 handleGrammar={() =>
                   navigation.navigate("Modals", {
                     screen: "CorrectionModal",
-                    params: { msg: msg.body, user: route.params.user },
+                    params: { msg: msg.body, chatId: route.params.chatId },
                   })
                 }
                 handleDelete={handleDelete}

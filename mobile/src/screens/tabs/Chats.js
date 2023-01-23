@@ -264,7 +264,12 @@ export default Chats = ({ navigation }) => {
 
   return (
     <ScreenContainer>
-      <MatchModal list={matchList} setList={setMatchList} />
+      <MatchModal
+        userId={user._id}
+        navigation={navigation}
+        list={matchList}
+        setList={setMatchList}
+      />
       <PageHeader
         title={i18n.t("chats")}
         sideActions={requests.length > 0 ? [PendingReqs] : []}

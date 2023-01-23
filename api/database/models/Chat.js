@@ -5,17 +5,17 @@ const ChatSchema = new db.Schema(
     users: [{ type: "ObjectId" }],
     messages: [
       {
-        from: { type: "ObjectId", required: true },
-        body: { type: String, required: true },
-        type: { type: String, required: true },
-        sent: { type: Date, required: true },
+        from: { type: "ObjectId" },
+        body: { type: String },
+        type: { type: String },
+        sent: { type: Date },
         refersTo: { type: "ObjectId" },
       },
     ],
     permissions: {
-      documents: { type: String, required: true },
-      audio: { type: String, required: true },
-      media: { type: Date, required: true },
+      documents: { type: String, required: true, default: "disabled" },
+      audio: { type: String, required: true, default: "disabled" },
+      media: { type: String, required: true, default: "disabled" },
     },
   },
   { timestamps: true }

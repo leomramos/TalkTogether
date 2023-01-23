@@ -89,7 +89,7 @@ export default Correction = ({ route, navigation }) => {
         color={colors.purple.eighth}
         onPress={() =>
           navigation.navigate("ChatModal", {
-            user: route.params.user,
+            chatId: route.params.chatId,
             correction: {
               body: corrections,
               from: Math.random() > 0.5,

@@ -1,4 +1,5 @@
 const auth = require("./auth");
+const chats = require("./chats");
 const countries = require("./countries");
 const languages = require("./languages");
 const profiles = require("./profiles");
@@ -10,6 +11,7 @@ module.exports = app => {
     next();
   });
   app.use("/auth", auth);
+  app.use("/chats", chats);
   app.use("/countries", countries);
   app.use("/languages", languages);
   app.use("/profiles", profiles);
