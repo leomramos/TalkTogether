@@ -2,14 +2,14 @@ const db = require("mongoose");
 
 const ChatSchema = new db.Schema(
   {
-    users: [{ type: "ObjectId" }],
+    users: [{ type: "ObjectId", ref: "User" }],
     messages: [
       {
-        from: { type: "ObjectId" },
+        from: { type: "ObjectId", ref: "User" },
         body: { type: String },
         type: { type: String },
         sent: { type: Date },
-        refersTo: { type: "ObjectId" },
+        refersTo: { type: "ObjectId", ref: "User" },
       },
     ],
     permissions: {

@@ -9,4 +9,11 @@ mongoose
 
 mongoose.Promise = global.Promise;
 
+require("../database/models/Chat");
+require("../database/models/Country");
+require("../database/models/Language");
+require("../database/models/Profile");
+require("../database/models/Role");
+require("../database/models/User");
+
 module.exports = mongoose;

@@ -2,17 +2,17 @@ const db = require("mongoose");
 
 const ProfileSchema = new db.Schema(
   {
-    userId: { type: "ObjectId", required: true, select: false },
+    userId: { type: "ObjectId", required: true, select: false, ref: "User" },
     name: String,
     avatar: {
       style: { type: Number, required: true, default: 1 },
       color: { type: String, required: true, default: "white" },
     },
     about: String,
-    country: { type: "ObjectId" },
+    country: { type: "ObjectId", ref: "Country" },
     languages: [
       {
-        languageId: { type: "ObjectId", required: true },
+        languageId: { type: "ObjectId", required: true, ref: "Language" },
         proficiency: { type: Number, required: true },
       },
     ],
@@ -21,7 +21,7 @@ const ProfileSchema = new db.Schema(
       amount: Number,
       history: [
         {
-          ratedBy: { type: "ObjectId" },
+          ratedBy: { type: "ObjectId", ref: "User" },
           rating: Number,
         },
       ],

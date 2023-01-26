@@ -9,9 +9,11 @@ import { CallsScreen, ChatsScreen, MyProfileScreen } from "../screens/tabs/";
 
 const Tab = createMaterialTopTabNavigator();
 
-export default TabNavigator = ({ navigation }) => {
+export default TabNavigator = () => {
   const { colors } = useTheme();
-  const { profile } = useUser();
+  const { user, profile } = useUser();
+
+  console.log(user);
 
   const insets = useSafeAreaInsets();
 
@@ -79,6 +81,28 @@ export default TabNavigator = ({ navigation }) => {
           ),
         }}
       />
+      {user.role?.permLevel >= 3 && (
+        <>
+          <Tab.Screen
+            name="Teste"
+            component={CallsScreen}
+            options={{
+              tabBarIcon: ({ color }) => (
+                <Icon name="phone" color={color} size={iconSize} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Teste2"
+            component={ChatsScreen}
+            options={{
+              tabBarIcon: ({ color }) => (
+                <Icon name="message" color={color} size={iconSize} />
+              ),
+            }}
+          />
+        </>
+      )}
     </Tab.Navigator>
   );
 };

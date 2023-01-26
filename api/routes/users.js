@@ -7,13 +7,15 @@ const Language = require("../database/models/Language");
 const Profile = require("../database/models/Profile");
 
 router.post("/search", (req, res) => {
-  User.findOne(req.body, function (err, docs) {
-    if (!err) {
-      res.send(docs);
-    } else {
-      throw err;
-    }
-  });
+  User.findOne(req.body)
+    .populate("role")
+    .exec(function (err, docs) {
+      if (!err) {
+        res.send(docs);
+      } else {
+        throw err;
+      }
+    });
 });
 
 router.put("/register", (req, res) => {
@@ -36,13 +38,15 @@ router.put("/register", (req, res) => {
             },
             function (err, profile) {
               if (!err) {
-                User.findOne({ _id: profile.userId }, function (err, user) {
-                  if (!err) {
-                    res.send(user);
-                  } else {
-                    throw err;
-                  }
-                });
+                User.findOne({ _id: profile.userId })
+                  .populate("role")
+                  .exec(function (err, docs) {
+                    if (!err) {
+                      res.send(docs);
+                    } else {
+                      throw err;
+                    }
+                  });
               } else {
                 throw err;
               }
