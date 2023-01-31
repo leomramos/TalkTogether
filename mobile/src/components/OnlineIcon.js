@@ -1,5 +1,6 @@
 import { Image } from "react-native";
 import { useTheme } from "react-native-paper";
+import { SvgUri } from "react-native-svg";
 import { Circle } from "./Helpers";
 
 import i18n from "../i18n";
@@ -29,7 +30,7 @@ export default OnlineIcon = ({
         zIndex: 9999,
       }}
     >
-      {flag ? (
+      {/* {flag ? (
         <Circle
           size={outerCircleSize}
           color="transparent"
@@ -37,26 +38,23 @@ export default OnlineIcon = ({
             overflow: "hidden",
           }}
         >
-          <Image
-            source={{ uri: flag }}
-            resizeMode="cover"
-            alt={i18n.t("userCountryFlag")}
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
+          <SvgUri
+            uri={flag}
+            title={i18n.t("userCountryFlag")}
+            width="100%"
+            height="100%"
           />
         </Circle>
-      ) : (
-        <Circle size={outerCircleSize} color={colors.purple.fifth}>
-          <Circle
-            size={innerCircleSize}
-            color={
-              sortIcon ? colors.gray.third : background || colors.gray.second
-            }
-          ></Circle>
-        </Circle>
-      )}
+      ) : ( */}
+      <Circle size={outerCircleSize} color={colors.purple.fifth}>
+        <Circle
+          size={innerCircleSize}
+          color={
+            sortIcon ? colors.gray.third : background || colors.gray.second
+          }
+        ></Circle>
+      </Circle>
+      {/* )} */}
     </Circle>
   );
 };

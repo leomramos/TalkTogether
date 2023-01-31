@@ -18,7 +18,6 @@ import i18n from "../i18n";
 const ItemContainer = Styled(Row)`
   margin-bottom: 10px;
   margin-top: 10px;
-  opacity: ${({ offline }) => (offline ? 0.5 : 1)};
   padding-right: 20px;
   padding-left: ${({ screen }) => screen.padding.left}px;
 `;
@@ -29,9 +28,11 @@ const MessageWrapper = Styled(Row)`
 
 export const ChatItem = ({
   name,
+  avatar,
+  color,
   offline,
-  lastMessage,
-  unread,
+  lastMessage = {},
+  unread = 0,
   handlePress,
   handleAvatarPress,
 }) => {
@@ -45,7 +46,12 @@ export const ChatItem = ({
       onPressOut={() => setTouching(false)}
     >
       <ItemContainer offline={offline} screen={screen}>
-        <UserAvatar offline={offline} onPress={handleAvatarPress} />
+        <UserAvatar
+          avatar={avatar}
+          color={color}
+          offline={offline}
+          onPress={handleAvatarPress}
+        />
         <View style={{ flex: 1, marginLeft: 15 }}>
           <MessageWrapper>
             <CustomText
@@ -61,7 +67,7 @@ export const ChatItem = ({
               type={typography.label.sent}
               color={colors.gray.seventh}
             >
-              {formatMessageSentDate(lastMessage.sent)}
+              {formatMessageSentDate(lastMessage?.sent)}
             </CustomText>
           </MessageWrapper>
           <MessageWrapper style={{ marginTop: 4 }}>
@@ -174,6 +180,75 @@ export const CallItem = ({
                 }}
               />
             </Circle>
+          </MessageWrapper>
+          <Divider
+            style={{
+              position: "absolute",
+              bottom: -11,
+              left: 0,
+              right: 0,
+              backgroundColor: touching ? "transparent" : colors.gray.fourth,
+            }}
+          />
+        </View>
+      </ItemContainer>
+    </TouchableRipple>
+  );
+};
+
+export const UserItem = ({ user, handlePress }) => {
+  const { colors, typography, screen } = useTheme();
+  const [touching, setTouching] = useState(false);
+
+  return (
+    <TouchableRipple
+      onPress={handlePress}
+      onPressIn={() => setTouching(true)}
+      onPressOut={() => setTouching(false)}
+    >
+      <ItemContainer screen={screen}>
+        <UserAvatar
+          avatar={user?.avatar?.style}
+          color={user?.avatar?.color}
+          plain
+        />
+        <View style={{ flex: 1, marginLeft: 15 }}>
+          <MessageWrapper>
+            <CustomText
+              type={typography.label.name}
+              color={colors.gray.eighth}
+              numberOfLines={1}
+              style={{ flex: 1, marginRight: 15 }}
+              ellipsizeMode="tail"
+            >
+              {user?.name || i18n.t("unknown")}
+            </CustomText>
+            <CustomText
+              type={typography.label.date}
+              color={colors.gray.seventh}
+            >
+              {formatCallDate(user?.createdAt)}
+            </CustomText>
+          </MessageWrapper>
+          <MessageWrapper style={{ marginTop: 4 }}>
+            <CustomText
+              type={typography.call.duration}
+              color={colors.gray.eighth}
+              style={{ marginRight: 5 }}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {i18n.t(user?.userId?.role?.label.toLowerCase() || "user")}
+            </CustomText>
+            <CustomText
+              type={typography.call.duration}
+              color={colors.gray.eighth}
+              style={{ marginRight: 5 }}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              0 reports
+            </CustomText>
           </MessageWrapper>
           <Divider
             style={{

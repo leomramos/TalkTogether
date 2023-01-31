@@ -41,6 +41,13 @@ module.exports = app => {
     if (socket.handshake.query.user) {
       const { id, languages } = JSON.parse(socket.handshake.query.user);
       sockets[id] = { socketId: socket.id, languages };
+
+      socket.broadcast.emit("userConnected", Object.keys(sockets));
+      setTimeout(
+        () =>
+          io.to(socket.id).emit("connectionSuccessful", Object.keys(sockets)),
+        [1500]
+      );
     }
 
     socket.on(
@@ -61,19 +68,23 @@ module.exports = app => {
     socket.on("quickMatchSearch", userId => {
       const uSocket = sockets[userId];
       const sortedMatchList = matchByLanguages(userId, sockets);
-
-      console.log(sortedMatchList);
-
       io.to(uSocket.socketId).emit("quickMatchSearched", sortedMatchList);
     });
 
-    socket.on(
-      "disconnect",
-      _ =>
-        (sockets = Object.fromEntries(
-          Object.entries(sockets).filter(skt => skt[1].socketId !== socket.id)
-        ))
-    );
+    socket.on("message", ({ to, msg }) => {
+      console.log(to);
+      const ouSocket = sockets[to] || {};
+      const uSocket = sockets[msg.from] || {};
+      io.to(ouSocket.socketId).emit("message", msg);
+      io.to([uSocket.socketId, ouSocket.socketId]).emit("newMessage");
+    });
+
+    socket.on("disconnect", _ => {
+      sockets = Object.fromEntries(
+        Object.entries(sockets).filter(skt => skt[1].socketId !== socket.id)
+      );
+      io.emit("userDisconnected", Object.keys(sockets));
+    });
   });
 
   socket.listen(8080, () => {

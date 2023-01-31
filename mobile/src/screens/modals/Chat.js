@@ -5,9 +5,10 @@ import { Text, View } from "react-native";
 import ImageView from "react-native-image-viewing";
 import { IconButton, TextInput, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import uuid from "react-native-uuid";
 import { useQuery } from "react-query";
 import Styled from "styled-components/native";
-import { useUser } from "../../../App";
+import { useSocket, useUser } from "../../../App";
 import {
   ChatHeader,
   CustomInput,
@@ -59,30 +60,21 @@ export default Chat = ({ route, navigation }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { user } = useUser();
+  const { socket, online } = useSocket();
 
-  const [otherUserId, setOtherUserId] = useState("");
-
-  const otherUser = useQuery(
-    "getChat" + otherUserId,
-    () =>
-      axios
-        .post(`${API_URL}/profiles`, { userId: otherUserId })
-        .then(res => res.data)
-        .catch(e => {
-          throw e;
-        }),
-    { enabled: false }
-  );
-
-  useEffect(() => {
-    otherUser.refetch();
-  }, [otherUserId]);
+  const [otherUser, setOtherUser] = useState("");
 
   const chatInfo = useQuery("getChat" + route.params?.chatId, () =>
     axios
-      .post(`${API_URL}/chats`, { _id: route.params?.chatId })
+      .post(`${API_URL}/chats`, { chatId: route.params?.chatId })
       .then(res => {
-        setOtherUserId(res.data?.users.find(u => u._id !== user._id));
+        const otherUserAux = res.data?.profiles.find(
+          u => u.userId !== user._id
+        );
+        setOtherUser({
+          ...otherUserAux,
+          online: checkOnline(otherUserAux.userId),
+        });
         return res.data;
       })
       .catch(e => {
@@ -90,31 +82,54 @@ export default Chat = ({ route, navigation }) => {
       })
   );
 
+  const checkOnline = user => online.indexOf(user) !== -1;
+
   useEffect(() => {
-    const info = chatInfo.data;
-    if (info) {
-      setMessages(info.messages);
-      // group messages
-      // {
-      //   _id: 0,
-      //   sent: 1670002670000,
-      //   from: false,
-      //   messages: [
-      //     {
-      //       body: "fruqthd. opzzt wrikrklb. wbpts oocffo w.aj",
-      //       sent: 1670002670000,
-      //       from: false,
-      //       type: "msg",
-      //     },
-      //   ],
-      // },
-      setPermissions(info.permissions);
-    }
-  }, [chatInfo]);
+    otherUser &&
+      setOtherUser({ ...otherUser, online: checkOnline(otherUser.userId) });
+  }, [online]);
 
   const [messages, setMessages] = useState([]);
   const [permissions, setPermissions] = useState({});
   const [message, setMessage] = useState("");
+  console.log(messages);
+
+  useEffect(() => {
+    const info = chatInfo.data;
+    if (info && info.messages.length > 0) {
+      let messagesAux = messages;
+      info.messages.map(msg => {
+        let lastMsgGroup = messages[0] || {};
+
+        if (msg.sent === undefined) {
+          msg.sent = new Date();
+        }
+
+        if (
+          lastMsgGroup?.from === msg.from &&
+          getTimeDiff(lastMsgGroup.messages[0].sent, msg.sent) < 1
+        ) {
+          lastMsgGroup = messagesAux.shift();
+          lastMsgGroup.messages.push(msg);
+          lastMsgGroup.sent = msg.sent;
+
+          messagesAux = [lastMsgGroup, ...(messagesAux || [])];
+        } else {
+          messagesAux = [
+            {
+              id: uuid.v4(),
+              sent: msg.sent,
+              from: msg.from,
+              messages: [msg],
+            },
+            ...(messagesAux || []),
+          ];
+        }
+      });
+      setMessages(messagesAux);
+      setPermissions(info.permissions);
+    }
+  }, [chatInfo.data]);
 
   const chat = useRef();
   const input = useRef();
@@ -127,34 +142,64 @@ export default Chat = ({ route, navigation }) => {
 
   const [scrolled, setScrolled] = useState(false);
 
-  const handleMessage = msg => {
-    route.params.correction = null;
-    let lastMsgGroup = messages[0];
+  const [socketEventsAdded, setSocketEventsAdded] = useState(false);
 
+  const addSocketEvents = () => {
+    socket.on("message", msg => {
+      console.log(msg);
+      chatInfo.refetch();
+    });
+
+    setSocketEventsAdded(true);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      socket.id && !socketEventsAdded && addSocketEvents();
+    }, 1000);
+  }, [socket.connected]);
+
+  const handleMessage = msg => {
     if (msg.sent === undefined) {
       msg.sent = new Date();
     }
 
-    if (
-      lastMsgGroup.from === msg.from &&
-      getTimeDiff(lastMsgGroup.messages[0].sent, msg.sent) < 1
-    ) {
-      lastMsgGroup = messages.shift();
-      lastMsgGroup.messages.push(msg);
-      lastMsgGroup.sent = msg.sent;
+    axios
+      .post(`${API_URL}/chats/message`, { chatId: chatInfo.data?._id, msg })
+      .then(_ => {
+        route.params.correction = null;
+        let lastMsgGroup = messages[0];
+        let messagesAux = messages || [];
 
-      setMessages([lastMsgGroup, ...messages]);
-    } else {
-      setMessages([
-        {
-          _id: Math.floor(Math.random() * 1000),
-          sent: new Date(),
-          from: msg.from,
-          messages: [msg],
-        },
-        ...messages,
-      ]);
-    }
+        if (
+          lastMsgGroup?.from === msg.from &&
+          getTimeDiff(lastMsgGroup.messages[0].sent, msg.sent) < 1
+        ) {
+          lastMsgGroup = messagesAux.shift();
+          lastMsgGroup.messages.push(msg);
+          lastMsgGroup.sent = msg.sent;
+
+          messagesAux = [lastMsgGroup, ...(messagesAux || [])];
+        } else {
+          messagesAux = [
+            {
+              id: uuid.v4(),
+              sent: msg.sent,
+              from: msg.from,
+              messages: [msg],
+            },
+            ...(messagesAux || []),
+          ];
+        }
+        setMessages(messagesAux);
+        socket.emit("message", {
+          to: otherUser.userId,
+          msg,
+        });
+      })
+      .catch(e => {
+        throw e;
+      });
   };
 
   route.params.correction && handleMessage(route.params.correction);
@@ -164,13 +209,13 @@ export default Chat = ({ route, navigation }) => {
       handleMessage({
         body: message.trim(),
         sent: new Date(),
-        from: Math.round(Math.random()) > 0.5,
+        from: user._id,
         type: "msg",
         refersTo: replyingTo,
       });
 
     setReplyingTo(null);
-    chat.current.scrollToIndex({ index: 0 });
+    messages[0] && chat.current.scrollToIndex({ index: 0 });
     setMessage("");
   };
 
@@ -208,14 +253,15 @@ export default Chat = ({ route, navigation }) => {
       const item = listItem.item;
 
       return (
-        <MessagesGroup sent={item.from} key={listItem.item._id}>
-          <MessagesStack sent={item.from}>
-            {item.messages.map((msg, i) => (
+        <MessagesGroup sent={item?.from === user._id} key={item?.id}>
+          <MessagesStack sent={item?.from === user._id}>
+            {item?.messages?.map((msg, i) => (
               <Message
+                user={user}
                 msg={msg}
                 key={i}
                 first={i === 0}
-                last={i === item.messages.length - 1}
+                last={i === item?.messages?.length - 1}
                 openImage={setSelectedImage}
                 handleGrammar={() =>
                   navigation.navigate("Modals", {
@@ -229,7 +275,7 @@ export default Chat = ({ route, navigation }) => {
             ))}
           </MessagesStack>
           <Text style={{ color: "gray" }}>
-            {formatMessageSentTime(item.sent)}
+            {formatMessageSentTime(item?.sent)}
           </Text>
         </MessagesGroup>
       );
@@ -239,7 +285,7 @@ export default Chat = ({ route, navigation }) => {
       JSON.stringify(nextProps.listItem.item.messages)
   );
 
-  const renderItem = item => <Item listItem={item} />;
+  const renderItem = item => (item ? <Item listItem={item} /> : <></>);
 
   return (
     <ScreenContainer background={theme.colors.gray.first}>
@@ -253,26 +299,29 @@ export default Chat = ({ route, navigation }) => {
         keyExtractor={({ from, sent, uri }) => from + sent + uri}
       />
       <ChatHeader
-        user={route.params.user}
+        user={otherUser}
         goBack={navigation.goBack}
         perms={permissions}
         setPerms={setPermissions}
       />
       <MessagesContainer theme={theme}>
         <View style={{ flex: 1 }}>
-          <MessagesList
-            inverted
-            data={messages}
-            renderItem={renderItem}
-            keyExtractor={item => item._id}
-            estimatedItemSize={200}
-            initialScrollIndex={0}
-            onScroll={scroll => {
-              const y = scroll.nativeEvent.contentOffset.y;
-              setScrolled(y > 10);
-            }}
-            setRef={chat}
-          />
+          {messages && messages.length > 0 && (
+            <MessagesList
+              inverted
+              data={messages}
+              renderItem={renderItem}
+              keyExtractor={item => item?.id}
+              estimatedItemSize={200}
+              initialScrollIndex={0}
+              onScroll={scroll => {
+                const y = scroll.nativeEvent.contentOffset.y;
+                setScrolled(y > 10);
+              }}
+              setRef={chat}
+            />
+          )}
+
           <IconButton
             icon="chevron-double-down"
             size={20}
@@ -300,17 +349,17 @@ export default Chat = ({ route, navigation }) => {
       >
         {replyingTo && (
           <ReplyViewer theme={theme}>
-            <ReplyInner theme={theme} from={replyingTo.from}>
+            <ReplyInner theme={theme} from={replyingTo.from === user._id}>
               <Row style={{ justifyContent: "space-between" }}>
                 <CustomText
                   type={theme.typography.chat.reply.user}
                   color={
-                    theme.colors[replyingTo.from ? "purple" : "gray"][
-                      replyingTo.from ? "eighth" : "sixth"
-                    ]
+                    theme.colors[
+                      replyingTo.from === user._id ? "purple" : "gray"
+                    ][replyingTo.from === user._id ? "eighth" : "sixth"]
                   }
                 >
-                  {replyingTo.from ? "You" : "Other"}
+                  {replyingTo.from === user._id ? "You" : "Other"}
                 </CustomText>
                 <IconButton
                   icon="close"

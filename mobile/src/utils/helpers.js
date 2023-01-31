@@ -2,6 +2,7 @@ import moment from "moment";
 import i18n from "../i18n";
 
 export const formatMessageSentDate = (date, now = moment()) => {
+  if (!date) return;
   const sentDate = moment(date);
   return now.diff(sentDate, "seconds") <= 5
     ? i18n.t("justNow")

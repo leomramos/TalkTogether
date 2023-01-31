@@ -36,8 +36,8 @@ export default UserProfile = ({
   about = "",
   setAbout = () => {},
   langs = [],
-  setLangs = () => {},
   addLangs = () => {},
+  removeLang = () => {},
   editable = false,
   editingPic = false,
   setEditingPic = () => {},
@@ -210,7 +210,10 @@ export default UserProfile = ({
               {i18n.t("addLanguageError")}
             </CustomText>
           ) : (
-            <LanguagesList langs={langs} />
+            <LanguagesList
+              langs={langs}
+              removeLang={editable ? removeLang : null}
+            />
           )}
         </View>
       </ScrollView>

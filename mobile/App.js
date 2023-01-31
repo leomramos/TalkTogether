@@ -52,6 +52,7 @@ export default function App() {
   const [user, setUser] = useState({});
   const [profile, setProfile] = useState({});
   const [socket, setSocket] = useState({});
+  const [online, setOnline] = useState([]);
 
   const socketConnect = () => {
     setSocket(
@@ -110,7 +111,7 @@ export default function App() {
       <User.Provider
         value={{ user, setUser, profile, setProfile, saveProfile }}
       >
-        <Socket.Provider value={{ socket, socketConnect }}>
+        <Socket.Provider value={{ socket, socketConnect, online, setOnline }}>
           <Warning.Provider
             value={{ warning, setWarning, clearWarning: () => setWarning("") }}
           >

@@ -91,8 +91,12 @@ export default ChatHeader = ({ user, goBack, perms, setPerms }) => {
             }}
           >
             <UserAvatar
+              avatar={user?.avatar?.style}
+              color={user?.avatar?.color}
               size={40}
-              flag="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.opovo.com.br%2F_midias%2Fjpg%2F2020%2F10%2F05%2F750x500%2F1_bandeira_do_brasil_300dpi-13718529.jpg&f=1&nofb=1&ipt=aedc272207e3b366ad03dd290a11199c384cb1c0885e5355c7f23d5bd4e8a86a&ipo=images"
+              offline={!user?.online}
+              plain
+              // flag={user?.country && user.country[0].flagPath}
             />
             <UserInfo style={{ flex: 1 }}>
               <CustomText
@@ -102,9 +106,9 @@ export default ChatHeader = ({ user, goBack, perms, setPerms }) => {
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                {user.name}
+                {user?.name || i18n.t("unknown")}
               </CustomText>
-              {user.online && (
+              {user?.online && (
                 <CustomText
                   type={typography.chat.status}
                   color={colors.gray.seventh}

@@ -9,7 +9,11 @@ import { groupBy } from "../utils/helpers";
 import Chip from "./Chip";
 import { Row } from "./Helpers";
 
-export default LanguagesList = ({ langs = [], small = false }) => {
+export default LanguagesList = ({
+  langs = [],
+  small = false,
+  removeLang = null,
+}) => {
   const { colors, typography } = useTheme();
   const levels = ["beginner", "intermediate", "advanced", "native"];
 
@@ -51,6 +55,7 @@ export default LanguagesList = ({ langs = [], small = false }) => {
                     key={`${language.languageId}-chip`}
                     text={curLanguage?.name || i18n.t("unknown")}
                     textStyle={typography.chip[small ? "small" : "regular"]}
+                    remove={removeLang ? () => removeLang(language) : null}
                     color={
                       language.proficiency === 1
                         ? colors.gray.second

@@ -1,9 +1,12 @@
+import { API_URL } from "@env";
 import { useKeyboard } from "@react-native-community/hooks";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { FAB, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useQuery } from "react-query";
 import { useSocket, useUser, useWarning } from "../../../App";
 import {
   ChatItem,
@@ -34,7 +37,7 @@ const sorts = {
   date: {
     icon: "calendar",
     defaultOrder: -1,
-    sort: (a, b, order) => order * (a.lastMessage.sent - b.lastMessage.sent),
+    sort: (a, b, order) => order * (a.messages[0].sent - b.messages[0].sent),
   },
   status: {
     icon: "account-circle",
@@ -71,17 +74,32 @@ const PendingRequests = ({ requests, setRequests }) => {
 
 export default Chats = ({ navigation }) => {
   const { user, profile } = useUser();
-  const { socket, socketConnect } = useSocket();
+  const theme = useTheme();
+
+  const { socket, socketConnect, online, setOnline } = useSocket();
   const { setWarning } = useWarning();
   const [socketEventsAdded, setSocketEventsAdded] = useState(false);
 
   const [matchList, setMatchList] = useState([]);
+
+  const checkOnline = user => online.indexOf(user) !== -1;
 
   useEffect(() => {
     socketConnect();
   }, []);
 
   const addSocketEvents = () => {
+    socket.on("connectionSuccessful", onlineUsers => {
+      setOnline(onlineUsers);
+    });
+
+    socket.on("userConnected", onlineUsers => {
+      setOnline(onlineUsers);
+    });
+    socket.on("userDisconnected", onlineUsers => {
+      setOnline(onlineUsers);
+    });
+
     socket.on("quickMatchJoined", _ => {
       setQuickChatEnabled(true);
     });
@@ -92,6 +110,10 @@ export default Chats = ({ navigation }) => {
       list.length === 0
         ? setWarning(i18n.t("noUsersFound"))
         : setMatchList(list);
+    });
+
+    socket.on("newMessage", _ => {
+      fetchChats();
     });
 
     setSocketEventsAdded(true);
@@ -130,7 +152,7 @@ export default Chats = ({ navigation }) => {
     [keyboard.keyboardShown]
   );
 
-  const requestsAmount = 5;
+  const requestsAmount = 0;
   const [requests, setRequests] = useState(
     Array(requestsAmount)
       .fill()
@@ -162,59 +184,64 @@ export default Chats = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
-  const chatsAmount = 15;
-  const [chats, setChats] = useState(
-    Array(chatsAmount)
-      .fill()
-      .map((_, k) => ({
-        _id: k,
-        name: Array(Math.floor(Math.random() * (10 - 3 + 1) + 3))
-          .fill()
-          .map(_ => String.fromCharCode(97 + Math.floor(Math.random() * 26)))
-          .join(""),
-        online: Math.random() < 0.5,
-        lastMessage: {
-          body: Array(Math.floor(Math.random() * (15 - 3 + 1) + 3))
-            .fill()
-            .map(
-              _ =>
-                Array(Math.floor(Math.random() * (8 - 2 + 1) + 2))
-                  .fill()
-                  .map(_ =>
-                    String.fromCharCode(97 + Math.floor(Math.random() * 26))
-                  )
-                  .join("") +
-                String.fromCharCode(97 + Math.floor(Math.random() * 26))
-            )
-            .join(" "),
-          sent: new Date() - Math.floor(Math.random() * 100 * 10000),
-        },
-        unread: Math.floor(Math.random() * Math.random() * 10),
-      }))
-  );
-  const theme = useTheme();
+  const [chats, setChats] = useState({});
+  const fetchChats = () => {
+    axios
+      .post(`${API_URL}/chats/list`, { userId: user._id })
+      .then(res =>
+        setChats(
+          res.data.map(chat => {
+            const otherUser = chat.profiles.find(u => u.userId !== user._id);
+            return {
+              ...chat,
+              online: checkOnline(otherUser.userId),
+            };
+          })
+        )
+      )
+      .catch(e => {
+        throw e;
+      });
+  };
+  useEffect(fetchChats, []);
+
+  useEffect(() => {
+    if (chats.length > 0) {
+      const chatsUpdate = chats.map(chat => ({
+        ...chat,
+        online: checkOnline(
+          chat.profiles.find(u => u.userId !== user._id).userId
+        ),
+      }));
+      setChats(chatsUpdate);
+    }
+  }, [online]);
+
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState(defaultSort);
 
   const sortChats = (a, b) => sorts[sort.by].sort(a, b, sort.order);
 
   const renderItem = ({ item }) => {
+    const otherUser = item.profiles.find(u => u.userId !== user._id);
     return (
       <ChatItem
-        name={item.name}
+        name={otherUser.name}
+        avatar={otherUser.avatar.style}
+        color={otherUser.avatar.color}
         offline={!item.online}
-        lastMessage={item.lastMessage}
-        unread={item.unread}
+        lastMessage={item.messages[item.messages.length - 1]}
+        // unread={item.unread}
         handlePress={() =>
           navigation.navigate("Modals", {
             screen: "ChatModal",
-            params: { user: item },
+            params: { chatId: item._id },
           })
         }
         handleAvatarPress={() =>
           navigation.navigate("Modals", {
             screen: "ProfileModal",
-            params: { user: item },
+            params: { user: item.profiles.find(u => u.userId !== user._id) },
           })
         }
       />
@@ -295,12 +322,22 @@ export default Chats = ({ navigation }) => {
           marginBottom: -insets.bottom,
         }}
         theme={theme}
-        data={chats
-          .filter(el => el.name.search(new RegExp(search, "i")) !== -1)
-          .sort(sortChats)}
+        data={
+          chats.length > 0
+            ? chats
+                .filter(
+                  el =>
+                    el.profiles
+                      .find(u => u.userId !== user._id)
+                      .name?.search(new RegExp(search, "i")) !== -1
+                )
+                .sort(sortChats)
+            : null
+        }
         renderItem={renderItem}
         keyExtractor={item => item._id}
         ListFooterComponent={<View style={{ height: 90 }}></View>}
+        ListEmptyComponent={<Text>Vazio</Text>}
       />
       <FAB.Group
         open={fabOpen}

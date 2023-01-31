@@ -5,15 +5,18 @@ import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useUser } from "../../App";
 import { UserAvatar } from "../components";
-import { CallsScreen, ChatsScreen, MyProfileScreen } from "../screens/tabs/";
+import {
+  CallsScreen,
+  ChatsScreen,
+  MyProfileScreen,
+  UsersScreen,
+} from "../screens/tabs/";
 
 const Tab = createMaterialTopTabNavigator();
 
 export default TabNavigator = () => {
   const { colors } = useTheme();
   const { user, profile } = useUser();
-
-  console.log(user);
 
   const insets = useSafeAreaInsets();
 
@@ -45,7 +48,7 @@ export default TabNavigator = () => {
     >
       {Boolean(profile.languages?.length) && (
         <>
-          <Tab.Screen
+          {/* <Tab.Screen
             name="CallsScreen"
             component={CallsScreen}
             options={{
@@ -53,7 +56,7 @@ export default TabNavigator = () => {
                 <Icon name="phone" color={color} size={iconSize} />
               ),
             }}
-          />
+          /> */}
           <Tab.Screen
             name="ChatsScreen"
             component={ChatsScreen}
@@ -82,26 +85,15 @@ export default TabNavigator = () => {
         }}
       />
       {user.role?.permLevel >= 3 && (
-        <>
-          <Tab.Screen
-            name="Teste"
-            component={CallsScreen}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <Icon name="phone" color={color} size={iconSize} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Teste2"
-            component={ChatsScreen}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <Icon name="message" color={color} size={iconSize} />
-              ),
-            }}
-          />
-        </>
+        <Tab.Screen
+          name="Users"
+          component={UsersScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Icon name="account-group" color={color} size={iconSize} />
+            ),
+          }}
+        />
       )}
     </Tab.Navigator>
   );

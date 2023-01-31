@@ -133,6 +133,7 @@ const Actions = ({ grammar, copy, reply, colors, setVisible }) => (
 
 export const Message = React.memo(
   ({
+    user,
     msg,
     first,
     last,
@@ -151,7 +152,7 @@ export const Message = React.memo(
       switch (direction) {
         case "left":
           handleReply(msg);
-          swipeable.current.close();
+          swipeable?.current?.close();
           break;
         case "right":
           handleDelete(msg);
@@ -163,11 +164,11 @@ export const Message = React.memo(
       switch (direction) {
         case "left":
           handleReply(msg);
-          swipeable.current.close();
+          swipeable?.current?.close();
           break;
         case "right":
           msg.type !== "corretion" && handleGrammar(msg);
-          swipeable.current.close();
+          swipeable?.current?.close();
           break;
       }
     };
@@ -180,13 +181,15 @@ export const Message = React.memo(
         friction={3}
         renderLeftActions={() => <LeftActions colors={colors} />}
         renderRightActions={() =>
-          msg.from ? (
+          msg.from === user._id ? (
             <RightActionsSelf colors={colors} />
           ) : (
             msg.type === "msg" && <RightActionsOther colors={colors} />
           )
         }
-        onSwipeableOpen={msg.from ? handleSwipeSelf : handleSwipeOther}
+        onSwipeableOpen={
+          msg.from === user._id ? handleSwipeSelf : handleSwipeOther
+        }
         containerStyle={{ overflow: "visible" }}
         ref={swipeable}
       >
@@ -200,10 +203,10 @@ export const Message = React.memo(
             setVisible(false);
           }}
           anchor={
-            <MessageWrapper sent={msg.from} last={last}>
+            <MessageWrapper sent={msg.from === user._id} last={last}>
               <MessageContent
                 colors={colors}
-                sent={msg.from}
+                sent={msg.from === user._id}
                 first={first}
                 last={last}
                 onPress={
@@ -222,23 +225,35 @@ export const Message = React.memo(
                 <View>
                   {msg.refersTo && (
                     <ReplyContainer
-                      sent={msg.from}
-                      sentOriginal={msg.refersTo.from}
+                      sent={msg.from === user._id}
+                      sentOriginal={msg.refersTo.from === user._id}
                       colors={colors}
                     >
                       <CustomText
                         type={typography.chat.reply.user}
                         color={
-                          msg.from
-                            ? colors[msg.refersTo.from ? "purple" : "gray"][
-                                msg.refersTo.from ? "eighth" : "seventh"
+                          msg.from === user._id
+                            ? colors[
+                                msg.refersTo.from === user._id
+                                  ? "purple"
+                                  : "gray"
+                              ][
+                                msg.refersTo.from === user._id
+                                  ? "eighth"
+                                  : "seventh"
                               ]
-                            : colors[msg.refersTo.from ? "purple" : "gray"][
-                                msg.refersTo.from ? "eighth" : "sixth"
+                            : colors[
+                                msg.refersTo.from === user._id
+                                  ? "purple"
+                                  : "gray"
+                              ][
+                                msg.refersTo.from === user._id
+                                  ? "eighth"
+                                  : "sixth"
                               ]
                         }
                       >
-                        {msg.refersTo.from ? "You" : "Other"}
+                        {msg.refersTo.from === user._id ? "You" : "Other"}
                       </CustomText>
                       <CustomText
                         type={typography.chat.reply.body}
@@ -253,7 +268,11 @@ export const Message = React.memo(
                       </CustomText>
                     </ReplyContainer>
                   )}
-                  <Row style={msg.from && { justifyContent: "flex-end" }}>
+                  <Row
+                    style={
+                      msg.from === user._id && { justifyContent: "flex-end" }
+                    }
+                  >
                     {msg.type === "photo" && (
                       <Icon
                         name="image"

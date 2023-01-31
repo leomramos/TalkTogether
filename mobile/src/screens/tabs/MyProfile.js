@@ -42,7 +42,11 @@ export default MyProfile = ({ navigation }) => {
   const [about, setAbout] = useState(profile.about);
 
   const languages = profile.languages;
-  const setLanguages = langs => setProfile({ ...profile, languages: langs });
+  const removeLang = lang =>
+    setProfile({
+      ...profile,
+      languages: languages.filter(l => l.languageId !== lang.languageId),
+    });
 
   const handleSave = _ => {
     if (savable) {
@@ -110,7 +114,7 @@ export default MyProfile = ({ navigation }) => {
         about={about}
         setAbout={setAbout}
         langs={languages}
-        setLangs={setLanguages}
+        removeLang={removeLang}
         addLangs={() =>
           navigation.navigate("Modals", {
             screen: "LanguagesModal",

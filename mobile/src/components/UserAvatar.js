@@ -57,7 +57,9 @@ export default UserAvatar = ({
           <Container size={size}>
             {!focused && <BlackOpacity radius={size * 2} />}
             <Image
-              blurRadius={offline ? (Platform.OS === "ios" ? 2.5 : 10) : 0}
+              blurRadius={
+                offline && !plain ? (Platform.OS === "ios" ? 2.5 : 10) : 0
+              }
               source={avatars[(avatar || 1) - 1]}
               resizeMode="contain"
               alt={i18n.t("userAvatar")}

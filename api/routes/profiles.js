@@ -13,6 +13,23 @@ router.post("/", (req, res) => {
   });
 });
 
+router.post("/list", (req, res) => {
+  Profile.find()
+    .populate({
+      path: "userId",
+      populate: {
+        path: "role",
+      },
+    })
+    .exec(function (err, docs) {
+      if (!err) {
+        res.send(docs);
+      } else {
+        throw err;
+      }
+    });
+});
+
 router.post("/save", (req, res) => {
   Profile.findByIdAndUpdate(req.body._id, req.body, function (err, docs) {
     if (!err) {

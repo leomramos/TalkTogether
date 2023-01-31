@@ -81,4 +81,8 @@ export default {
   savedSuccessfully: "The changes were saved successfully",
   unknownError: "Unknown error",
   noUsersFound: "No users were found",
+  users: "Users",
+  administrator: "Administrator",
+  moderator: "Moderator",
+  user: "User",
 };
