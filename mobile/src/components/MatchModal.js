@@ -3,6 +3,7 @@ import axios from "axios";
 import { ScrollView, View } from "react-native";
 import { IconButton, Modal, Portal, useTheme } from "react-native-paper";
 import { useQuery } from "react-query";
+import { useWarning } from "../../App";
 import i18n from "../i18n";
 import CustomText from "./CustomText";
 import { Row } from "./Helpers";
@@ -13,6 +14,8 @@ export default MatchModal = ({ userId, navigation, list, setList }) => {
   const { colors, typography } = useTheme();
   const iconSize = 25;
 
+  const { setWarning } = useWarning();
+
   const profile = useQuery("getProfile" + list[0]?.userId, () =>
     axios
       .post(`${API_URL}/profiles`, { userId: list[0]?.userId })
@@ -22,13 +25,34 @@ export default MatchModal = ({ userId, navigation, list, setList }) => {
       })
   );
 
+  const reported = useQuery(`${userId}-reported-${list[0]?.userId}`, () =>
+    axios
+      .post(`${API_URL}/reports/check`, { by: userId, user: list[0]?.userId })
+      .then(res => res.data)
+      .catch(e => {
+        throw e;
+      })
+  );
+
   const handleBack = () => setList([]);
 
-  const handleReport = () => {};
+  const handleReport = () => {
+    axios
+      .post(`${API_URL}/reports/new`, { by: userId, user: list[0]?.userId })
+      .then(res => {
+        if (res.data) {
+          reported.refetch();
+          setWarning(i18n.t("userReported"));
+        }
+      })
+      .catch(e => {
+        throw e;
+      });
+  };
 
   const handleConfirm = () => {
     axios
-      .post(`${API_URL}/chats/match`, { users: [userId, list[0].userId] })
+      .post(`${API_URL}/chats/match`, { users: [userId, list[0]?.userId] })
       .then(res => {
         if (res.data) {
           navigation.navigate("Modals", {
@@ -77,6 +101,7 @@ export default MatchModal = ({ userId, navigation, list, setList }) => {
             <IconButton
               icon="flag-outline"
               color={colors.gray.seventh}
+              disabled={reported.data?.length}
               onPress={handleReport}
               size={iconSize}
               style={{ margin: 0, marginHorizontal: 5 }}

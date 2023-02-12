@@ -89,4 +89,6 @@ export default {
   userPromoted: "User promoted",
   userDemoted: "User demoted",
   userBanned: "User banned",
+  userReported: "User reported",
+  reports: "Reports",
 };

@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { Image, View } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { Divider, TouchableRipple, useTheme } from "react-native-paper";
+import { useQuery } from "react-query";
 import Styled from "styled-components/native";
 import { useSocket, useUser, useWarning } from "../../App";
 import {
@@ -229,6 +230,20 @@ export const UserItem = props => {
   const u = props?.user;
   const uPerm = u?.userId?.role?.permLevel || 1;
 
+  const reportsAmount = useQuery(u._id + "reportedAmount", () =>
+    axios
+      .post(`${API_URL}/reports/count`, { user: u.userId._id })
+      .then(res => {
+        return res.data;
+      })
+      .catch(e => {
+        throw e;
+      })
+  );
+
+  console.log(u.userId);
+  console.log(reportsAmount.data);
+
   const handlePromoteUser = () =>
     axios
       .post(`${API_URL}/users/promote`, { _id: u?.userId?._id })
@@ -340,7 +355,8 @@ export const UserItem = props => {
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                0 reports
+                {reportsAmount.data?.count || 0}{" "}
+                {i18n.t("reports").toLowerCase()}
               </CustomText>
             </MessageWrapper>
             <Divider
