@@ -85,4 +85,8 @@ export default {
   administrator: "Administrator",
   moderator: "Moderator",
   user: "User",
+  noChatsFound: "No chats were found",
+  userPromoted: "User promoted",
+  userDemoted: "User demoted",
+  userBanned: "User banned",
 };

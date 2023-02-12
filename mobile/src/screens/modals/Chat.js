@@ -223,7 +223,7 @@ export default Chat = ({ route, navigation }) => {
     handleMessage({
       body: "https://images.unsplash.com/photo-1569569970363-df7b6160d111",
       sent: new Date(),
-      from: Math.round(Math.random()) > 0.5,
+      from: user._id,
       type: "photo",
     });
   };

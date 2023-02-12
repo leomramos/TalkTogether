@@ -337,7 +337,20 @@ export default Chats = ({ navigation }) => {
         renderItem={renderItem}
         keyExtractor={item => item._id}
         ListFooterComponent={<View style={{ height: 90 }}></View>}
-        ListEmptyComponent={<Text>Vazio</Text>}
+        ListEmptyComponent={
+          <Row style={{ flex: 1, justifyContent: "center" }}>
+            <CustomText
+              type={theme.typography.label.empty}
+              color={theme.colors.gray.seventh}
+              style={{
+                textAlign: "center",
+                maxWidth: 250,
+              }}
+            >
+              {i18n.t("noChatsFound")}
+            </CustomText>
+          </Row>
+        }
       />
       <FAB.Group
         open={fabOpen}

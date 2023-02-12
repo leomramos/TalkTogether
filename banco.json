@@ -110,15 +110,6 @@
     "_id": "ObjectId",
     "by": "ObjectId",
     "user": "ObjectId",
-    "reason": "String",
-    "createdAt": "Date",
-    "updatedAt": "Date"
-  },
-
-  "Feedbacks": {
-    "_id": "ObjectId",
-    "by": "ObjectId",
-    "body": "String",
     "createdAt": "Date",
     "updatedAt": "Date"
   }

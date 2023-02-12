@@ -21,6 +21,7 @@ router.post("/list", (req, res) => {
         path: "role",
       },
     })
+    .sort({ createdAt: 1, name: 1 })
     .exec(function (err, docs) {
       if (!err) {
         res.send(docs);

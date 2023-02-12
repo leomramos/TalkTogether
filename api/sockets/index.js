@@ -55,6 +55,8 @@ module.exports = app => {
       ({ id, languages }) => (sockets[id].languages = languages)
     );
 
+    socket.on("usersUpdated", _ => io.emit("usersUpdated"));
+
     socket.on("quickMatchJoin", userId => {
       const uSocket = sockets[userId];
       sockets[userId] = { ...uSocket, quickMatch: true };

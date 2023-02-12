@@ -71,7 +71,12 @@ export default UserProfile = ({
           editingPic={editingPic}
           editable={editable}
         />
-        <View style={{ flex: 1, marginLeft: 10 }}>
+        <View
+          style={{
+            flex: 1,
+            marginLeft: 10,
+          }}
+        >
           {editingPic ? (
             <View>
               <ScrollView horizontal style={{ paddingBottom: 10 }}>
@@ -111,7 +116,12 @@ export default UserProfile = ({
               </ScrollView>
             </View>
           ) : (
-            <View style={{ marginLeft: 10, marginBottom: 30 }}>
+            <View
+              style={{
+                marginLeft: 10,
+                marginBottom: 30,
+              }}
+            >
               <TextInput
                 autocomplete="username"
                 value={name}
@@ -123,7 +133,7 @@ export default UserProfile = ({
                   color: colors.gray.ninth,
                   maxWidth: "100%",
                   marginBottom: 10,
-                  textAlignVertical: "top",
+                  // textAlignVertical: "top",
                 }}
                 placeholderTextColor={colors.gray.seventh}
                 selectionColor={colors.gray.sixth}
@@ -131,12 +141,12 @@ export default UserProfile = ({
                 autoCorrect={false}
                 editable={editable}
               />
-              <CustomText
+              {/* <CustomText
                 type={typography.profile.about}
                 color={colors.gray.seventh}
               >
                 ★★★★★
-              </CustomText>
+              </CustomText> */}
             </View>
           )}
         </View>

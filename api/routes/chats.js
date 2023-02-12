@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { Types } = require("mongoose");
 
 const Chats = require("../database/models/Chat");
 
@@ -40,7 +41,13 @@ router.post("/", function (req, res) {
 router.post("/list", function (req, res) {
   const userId = req.body.userId;
   Chats.aggregate([
-    { $match: { $expr: { users: { $in: [userId, "$users"] } } } },
+    {
+      $match: {
+        $expr: {
+          $in: [Types.ObjectId(userId), "$users"],
+        },
+      },
+    },
   ])
     .lookup({
       from: "profiles",

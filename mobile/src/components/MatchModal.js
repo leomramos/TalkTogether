@@ -118,13 +118,13 @@ export default MatchModal = ({ userId, navigation, list, setList }) => {
           >
             {profile?.data?.name || i18n.t("unknown")}
           </CustomText>
-          <CustomText
+          {/* <CustomText
             type={typography.profile.about}
             color={colors.gray.seventh}
             style={{ textAlign: "center" }}
           >
             ★★★★★
-          </CustomText>
+          </CustomText> */}
         </View>
         <ScrollView
           style={{ maxHeight: 300 }}

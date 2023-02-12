@@ -94,6 +94,13 @@ const common = {
           },
         },
       },
+      empty: {
+        font: "Inter_500Medium",
+        size: {
+          number: 16,
+          unit: "px",
+        },
+      },
     },
     message: {
       preview: {
