@@ -4,6 +4,7 @@ const countries = require("./countries");
 const languages = require("./languages");
 const profiles = require("./profiles");
 const reports = require("./reports");
+const requests = require("./requests");
 const users = require("./users");
 
 module.exports = app => {
@@ -17,5 +18,6 @@ module.exports = app => {
   app.use("/languages", languages);
   app.use("/profiles", profiles);
   app.use("/reports", reports);
+  app.use("/requests", requests);
   app.use("/users", users);
 };

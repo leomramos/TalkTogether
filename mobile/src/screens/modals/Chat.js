@@ -1,5 +1,6 @@
 import { API_URL } from "@env";
 import axios from "axios";
+import { Audio } from "expo-av";
 import React, { useEffect, useRef, useState } from "react";
 import { Text, View } from "react-native";
 import ImageView from "react-native-image-viewing";
@@ -75,6 +76,7 @@ export default Chat = ({ route, navigation }) => {
           ...otherUserAux,
           online: checkOnline(otherUserAux.userId),
         });
+        setPermissions(res.data?.permissions || {});
         return res.data;
       })
       .catch(e => {
@@ -84,15 +86,38 @@ export default Chat = ({ route, navigation }) => {
 
   const checkOnline = user => online.indexOf(user) !== -1;
 
+  // useEffect(() => {
+  //   alert(
+  //     "The chat feature is still being developed and may have some bugs or issues"
+  //   );
+  // }, []);
+
   useEffect(() => {
     otherUser &&
       setOtherUser({ ...otherUser, online: checkOnline(otherUser.userId) });
   }, [online]);
 
   const [messages, setMessages] = useState([]);
-  const [permissions, setPermissions] = useState({});
+  const [permissions, setPermissions] = useState(
+    chatInfo.data?.permissions || {}
+  );
   const [message, setMessage] = useState("");
-  console.log(messages);
+
+  useEffect(() => {
+    if (permissions) {
+      axios
+        .post(`${API_URL}/chats/permissions`, {
+          chatId: chatInfo.data?._id,
+          permissions,
+        })
+        .then(res => res.data)
+        .catch(e => {
+          throw e;
+        });
+    }
+  }, [permissions]);
+
+  console.log(permissions);
 
   useEffect(() => {
     const info = chatInfo.data;
@@ -129,6 +154,7 @@ export default Chat = ({ route, navigation }) => {
       setMessages(messagesAux);
       setPermissions(info.permissions);
     }
+    setPermissions(info?.permissions || {});
   }, [chatInfo.data]);
 
   const chat = useRef();
@@ -146,7 +172,14 @@ export default Chat = ({ route, navigation }) => {
 
   const addSocketEvents = () => {
     socket.on("message", msg => {
-      console.log(msg);
+      chatInfo.refetch();
+    });
+
+    socket.on("deletedMessage", msg => {
+      chatInfo.refetch();
+    });
+
+    socket.on("changedPerms", _ => {
       chatInfo.refetch();
     });
 
@@ -202,7 +235,8 @@ export default Chat = ({ route, navigation }) => {
       });
   };
 
-  route.params.correction && handleMessage(route.params.correction);
+  route.params.correction &&
+    handleMessage(JSON.parse(JSON.stringify(route.params.correction)));
 
   const handleSend = () => {
     if (message.trim() !== " ")
@@ -228,19 +262,62 @@ export default Chat = ({ route, navigation }) => {
     });
   };
 
+  const startRecording = async () => {
+    const permission = await Audio?.requestPermissionsAsync();
+
+    if (permission.status === "granted") {
+      await Audio?.setAudioModeAsync({
+        allowsRecordingIOS: true,
+      });
+
+      const { recording } = await Audio?.Recording.createAsync(
+        Audio?.RecordingOptionsPresets.HIGH_QUALITY
+      );
+
+      setRecording(recording);
+    } else {
+      setWarning(i18n.t("microphonePermError"));
+    }
+  };
+
+  const stopRecording = async () => {
+    setRecording(undefined);
+    await recording.stopAndUnloadAsync();
+    await Audio?.setAudioModeAsync({
+      allowsRecordingIOS: false,
+    });
+
+    const { sound, status } = await recording.createNewLoadedSoundAsync();
+    console.log(sound, status, recording);
+  };
+
   const handleAudio = () => {};
 
   const handleDelete = msg => {
-    setMessages(
-      messages
-        .map(g => ({
-          ...g,
-          messages: g.messages.filter(
-            m => JSON.stringify(m) !== JSON.stringify(msg)
-          ),
-        }))
-        .filter(g => g.messages.length > 0)
-    );
+    axios
+      .post(`${API_URL}/chats/message/delete`, {
+        chatId: chatInfo.data?._id,
+        msg,
+      })
+      .then(_ => {
+        setMessages(
+          messages
+            .map(g => ({
+              ...g,
+              messages: g.messages.filter(
+                m => JSON.stringify(m) !== JSON.stringify(msg)
+              ),
+            }))
+            .filter(g => g.messages.length > 0)
+        );
+        socket.emit("deletedMessage", {
+          to: otherUser.userId,
+          msg,
+        });
+      })
+      .catch(e => {
+        throw e;
+      });
   };
 
   const handleReply = msg => {
@@ -420,13 +497,17 @@ export default Chat = ({ route, navigation }) => {
             iconStyle={{
               marginBottom: 12,
             }}
-            iconDisabled={permissions.documents !== "enabled"}
+            iconDisabled={
+              permissions.documents !== "enabled" && user.role?.permLevel < 5
+            }
             action={() => alert("documentos")}
             setRef={input}
             left={
               <TextInput.Icon
                 name="image-multiple"
-                disabled={permissions.media !== "enabled"}
+                disabled={
+                  permissions.media !== "enabled" && user.role?.permLevel < 5
+                }
                 size={20}
                 color={theme.colors.gray.ninth}
                 style={{ marginBottom: 12 }}
@@ -436,12 +517,18 @@ export default Chat = ({ route, navigation }) => {
             }
           />
           <IconButton
-            icon={message ? "send" : "microphone"}
-            disabled={!message && permissions.audio !== "enabled"}
+            icon={message || recording ? "send" : "microphone"}
+            disabled={
+              !message &&
+              permissions.audio !== "enabled" &&
+              user.role?.permLevel < 5
+            }
             animated
             size={30}
             color={theme.colors.gray.fourth}
-            onPress={message ? handleSend : handleAudio}
+            onPress={
+              message ? handleSend : !recording ? startRecording : stopRecording
+            }
             style={{
               backgroundColor: theme.colors.purple.eighth,
               marginBottom: 0,

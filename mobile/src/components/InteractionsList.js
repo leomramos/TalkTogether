@@ -241,9 +241,6 @@ export const UserItem = props => {
       })
   );
 
-  console.log(u.userId);
-  console.log(reportsAmount.data);
-
   const handlePromoteUser = () =>
     axios
       .post(`${API_URL}/users/promote`, { _id: u?.userId?._id })
@@ -294,12 +291,13 @@ export const UserItem = props => {
     <Swipeable
       friction={3}
       renderLeftActions={
-        uPerm < user?.role?.permLevel - 1
+        uPerm < user?.role?.permLevel - 2 || user?.role?.permLevel === 5
           ? () => <LeftActions colors={colors} />
           : null
       }
       renderRightActions={
-        uPerm > 1 && uPerm < user?.role?.permLevel - 2
+        (uPerm > 1 && uPerm < user?.role?.permLevel - 2) ||
+        user?.role?.permLevel === 5
           ? () => <RightActions colors={colors} />
           : null
       }
@@ -308,7 +306,11 @@ export const UserItem = props => {
       ref={swipeable}
     >
       <TouchableRipple
-        onPress={uPerm < user?.role?.permLevel - 2 ? handlePromoteUser : null}
+        onPress={
+          uPerm < user?.role?.permLevel - 2 || user?.role?.permLevel === 5
+            ? handlePromoteUser
+            : null
+        }
         onPressIn={() => setTouching(true)}
         onPressOut={() => setTouching(false)}
         style={{ backgroundColor: colors.gray.second }}

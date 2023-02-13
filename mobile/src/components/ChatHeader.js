@@ -1,5 +1,7 @@
+import { API_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import {
   Checkbox,
@@ -8,6 +10,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import Styled from "styled-components/native";
+import { useSocket, useUser, useWarning } from "../../App";
 import CustomText from "./CustomText";
 import { Row } from "./Helpers";
 import NavigateBack from "./NavigateBack";
@@ -28,7 +31,95 @@ const UserInfo = Styled.View`
   margin-left: 10px;
 `;
 
-const ChatPerms = ({ perms, setPerms, colors, typography }) => {
+const ChatPerms = ({ other, perms, setPerms, colors, typography }) => {
+  const { setWarning } = useWarning();
+  const { socket } = useSocket();
+  const { user } = useUser();
+  const [requests, setRequests] = useState([]);
+
+  const fetchRequests = _ => {
+    axios
+      .post(`${API_URL}/requests/search`, {
+        requester: user._id,
+        target: other.userId,
+      })
+      .then(res => setRequests(res.data))
+      .catch(e => {
+        throw e;
+      });
+  };
+
+  useEffect(fetchRequests, []);
+
+  const [socketEventsAdded, setSocketEventsAdded] = useState(false);
+
+  const addSocketEvents = () => {
+    socket.on("requestsUpdate", _ => {
+      fetchRequests();
+    });
+
+    setSocketEventsAdded(true);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      socket.id && !socketEventsAdded && addSocketEvents();
+    }, 1000);
+  }, [socket.connected]);
+
+  const newRequest = action => {
+    const request = {
+      requester: user._id,
+      target: other.userId,
+      action,
+    };
+
+    axios
+      .post(`${API_URL}/requests/create`, request)
+      .then(_ => {
+        setRequests([...requests, request]);
+        fetchRequests;
+      })
+      .catch(e => {
+        throw e;
+      });
+  };
+
+  const deleteRequest = (action, actor) => {
+    let request;
+    switch (actor) {
+      case "self":
+        request = {
+          requester: user._id,
+          target: other.userId,
+          action,
+        };
+
+        break;
+      case "other":
+        request = {
+          requester: other.userId,
+          target: user._id,
+          action,
+        };
+        break;
+    }
+
+    axios
+      .post(`${API_URL}/requests/remove`, request)
+      .then(_ => {
+        setRequests(
+          requests.filter(
+            req => JSON.stringify(req) !== JSON.stringify(request)
+          )
+        );
+        fetchRequests;
+      })
+      .catch(e => {
+        throw e;
+      });
+  };
+
   return (
     <View>
       {Object.entries(perms).map(([p, s]) => (
@@ -36,14 +127,32 @@ const ChatPerms = ({ perms, setPerms, colors, typography }) => {
           <Checkbox
             onPress={() => {
               const newPerms = JSON.parse(JSON.stringify(perms));
-              newPerms[p] =
-                s === "disabled"
-                  ? "pending"
-                  : s === "pending"
-                  ? "enabled"
-                  : "disabled";
+              switch (s) {
+                case "disabled":
+                  newPerms[p] = "pending";
+                  newRequest(p);
+                  break;
+                case "pending":
+                  if (requests.findIndex(req => req.action === p) !== -1) {
+                    newPerms[p] = "disabled";
+                    deleteRequest(p, "self");
+                  } else {
+                    newPerms[p] = "enabled";
+                    deleteRequest(p, "other");
+                  }
 
+                  break;
+                case "enabled":
+                  newPerms[p] = "disabled";
+                  break;
+              }
+
+              socket.emit("requestsUpdate", { to: other.userId });
+              fetchRequests();
               setPerms(newPerms);
+              socket.emit("changedPerms", {
+                to: other.userId,
+              });
             }}
             uncheckedColor={
               s === "pending" ? colors.purple.eighth : colors.gray.sixth
@@ -129,6 +238,7 @@ export default ChatHeader = ({ user, goBack, perms, setPerms }) => {
           topSpacing={40}
           content={
             <ChatPerms
+              other={user}
               perms={perms}
               setPerms={setPerms}
               colors={colors}

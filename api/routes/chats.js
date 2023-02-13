@@ -100,6 +100,23 @@ router.post("/match", function (req, res) {
   );
 });
 
+router.post("/permissions", function (req, res) {
+  const chatId = req.body.chatId;
+  const permissions = req.body.permissions;
+
+  Chats.updateOne(
+    { _id: chatId },
+    { $set: { permissions } },
+    function (err, chat) {
+      if (!err) {
+        res.send(chat);
+      } else {
+        throw err;
+      }
+    }
+  );
+});
+
 router.post("/message", function (req, res) {
   const chatId = req.body.chatId;
   const msg = req.body.msg;
@@ -107,6 +124,23 @@ router.post("/message", function (req, res) {
   Chats.updateOne(
     { _id: chatId },
     { $push: { messages: msg } },
+    function (err, chat) {
+      if (!err) {
+        res.send(chat);
+      } else {
+        throw err;
+      }
+    }
+  );
+});
+
+router.post("/message/delete", function (req, res) {
+  const chatId = req.body.chatId;
+  const msg = req.body.msg;
+
+  Chats.updateOne(
+    { _id: chatId },
+    { $pull: { messages: msg } },
     function (err, chat) {
       if (!err) {
         res.send(chat);

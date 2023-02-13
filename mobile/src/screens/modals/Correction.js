@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { FlatList, TextInput, View } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
+import { useUser } from "../../../App";
 import { CustomText, PageHeader, Row } from "../../components/";
 
 import i18n from "../../i18n";
@@ -66,6 +67,7 @@ const Sentence = ({ item, corrections, setCorrections }) => {
 export default Correction = ({ route, navigation }) => {
   const msgs = route.params.msg.split(".");
   const { colors } = useTheme();
+  const { user } = useUser();
 
   const [corrections, setCorrections] = useState({});
 
@@ -91,8 +93,8 @@ export default Correction = ({ route, navigation }) => {
           navigation.navigate("ChatModal", {
             chatId: route.params.chatId,
             correction: {
-              body: corrections,
-              from: Math.random() > 0.5,
+              body: JSON.stringify(corrections),
+              from: user._id,
               type: "correction",
             },
           })

@@ -14,6 +14,7 @@ require("../database/models/Country");
 require("../database/models/Language");
 require("../database/models/Profile");
 require("../database/models/Report");
+require("../database/models/Request");
 require("../database/models/Role");
 require("../database/models/User");
 

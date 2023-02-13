@@ -12,6 +12,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import Styled from "styled-components/native";
+import { useWarning } from "../../App";
 import CustomText from "./CustomText";
 import { Row } from "./Helpers";
 
@@ -148,6 +149,8 @@ export const Message = React.memo(
 
     const swipeable = useRef();
 
+    const { setWarning } = useWarning();
+
     const handleSwipeSelf = direction => {
       switch (direction) {
         case "left":
@@ -173,8 +176,10 @@ export const Message = React.memo(
       }
     };
 
-    const copyToClipboard = async () =>
+    const copyToClipboard = async () => {
       await Clipboard.setStringAsync(msg.body);
+      setWarning(i18n.t("copiedToClipboard"));
+    };
 
     return (
       <Swipeable
@@ -219,7 +224,7 @@ export const Message = React.memo(
                         })
                     : () => setVisible(true)
                 }
-                delayLongPress={500}
+                delayLongPress={750}
                 onLongPress={msg.type === "msg" ? copyToClipboard : null}
               >
                 <View>
@@ -283,56 +288,60 @@ export const Message = React.memo(
                     )}
                     {msg.type === "correction" ? (
                       <View style={{ width: "100%" }}>
-                        {Object.entries(msg.body).map(([ori, cor], i) => (
-                          <View
-                            key={ori + i}
-                            style={{
-                              width: "100%",
-                            }}
-                          >
-                            <Row style={{ marginBottom: 7 }}>
-                              <CustomText
-                                type={typography.chat[msg.type].wrong}
-                                color={colors.gray.ninth}
-                                style={{ flex: 1 }}
-                              >
-                                {ori}
-                              </CustomText>
-                              <Icon
-                                name="close"
-                                size={20}
-                                color={colors.aux.cancel}
-                                style={{ marginLeft: 5 }}
-                              />
-                            </Row>
+                        {Object.entries(JSON.parse(msg.body)).map(
+                          ([ori, cor], i) => (
+                            <View
+                              key={ori + i}
+                              style={{
+                                width: "100%",
+                              }}
+                            >
+                              <Row style={{ marginBottom: 7 }}>
+                                <CustomText
+                                  type={typography.chat[msg.type].wrong}
+                                  color={colors.gray.ninth}
+                                  style={{ flex: 1 }}
+                                >
+                                  {ori}
+                                </CustomText>
+                                <Icon
+                                  name="close"
+                                  size={20}
+                                  color={colors.aux.cancel}
+                                  style={{ marginLeft: 5 }}
+                                />
+                              </Row>
 
-                            <Row>
-                              <CustomText
-                                type={typography.chat[msg.type].correct}
-                                color={colors.gray.ninth}
-                                style={{ flex: 1 }}
-                              >
-                                {cor}
-                              </CustomText>
-                              <Icon
-                                name="check"
-                                size={20}
-                                color={colors.aux.confirm}
-                                style={{ marginLeft: 5 }}
-                              />
-                            </Row>
+                              <Row>
+                                <CustomText
+                                  type={typography.chat[msg.type].correct}
+                                  color={colors.gray.ninth}
+                                  style={{ flex: 1 }}
+                                >
+                                  {cor}
+                                </CustomText>
+                                <Icon
+                                  name="check"
+                                  size={20}
+                                  color={colors.aux.confirm}
+                                  style={{ marginLeft: 5 }}
+                                />
+                              </Row>
 
-                            {i !== Object.entries(msg.body).length - 1 && (
-                              <Divider
-                                style={{
-                                  height: 1,
-                                  backgroundColor: colors.gray.ninth,
-                                  marginVertical: 15,
-                                }}
-                              />
-                            )}
-                          </View>
-                        ))}
+                              {i !==
+                                Object.entries(JSON.parse(msg.body)).length -
+                                  1 && (
+                                <Divider
+                                  style={{
+                                    height: 1,
+                                    backgroundColor: colors.gray.ninth,
+                                    marginVertical: 15,
+                                  }}
+                                />
+                              )}
+                            </View>
+                          )
+                        )}
                       </View>
                     ) : (
                       <CustomText

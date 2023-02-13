@@ -49,28 +49,28 @@ const sorts = {
   },
 };
 
-const PendingRequests = ({ requests, setRequests }) => {
-  const navigation = useNavigation();
+// const PendingRequests = ({ requests, setRequests }) => {
+//   const navigation = useNavigation();
 
-  return (
-    <OverlayMenu
-      title={i18n.t("chatRequests")}
-      icon="account-multiple"
-      iconSize={20}
-      badge={requests.length < 10 ? requests.length : "9+"}
-      topSpacing={40}
-      content={
-        <RequestsOverlay
-          requests={requests}
-          setRequests={setRequests}
-          navigation={navigation}
-        />
-      }
-      // footer={i18n.t("clear")}
-      // footerAction={() => setSort(defaultSort)}
-    />
-  );
-};
+//   return (
+//     <OverlayMenu
+//       title={i18n.t("chatRequests")}
+//       icon="account-multiple"
+//       iconSize={20}
+//       badge={requests.length < 10 ? requests.length : "9+"}
+//       topSpacing={40}
+//       content={
+//         <RequestsOverlay
+//           requests={requests}
+//           setRequests={setRequests}
+//           navigation={navigation}
+//         />
+//       }
+//       // footer={i18n.t("clear")}
+//       // footerAction={() => setSort(defaultSort)}
+//     />
+//   );
+// };
 
 export default Chats = ({ navigation }) => {
   const { user, profile } = useUser();
@@ -116,6 +116,10 @@ export default Chats = ({ navigation }) => {
       fetchChats();
     });
 
+    socket.on("deletedMessage", _ => {
+      fetchChats();
+    });
+
     setSocketEventsAdded(true);
   };
 
@@ -152,26 +156,26 @@ export default Chats = ({ navigation }) => {
     [keyboard.keyboardShown]
   );
 
-  const requestsAmount = 0;
-  const [requests, setRequests] = useState(
-    Array(requestsAmount)
-      .fill()
-      .map((_, k) => ({
-        _id: k,
-        name: Array(Math.floor(Math.random() * (10 - 3 + 1) + 3))
-          .fill()
-          .map(_ => String.fromCharCode(97 + Math.floor(Math.random() * 26)))
-          .join(""),
-        avatar: {
-          style: "Number",
-          color: "String",
-        },
-      }))
-  );
+  // const requestsAmount = 0;
+  // const [requests, setRequests] = useState(
+  //   Array(requestsAmount)
+  //     .fill()
+  //     .map((_, k) => ({
+  //       _id: k,
+  //       name: Array(Math.floor(Math.random() * (10 - 3 + 1) + 3))
+  //         .fill()
+  //         .map(_ => String.fromCharCode(97 + Math.floor(Math.random() * 26)))
+  //         .join(""),
+  //       avatar: {
+  //         style: "Number",
+  //         color: "String",
+  //       },
+  //     }))
+  // );
 
-  const PendingReqs = () => (
-    <PendingRequests requests={requests} setRequests={setRequests} />
-  );
+  // const PendingReqs = () => (
+  //   <PendingRequests requests={requests} setRequests={setRequests} />
+  // );
 
   const defaultSort = { by: "date", order: -1 };
   const insets = useSafeAreaInsets();
@@ -299,7 +303,7 @@ export default Chats = ({ navigation }) => {
       />
       <PageHeader
         title={i18n.t("chats")}
-        sideActions={requests.length > 0 ? [PendingReqs] : []}
+        // sideActions={requests.length > 0 ? [PendingReqs] : []}
       />
       <Row>
         <CustomInput

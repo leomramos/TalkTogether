@@ -74,11 +74,26 @@ module.exports = app => {
     });
 
     socket.on("message", ({ to, msg }) => {
-      console.log(to);
       const ouSocket = sockets[to] || {};
       const uSocket = sockets[msg.from] || {};
       io.to(ouSocket.socketId).emit("message", msg);
       io.to([uSocket.socketId, ouSocket.socketId]).emit("newMessage");
+    });
+
+    socket.on("deletedMessage", ({ to, msg }) => {
+      const ouSocket = sockets[to] || {};
+      const uSocket = sockets[msg.from] || {};
+      io.to([uSocket.socketId, ouSocket.socketId]).emit("deletedMessage");
+    });
+
+    socket.on("requestsUpdate", ({ to }) => {
+      const ouSocket = sockets[to] || {};
+      io.to(ouSocket.socketId).emit("requestsUpdate");
+    });
+
+    socket.on("changedPerms", ({ to }) => {
+      const ouSocket = sockets[to] || {};
+      io.to(ouSocket.socketId).emit("changedPerms");
     });
 
     socket.on("disconnect", _ => {
