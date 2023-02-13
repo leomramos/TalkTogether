@@ -17,7 +17,6 @@ const matchByLanguages = (userId, sockets) => {
         const profDiff = Math.abs(lang.proficiency - uLang.proficiency);
         return total + (profDiff === 1 ? 2 : profDiff === 0 ? 1 : 3);
       }, 0);
-      console.log("match", match);
 
       return {
         userId: id,

@@ -1,6 +1,7 @@
 import { Icon } from "@react-native-material/core";
 import { FlashList } from "@shopify/flash-list";
 import * as Clipboard from "expo-clipboard";
+import * as WebBrowser from "expo-web-browser";
 import React, { useRef, useState } from "react";
 import { View } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
@@ -135,6 +136,7 @@ const Actions = ({ grammar, copy, reply, colors, setVisible }) => (
 export const Message = React.memo(
   ({
     user,
+    otherUser,
     msg,
     first,
     last,
@@ -183,7 +185,7 @@ export const Message = React.memo(
 
     return (
       <Swipeable
-        friction={3}
+        friction={4}
         renderLeftActions={() => <LeftActions colors={colors} />}
         renderRightActions={() =>
           msg.from === user._id ? (
@@ -222,6 +224,8 @@ export const Message = React.memo(
                           from: msg.from,
                           sent: msg.sent,
                         })
+                    : msg.type === "document"
+                    ? async () => await WebBrowser.openBrowserAsync(msg.body)
                     : () => setVisible(true)
                 }
                 delayLongPress={750}
@@ -258,7 +262,9 @@ export const Message = React.memo(
                               ]
                         }
                       >
-                        {msg.refersTo.from === user._id ? "You" : "Other"}
+                        {msg.refersTo.from === user._id
+                          ? i18n.t("you")
+                          : otherUser?.name || i18n.t("unknown")}
                       </CustomText>
                       <CustomText
                         type={typography.chat.reply.body}
@@ -281,6 +287,14 @@ export const Message = React.memo(
                     {msg.type === "photo" && (
                       <Icon
                         name="image"
+                        size={20}
+                        color={colors.gray.ninth}
+                        style={{ marginRight: 5 }}
+                      />
+                    )}
+                    {msg.type === "document" && (
+                      <Icon
+                        name="file-document"
                         size={20}
                         color={colors.gray.ninth}
                         style={{ marginRight: 5 }}

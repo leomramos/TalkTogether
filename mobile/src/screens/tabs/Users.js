@@ -44,6 +44,7 @@ export default Users = ({ navigation }) => {
     return (
       <UserItem
         user={item}
+        refetchUsers={users.refetch}
         handleAvatarPress={() =>
           navigation.navigate("Modals", {
             screen: "ProfileModal",

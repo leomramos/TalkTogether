@@ -27,6 +27,7 @@ const Sentence = ({ item, corrections, setCorrections }) => {
         <TextInput
           ref={input}
           value={correction}
+          multiline
           onChangeText={text => {
             setCorrection(text);
             const newCorrections = JSON.parse(JSON.stringify(corrections));
@@ -65,7 +66,9 @@ const Sentence = ({ item, corrections, setCorrections }) => {
 };
 
 export default Correction = ({ route, navigation }) => {
-  const msgs = route.params.msg.split(".");
+  const msgs = route.params.msg
+    .match(/[^\.!\?]+[\.!\?]+[""]?|.+$/g)
+    .map(msg => msg.trim());
   const { colors } = useTheme();
   const { user } = useUser();
 

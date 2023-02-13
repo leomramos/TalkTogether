@@ -78,12 +78,18 @@ export const ChatItem = ({
           <MessageWrapper style={{ marginTop: 4 }}>
             <CustomText
               type={typography.message.preview}
-              color={colors.gray.eighth}
+              color={
+                lastMessage?.type === "msg"
+                  ? colors.gray.eighth
+                  : colors.gray.seventh
+              }
               style={{ flex: 1, marginRight: 5 }}
               numberOfLines={1}
               ellipsizeMode="tail"
             >
-              {lastMessage.body}
+              {lastMessage?.type === "msg"
+                ? lastMessage.body || ""
+                : i18n.t(lastMessage?.type || "noMessagesFound")}
             </CustomText>
             {unread > 0 && (
               <Badge size={16} color={colors.purple.eighth}>
@@ -247,6 +253,7 @@ export const UserItem = props => {
       .then(_ => {
         socket.emit("usersUpdated");
         setWarning(i18n.t("userPromoted"));
+        props.refetchUsers();
       })
       .catch(e => {
         throw e;
@@ -258,6 +265,7 @@ export const UserItem = props => {
       .then(_ => {
         socket.emit("usersUpdated");
         setWarning(i18n.t("userDemoted"));
+        props.refetchUsers();
       })
       .catch(e => {
         throw e;
@@ -269,6 +277,7 @@ export const UserItem = props => {
       .then(_ => {
         socket.emit("usersUpdated");
         setWarning(i18n.t("userBanned"));
+        props.refetchUsers();
       })
       .catch(e => {
         throw e;
@@ -289,7 +298,7 @@ export const UserItem = props => {
 
   return (
     <Swipeable
-      friction={3}
+      friction={4}
       renderLeftActions={
         uPerm < user?.role?.permLevel - 2 || user?.role?.permLevel === 5
           ? () => <LeftActions colors={colors} />

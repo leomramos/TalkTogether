@@ -172,6 +172,13 @@ const common = {
           unit: "px",
         },
       },
+      document: {
+        font: "Inter_600SemiBold",
+        size: {
+          number: 14,
+          unit: "px",
+        },
+      },
       reply: {
         user: {
           font: "Inter_600SemiBold",

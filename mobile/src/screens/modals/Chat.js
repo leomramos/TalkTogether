@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import uuid from "react-native-uuid";
 import { useQuery } from "react-query";
 import Styled from "styled-components/native";
-import { useSocket, useUser } from "../../../App";
+import { useSocket, useUser, useWarning } from "../../../App";
 import {
   ChatHeader,
   CustomInput,
@@ -20,7 +20,11 @@ import {
   Row,
   ScreenContainer,
 } from "../../components";
-import { formatMessageSentTime, getTimeDiff } from "../../utils/helpers";
+import {
+  formatMessageSentDate,
+  formatMessageSentTime,
+  getTimeDiff,
+} from "../../utils/helpers";
 
 import { Icon } from "@react-native-material/core";
 import i18n from "../../i18n";
@@ -62,6 +66,7 @@ export default Chat = ({ route, navigation }) => {
   const insets = useSafeAreaInsets();
   const { user } = useUser();
   const { socket, online } = useSocket();
+  const { setWarning } = useWarning();
 
   const [otherUser, setOtherUser] = useState("");
 
@@ -85,7 +90,6 @@ export default Chat = ({ route, navigation }) => {
   );
 
   const checkOnline = user => online.indexOf(user) !== -1;
-
   // useEffect(() => {
   //   alert(
   //     "The chat feature is still being developed and may have some bugs or issues"
@@ -96,6 +100,8 @@ export default Chat = ({ route, navigation }) => {
     otherUser &&
       setOtherUser({ ...otherUser, online: checkOnline(otherUser.userId) });
   }, [online]);
+
+  const [groupsIds, setGroupIds] = useState([]);
 
   const [messages, setMessages] = useState([]);
   const [permissions, setPermissions] = useState(
@@ -117,14 +123,12 @@ export default Chat = ({ route, navigation }) => {
     }
   }, [permissions]);
 
-  console.log(permissions);
-
   useEffect(() => {
     const info = chatInfo.data;
     if (info && info.messages.length > 0) {
-      let messagesAux = messages;
+      let messagesAux = [];
       info.messages.map(msg => {
-        let lastMsgGroup = messages[0] || {};
+        let lastMsgGroup = messagesAux[0] || {};
 
         if (msg.sent === undefined) {
           msg.sent = new Date();
@@ -140,9 +144,13 @@ export default Chat = ({ route, navigation }) => {
 
           messagesAux = [lastMsgGroup, ...(messagesAux || [])];
         } else {
+          let curId = uuid.v4();
+          if (!groupsIds[messagesAux.length]) {
+            setGroupIds([...groupsIds, curId]);
+          }
           messagesAux = [
             {
-              id: uuid.v4(),
+              id: groupsIds[messagesAux.length] || curId,
               sent: msg.sent,
               from: msg.from,
               messages: [msg],
@@ -214,9 +222,13 @@ export default Chat = ({ route, navigation }) => {
 
           messagesAux = [lastMsgGroup, ...(messagesAux || [])];
         } else {
+          let curId = uuid.v4();
+          if (!groupsIds[messagesAux.length]) {
+            setGroupIds([...groupsIds, curId]);
+          }
           messagesAux = [
             {
-              id: uuid.v4(),
+              id: groupsIds[messagesAux.length] || curId,
               sent: msg.sent,
               from: msg.from,
               messages: [msg],
@@ -245,7 +257,7 @@ export default Chat = ({ route, navigation }) => {
         sent: new Date(),
         from: user._id,
         type: "msg",
-        refersTo: replyingTo,
+        refersTo: replyingTo?._id,
       });
 
     setReplyingTo(null);
@@ -259,6 +271,15 @@ export default Chat = ({ route, navigation }) => {
       sent: new Date(),
       from: user._id,
       type: "photo",
+    });
+  };
+
+  const handleDocument = () => {
+    handleMessage({
+      body: "https://www.ufrgs.br/producao/wp-content/uploads/2019/05/Lorem-Ipsum.pdf",
+      sent: new Date(),
+      from: user._id,
+      type: "document",
     });
   };
 
@@ -314,6 +335,7 @@ export default Chat = ({ route, navigation }) => {
           to: otherUser.userId,
           msg,
         });
+        setWarning(i18n.t("messageDeleted"));
       })
       .catch(e => {
         throw e;
@@ -329,30 +351,49 @@ export default Chat = ({ route, navigation }) => {
     ({ listItem }) => {
       const item = listItem.item;
 
+      const findReferredMessage = msg => {
+        const msgGroup = messages?.find(msgs =>
+          msgs.messages?.some(m => m._id === msg.refersTo)
+        );
+        return msgGroup?.messages?.find(m => m._id === msg.refersTo);
+      };
+
       return (
         <MessagesGroup sent={item?.from === user._id} key={item?.id}>
           <MessagesStack sent={item?.from === user._id}>
-            {item?.messages?.map((msg, i) => (
-              <Message
-                user={user}
-                msg={msg}
-                key={i}
-                first={i === 0}
-                last={i === item?.messages?.length - 1}
-                openImage={setSelectedImage}
-                handleGrammar={() =>
-                  navigation.navigate("Modals", {
-                    screen: "CorrectionModal",
-                    params: { msg: msg.body, chatId: route.params.chatId },
-                  })
-                }
-                handleDelete={handleDelete}
-                handleReply={handleReply}
-              />
-            ))}
+            {item?.messages
+              ?.map(msg =>
+                msg.refersTo
+                  ? {
+                      ...msg,
+                      refersTo: findReferredMessage(msg),
+                    }
+                  : msg
+              )
+              ?.map((msg, i) => (
+                <Message
+                  user={user}
+                  otherUser={otherUser}
+                  msg={msg}
+                  key={i}
+                  first={i === 0}
+                  last={i === item?.messages?.length - 1}
+                  openImage={setSelectedImage}
+                  handleGrammar={() =>
+                    navigation.navigate("Modals", {
+                      screen: "CorrectionModal",
+                      params: { msg: msg.body, chatId: route.params.chatId },
+                    })
+                  }
+                  handleDelete={handleDelete}
+                  handleReply={handleReply}
+                />
+              ))}
           </MessagesStack>
           <Text style={{ color: "gray" }}>
-            {formatMessageSentTime(item?.sent)}
+            {getTimeDiff(item?.sent, undefined, "d") < 1
+              ? formatMessageSentTime(item?.sent)
+              : formatMessageSentDate(item?.sent)}
           </Text>
         </MessagesGroup>
       );
@@ -389,7 +430,7 @@ export default Chat = ({ route, navigation }) => {
               data={messages}
               renderItem={renderItem}
               keyExtractor={item => item?.id}
-              estimatedItemSize={200}
+              estimatedItemSize={125}
               initialScrollIndex={0}
               onScroll={scroll => {
                 const y = scroll.nativeEvent.contentOffset.y;
@@ -436,7 +477,9 @@ export default Chat = ({ route, navigation }) => {
                     ][replyingTo.from === user._id ? "eighth" : "sixth"]
                   }
                 >
-                  {replyingTo.from === user._id ? "You" : "Other"}
+                  {replyingTo.from === user._id
+                    ? i18n.t("you")
+                    : otherUser.name}
                 </CustomText>
                 <IconButton
                   icon="close"
@@ -500,7 +543,7 @@ export default Chat = ({ route, navigation }) => {
             iconDisabled={
               permissions.documents !== "enabled" && user.role?.permLevel < 5
             }
-            action={() => alert("documentos")}
+            action={handleDocument}
             setRef={input}
             left={
               <TextInput.Icon

@@ -5,10 +5,8 @@ const { Types } = require("mongoose");
 const Requests = require("../database/models/Request");
 
 router.post("/search", (req, res) => {
-  console.log(req.body);
   Requests.find(req.body, function (err, docs) {
     if (!err) {
-      console.log(docs);
       res.send(docs);
     } else {
       throw err;
@@ -19,7 +17,6 @@ router.post("/search", (req, res) => {
 router.post("/create", (req, res) => {
   Requests.create(req.body, function (err, docs) {
     if (!err) {
-      console.log(docs);
       res.send(docs);
     } else {
       throw err;
