@@ -99,17 +99,24 @@ export default function App() {
   }, [user._id]);
 
   useEffect(() => {
-    if (profileFetched) {
+    if (profile._id && profileFetched) {
       saveProfile();
     } else {
       setProfileFetched(Boolean(profile._id));
     }
   }, [profile]);
 
+  const logout = () => {
+    setUser({});
+    setProfile({});
+    socket.disconnect();
+    setSocket({});
+  };
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <User.Provider
-        value={{ user, setUser, profile, setProfile, saveProfile }}
+        value={{ user, setUser, profile, setProfile, saveProfile, logout }}
       >
         <Socket.Provider value={{ socket, socketConnect, online, setOnline }}>
           <Warning.Provider

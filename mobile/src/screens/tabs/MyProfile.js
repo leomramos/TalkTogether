@@ -1,7 +1,7 @@
 import { useKeyboard } from "@react-native-community/hooks";
 import { useEffect, useState } from "react";
 import { IconButton, useTheme } from "react-native-paper";
-import { useUser, useWarning } from "../../../App";
+import { useUser } from "../../../App";
 import { PageHeader, ScreenContainer } from "../../components/";
 import { UserProfile } from "../mocks";
 
@@ -9,7 +9,7 @@ import i18n from "../../i18n";
 
 export default MyProfile = ({ navigation }) => {
   const keyboard = useKeyboard();
-  const { profile, setProfile, saveProfile } = useUser();
+  const { profile, setProfile, logout } = useUser();
 
   useEffect(
     _ =>
@@ -97,11 +97,27 @@ export default MyProfile = ({ navigation }) => {
     />
   );
 
+  const LogoutButton = _ => (
+    <IconButton
+      icon="logout"
+      color={colors.aux.cancel}
+      onPress={() => {
+        logout();
+        navigation.navigate("Auth", {
+          screen: "MainAuth",
+        });
+      }}
+      style={{ margin: 0 }}
+    />
+  );
+
   return (
     <ScreenContainer>
       <PageHeader
         title={i18n.t("myProfile")}
-        sideActions={editing ? [CancelButton, SaveButton] : [EditButton]}
+        sideActions={
+          editing ? [CancelButton, SaveButton] : [EditButton, LogoutButton]
+        }
       />
       <UserProfile
         editable={editing}
