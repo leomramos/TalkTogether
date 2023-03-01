@@ -27,7 +27,7 @@ export default {
   enterEmail: "Enter your e-mail",
   enterEmailError: "Please enter a valid e-mail",
   enterPasswordsMusMatch: "The passwords must match",
-  fillYourInformation: "Fill up your information",
+  fillYourInformation: "Fill in your information",
   forgotPassword: "Forgot password?",
   helloThere: "Hello there!",
   hoursAgo: "{{time}}h ago",
