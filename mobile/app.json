@@ -26,6 +26,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#21212B"
       },
+      "permissions": ["RECORD_AUDIO", "WRITE_EXTERNAL_STORAGE"],
       "package": "com.leormsz.TalkTogether"
     },
     "extra": {

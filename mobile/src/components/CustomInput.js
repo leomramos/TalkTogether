@@ -47,10 +47,11 @@ export default CustomInput = ({
       placeholderTextColor={colors.gray.sixth}
       value={value}
       onChangeText={text => {
-        if (restriction(text)) {
-          setValue(text);
-          search && search(text);
+        if (!restriction(text) && restriction(text.trim())) {
+          text = text.trim();
         }
+        setValue(text.trim());
+        search && search(text.trim());
       }}
       keyboardType={search ? "web-search" : keyboard}
       selectionColor={colors.purple.sixth}
